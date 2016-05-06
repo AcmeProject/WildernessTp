@@ -21,6 +21,9 @@ public class SignChangeListener implements Listener {
                 ev.setLine(1, ChatColor.translateAlternateColorCodes('&', "[&1Wild&0]"));
                 ev.setLine(2, ChatColor.translateAlternateColorCodes('&', "&4===================="));
                 ev.getPlayer().sendMessage(ChatColor.GREEN + "Successfully made a new WildTP sign");
+            } else {
+                ev.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', "&4You do not have permission to make a WildTP sign"));
+                ev.setCancelled(true);
             }
         }
     }

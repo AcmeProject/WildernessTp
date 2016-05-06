@@ -2,22 +2,26 @@ package net.poweredbyhate.wildtp;
 
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Random;
 
 public class TeleportGoneWild {
 
-    public void WildTeleport(Player p) {
-        p.teleport(getRandomeLocation(p.getWorld()));
+    public void WildTeleport(final Player p) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                p.teleport(getRandomeLocation(p.getWorld()));
+            }
+        }.runTaskLater(WildTP.instace, 10);
     }
 
     public Location getRandomeLocation(World world) {
         for (int i = 0; i<10; i++) {
             Location loco = new Location(world, r4nd0m(WildTP.maxXY[0], WildTP.minXY[0]), 5, r4nd0m(WildTP.maxXY[1], WildTP.minXY[1]));
-            Biome locoBiome = loco.getBlock().getBiome();
-            if (locoBiome != Biome.OCEAN || locoBiome != Biome.DEEP_OCEAN) {
+            if (!loco.getBlock().getBiome().toString().toLowerCase().contains("ocean")) {
                 loco.setY(world.getHighestBlockYAt(loco)+2);
                 return loco;
             }
