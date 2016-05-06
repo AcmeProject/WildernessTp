@@ -10,7 +10,7 @@ public class WildTP extends JavaPlugin {
 
     public static WildTP instace;
     public static int[] maxXY = {5000,5000};
-    public static int[] minXY = {-5000,-5000};
+    public static int[] minXY = {-5000,0};
 
     public void onEnable() {
         instace = this;
