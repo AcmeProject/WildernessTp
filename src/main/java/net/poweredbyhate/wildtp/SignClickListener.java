@@ -6,7 +6,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 /**
@@ -31,13 +30,6 @@ public class SignClickListener implements Listener {
             } else {
                 ev.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Hey! You may not break WildTP sign!"));
             }
-        }
-    }
-
-    @EventHandler
-    public void onChat(AsyncPlayerChatEvent ev) {
-        if (ev.getMessage().equalsIgnoreCase("test")) {
-            new TeleportGoneWild().WildTeleport(ev.getPlayer());
         }
     }
 }
