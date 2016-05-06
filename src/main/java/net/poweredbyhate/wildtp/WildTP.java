@@ -17,6 +17,7 @@ public class WildTP extends JavaPlugin {
         instace = this;
         getWild();
         getCommand("wild").setExecutor(new CommandsGoneWild(this));
+        getCommand("wildtp").setExecutor(new AdminsGoneWild(this));
         Bukkit.getPluginManager().registerEvents(new SignChangeListener(), this);
         Bukkit.getPluginManager().registerEvents(new SignClickListener(), this);
     }
