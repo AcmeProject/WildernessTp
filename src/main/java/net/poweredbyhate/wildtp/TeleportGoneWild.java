@@ -20,7 +20,7 @@ public class TeleportGoneWild {
 
     public Location getRandomeLocation(World world) {
         for (int i = 0; i<10; i++) {
-            Location loco = new Location(world, r4nd0m(WildTP.maxXY[0], WildTP.minXY[0]), 5, r4nd0m(WildTP.maxXY[1], WildTP.minXY[1]));
+            Location loco = new Location(world, r4nd0m(WildTP.maxXY, WildTP.minXY), 5, r4nd0m(WildTP.maxXY, WildTP.minXY));
             if (!loco.getBlock().getBiome().toString().toLowerCase().contains("ocean")) {
                 loco.setY(world.getHighestBlockYAt(loco)+2);
                 return loco;
