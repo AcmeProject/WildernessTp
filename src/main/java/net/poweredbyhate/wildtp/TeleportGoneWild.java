@@ -1,5 +1,6 @@
 package net.poweredbyhate.wildtp;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -9,11 +10,18 @@ import java.util.Random;
 
 public class TeleportGoneWild {
 
+    ChecKar chacKer = new ChecKar();
+
     public void WildTeleport(final Player p) {
+        if (chacKer.isInCooldown(p.getUniqueId())) {
+            p.sendMessage(ChatColor.RED + "Please wait until your cooldown is over.");
+            return;
+        }
         new BukkitRunnable() {
             @Override
             public void run() {
                 p.teleport(getRandomeLocation(p.getWorld()));
+                chacKer.addKewlzDown(p.getUniqueId());
             }
         }.runTaskLater(WildTP.instace, 10);
     }
