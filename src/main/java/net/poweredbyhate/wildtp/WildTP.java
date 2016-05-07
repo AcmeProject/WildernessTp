@@ -25,6 +25,7 @@ public class WildTP extends JavaPlugin {
 
     public void getWild() {
         saveDefaultConfig();
+        coolDownTeim = getConfig().getInt("Cooldown");
         maxXY = getConfig().getInt("MaxXY");
         minXY = getConfig().getInt("MinXY");
         retries = getConfig().getInt("Retries");
