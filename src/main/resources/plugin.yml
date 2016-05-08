@@ -1,4 +1,7 @@
 name: Wild
-version: 1
+version: 1.5
 author: [LaxWasHere,RoboMWM]
 main: net.poweredbyhate.wildtp.WildTP
+commands:
+  wild:
+  wildtp:

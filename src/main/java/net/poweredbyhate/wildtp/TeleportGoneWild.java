@@ -1,5 +1,6 @@
 package net.poweredbyhate.wildtp;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -9,18 +10,25 @@ import java.util.Random;
 
 public class TeleportGoneWild {
 
+    ChecKar chacKer = new ChecKar();
+
     public void WildTeleport(final Player p) {
+        if (chacKer.isInCooldown(p.getUniqueId())) {
+            p.sendMessage(ChatColor.RED + "Please wait until your cooldown is over.");
+            return;
+        }
         new BukkitRunnable() {
             @Override
             public void run() {
                 p.teleport(getRandomeLocation(p.getWorld()));
+                chacKer.addKewlzDown(p.getUniqueId());
             }
         }.runTaskLater(WildTP.instace, 10);
     }
 
     public Location getRandomeLocation(World world) {
         for (int i = 0; i<10; i++) {
-            Location loco = new Location(world, r4nd0m(WildTP.maxXY[0], WildTP.minXY[0]), 5, r4nd0m(WildTP.maxXY[1], WildTP.minXY[1]));
+            Location loco = new Location(world, r4nd0m(WildTP.maxXY, WildTP.minXY), 5, r4nd0m(WildTP.maxXY, WildTP.minXY));
             if (!loco.getBlock().getBiome().toString().toLowerCase().contains("ocean")) {
                 loco.setY(world.getHighestBlockYAt(loco)+2);
                 return loco;
