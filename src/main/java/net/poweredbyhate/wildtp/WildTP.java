@@ -17,6 +17,8 @@ public class WildTP extends JavaPlugin {
     public static int minXY = -5000;
     public static int retries = 10;
     public static int coolDownTeim = 30;
+    public static int wamuppah = 10;
+    public static boolean ifurwildandunoitclapurhands = true;
     GriefPrevention antgreif;
     DataStore dataaaastorege;
 
