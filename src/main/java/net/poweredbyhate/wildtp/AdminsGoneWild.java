@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Created by Lax on 5/6/2016.
@@ -39,6 +40,9 @@ public class AdminsGoneWild implements CommandExecutor {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&0[&aWildnernessTP&0]&aPlugin config has successfuly been reload."));
             } else {
                 sender.sendMessage(ChatColor.RED + "Sorry you do not have permission to reload the plugin");
+            }
+            if (args[0].equalsIgnoreCase("gui") && sender.hasPermission("wild.wildtp.set") && sender instanceof Player) {
+                new GeeYouEye().openMenu((Player) sender);
             }
         }
         return false;
