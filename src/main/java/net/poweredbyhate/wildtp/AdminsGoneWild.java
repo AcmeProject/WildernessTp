@@ -10,6 +10,16 @@ import org.bukkit.command.CommandSender;
  */
 public class AdminsGoneWild implements CommandExecutor {
 
+    String[] halpMessage = {
+            "&6-------------------Help-------------------------",
+            "&6*Command:          Description:                *",
+            "&6* /Wild - Teleports player to random location  *",
+            "&6* /Wild [player] - Random teleport a player    *",
+            "&6* /WildTP reload - Reloads the plugin's config *",
+            "&6* /WildTP - shows this help message            *",
+            "&6------------------------------------------------"
+    };
+
     WildTP tpWild;
 
     public AdminsGoneWild(WildTP wildTP) {
@@ -18,6 +28,11 @@ public class AdminsGoneWild implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
+        if (args.length == 0) {
+            for (String aHalpMessage : halpMessage) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', aHalpMessage));
+            }
+        }
         if (args.length >= 1) {
             if (args[0].equalsIgnoreCase("reload") && sender.hasPermission("wild.wildtp.reload")) {
                 tpWild.getWild();
