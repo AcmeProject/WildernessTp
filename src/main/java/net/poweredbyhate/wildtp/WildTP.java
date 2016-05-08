@@ -28,15 +28,12 @@ public class WildTP extends JavaPlugin {
         getCommand("wildtp").setExecutor(new AdminsGoneWild(this));
         Bukkit.getPluginManager().registerEvents(new SignChangeListener(), this);
         Bukkit.getPluginManager().registerEvents(new SignClickListener(), this);
-<<<<<<< HEAD
         Bukkit.getPluginManager().registerEvents(new GeeYouEye(), this);
-=======
         if (getServer().getPluginManager().getPlugin("GriefPrevention") != null)
         {
             antgreif = (GriefPrevention)getServer().getPluginManager().getPlugin("GriefPrevention");
             dataaaastorege = antgreif.dataStore;
         }
->>>>>>> 372912a7dd356a626a722ca27385a76da875ed12
     }
 
     public void getWild() {
