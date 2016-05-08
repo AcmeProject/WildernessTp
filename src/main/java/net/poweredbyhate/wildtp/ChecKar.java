@@ -18,7 +18,7 @@ public class ChecKar {
             return false;
         }
         if (kewwwlDown.get(youyouEyeDee) > System.currentTimeMillis()) {
-            return true;
+            return WildTP.instace.ifurwildandunoitclapurhands;
         } else {
             kewwwlDown.remove(youyouEyeDee);
             return false;
