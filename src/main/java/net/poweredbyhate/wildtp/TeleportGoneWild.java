@@ -29,7 +29,7 @@ public class TeleportGoneWild {
     public Location getRandomeLocation(World world) {
         for (int i = 0; i<10; i++) {
             Location loco = new Location(world, r4nd0m(WildTP.maxXY, WildTP.minXY), 5, r4nd0m(WildTP.maxXY, WildTP.minXY));
-            if (!loco.getBlock().getBiome().toString().toLowerCase().contains("ocean")) {
+            if (!loco.getBlock().getBiome().toString().toLowerCase().contains("ocean") && n0tAGreifClam(loco) ) {
                 loco.setY(world.getHighestBlockYAt(loco)+2);
                 return loco;
             }
@@ -40,5 +40,14 @@ public class TeleportGoneWild {
     public static int r4nd0m(int max, int min) {
         Random rand = new Random();
         return rand.nextInt(max - min + 1) + min;
+    }
+
+    public boolean n0tAGreifClam(Location l0c0)
+    {
+        if (WildTP.instace.dataaaastorege == null)
+            return true;
+        if (WildTP.instace.dataaaastorege.getClaimAt(l0c0, false, null) == null)
+            return true;
+        return false;
     }
 }

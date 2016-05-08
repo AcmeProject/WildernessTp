@@ -1,5 +1,7 @@
 package net.poweredbyhate.wildtp;
 
+import me.ryanhamshire.GriefPrevention.DataStore;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,6 +17,8 @@ public class WildTP extends JavaPlugin {
     public static int minXY = -5000;
     public static int retries = 10;
     public static int coolDownTeim = 30;
+    GriefPrevention antgreif;
+    DataStore dataaaastorege;
 
     public void onEnable() {
         instace = this;
@@ -24,7 +28,15 @@ public class WildTP extends JavaPlugin {
         getCommand("wildtp").setExecutor(new AdminsGoneWild(this));
         Bukkit.getPluginManager().registerEvents(new SignChangeListener(), this);
         Bukkit.getPluginManager().registerEvents(new SignClickListener(), this);
+<<<<<<< HEAD
         Bukkit.getPluginManager().registerEvents(new GeeYouEye(), this);
+=======
+        if (getServer().getPluginManager().getPlugin("GriefPrevention") != null)
+        {
+            antgreif = (GriefPrevention)getServer().getPluginManager().getPlugin("GriefPrevention");
+            dataaaastorege = antgreif.dataStore;
+        }
+>>>>>>> 372912a7dd356a626a722ca27385a76da875ed12
     }
 
     public void getWild() {
