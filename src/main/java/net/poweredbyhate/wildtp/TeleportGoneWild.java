@@ -46,7 +46,7 @@ public class TeleportGoneWild {
     {
         if (WildTP.instace.dataaaastorege == null)
             return true;
-        if (WildTP.instace.dataaaastorege.getClaimAt(l0c0, false, null) == null)
+        if (WildTP.instace.dataaaastorege.getClaimAt(l0c0, WildTP.instace.ifurwildandunoitclapurhands, null) == null)
             return WildTP.instace.ifurwildandunoitclapurhands;
         return false;
     }
