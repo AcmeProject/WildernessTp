@@ -23,7 +23,7 @@ public class TeleportGoneWild {
                 p.teleport(getRandomeLocation(p.getWorld()));
                 chacKer.addKewlzDown(p.getUniqueId());
             }
-        }.runTaskLater(WildTP.instace, 10);
+        }.runTaskLater(WildTP.instace, WildTP.instace.wamuppah);
     }
 
     public Location getRandomeLocation(World world) {
