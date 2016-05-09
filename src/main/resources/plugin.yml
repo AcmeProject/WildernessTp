@@ -7,3 +7,4 @@ commands:
   wild:
     aliases: [wilderness,rtp]
   wildtp:
+    aliases: [wtp]
