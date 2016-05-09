@@ -5,4 +5,5 @@ main: net.poweredbyhate.wildtp.WildTP
 softdepend: GriefPrevention
 commands:
   wild:
+    aliases: [wilderness,rtp]
   wildtp:
