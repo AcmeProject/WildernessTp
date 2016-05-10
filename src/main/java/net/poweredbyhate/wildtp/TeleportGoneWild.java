@@ -18,10 +18,14 @@ public class TeleportGoneWild {
             p.sendMessage(ChatColor.RED + "Please wait until your cooldown is over.");
             return;
         }
+        final Location loc = getRandomeLocation(p.getWorld());
+        PreWildTeleportEvent preWildTeleportEvent = new PreWildTeleportEvent(p, loc);
+        Bukkit.getServer().getPluginManager().callEvent(preWildTeleportEvent);
+        if (preWildTeleportEvent.isCancelled()) return;
         new BukkitRunnable() {
             @Override
             public void run() {
-                p.teleport(getRandomeLocation(p.getWorld()));
+                p.teleport(loc);
                 chacKer.addKewlzDown(p.getUniqueId());
                 PostWildTeleportEvent postWildTeleportEvent = new PostWildTeleportEvent(p);
                 Bukkit.getServer().getPluginManager().callEvent(postWildTeleportEvent);
