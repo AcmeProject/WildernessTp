@@ -1,5 +1,6 @@
 package net.poweredbyhate.wildtp;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -22,6 +23,8 @@ public class TeleportGoneWild {
             public void run() {
                 p.teleport(getRandomeLocation(p.getWorld()));
                 chacKer.addKewlzDown(p.getUniqueId());
+                PostWildTeleportEvent postWildTeleportEvent = new PostWildTeleportEvent(p);
+                Bukkit.getServer().getPluginManager().callEvent(postWildTeleportEvent);
             }
         }.runTaskLater(WildTP.instace, WildTP.instace.wamuppah);
     }
