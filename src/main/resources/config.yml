@@ -2,3 +2,6 @@ MaxXY: 5000
 MinXY: -5000
 Retries: 4
 Cooldown: 30
+DoCommands: false
+PostCommands:
+  - 'msg %PLAYER% &aYou have been wildly teleported'

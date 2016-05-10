@@ -31,6 +31,7 @@ public class WildTP extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new SignChangeListener(), this);
         Bukkit.getPluginManager().registerEvents(new SignClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new GeeYouEye(), this);
+        Bukkit.getPluginManager().registerEvents(new PostTeleportEvent(), this);
         if (getServer().getPluginManager().getPlugin("GriefPrevention") != null)
         {
             antgreif = (GriefPrevention)getServer().getPluginManager().getPlugin("GriefPrevention");
