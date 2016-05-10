@@ -13,7 +13,7 @@ public class AdminsGoneWild implements CommandExecutor {
 
     String[] halpMessage = {
             "&6-------------------Help-------------------------",
-            "&6*Command:          Description:                *",
+            "&6* Command:          Description:                *",
             "&6* /Wild - Teleports player to random location  *",
             "&6* /Wild [player] - Random teleport a player    *",
             "&6* /WildTP reload - Reloads the plugin's config *",
@@ -38,8 +38,6 @@ public class AdminsGoneWild implements CommandExecutor {
             if (args[0].equalsIgnoreCase("reload") && sender.hasPermission("wild.wildtp.reload")) {
                 tpWild.getWild();
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&0[&aWildnernessTP&0]&aPlugin config has successfuly been reload."));
-            } else {
-                sender.sendMessage(ChatColor.RED + "Sorry you do not have permission to reload the plugin");
             }
             if (args[0].equalsIgnoreCase("gui") && sender.hasPermission("wild.wildtp.set") && sender instanceof Player) {
                 new GeeYouEye().openMenu((Player) sender);

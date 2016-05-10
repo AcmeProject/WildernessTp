@@ -16,6 +16,10 @@ public class PostWildTeleportEvent extends Event {
         this.wildLing = wildLing;
     }
 
+    public static HandlerList getHandlerList() {
+        return panHandlers;
+    }
+
     @Override
     public HandlerList getHandlers() {
         return panHandlers;

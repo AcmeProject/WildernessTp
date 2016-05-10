@@ -9,7 +9,7 @@ import org.bukkit.event.HandlerList;
 /**
  * Created by John on 5/10/2016.
  */
-public class PreWildTeleportEvent extends Event implements Cancellable{
+public class PreWildTeleportEvent extends Event implements Cancellable {
 
     public static final HandlerList panHandlers = new HandlerList();
     private boolean cancelled;
@@ -27,6 +27,10 @@ public class PreWildTeleportEvent extends Event implements Cancellable{
 
     public Location getLocoLocation() {
         return this.locoLocation;
+    }
+
+    public static HandlerList getHandlerList() {
+        return panHandlers;
     }
 
     @Override
