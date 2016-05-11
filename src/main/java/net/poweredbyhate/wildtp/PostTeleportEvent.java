@@ -11,7 +11,7 @@ public class PostTeleportEvent implements Listener {
 
     @EventHandler
     public void onPostTele(PostWildTeleportEvent ev) {
-        if (WildTP.instace.getConfig().getBoolean("DoCommands")) {
+        if (WildTP.doCommandz) {
             for (String cmds : WildTP.instace.getConfig().getStringList("PostCommands")) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmds.replace("%PLAYER%", ev.getWildLing().getName()));
             }

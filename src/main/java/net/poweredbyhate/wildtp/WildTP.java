@@ -18,6 +18,7 @@ public class WildTP extends JavaPlugin {
     public static int retries = 10;
     public static int coolDownTeim = 30;
     public static int wamuppah = 10;
+    public static boolean doCommandz;
     public static boolean ifurwildandunoitclapurhands = true;
     GriefPrevention antgreif;
     DataStore dataaaastorege;
@@ -45,6 +46,7 @@ public class WildTP extends JavaPlugin {
         maxXY = getConfig().getInt("MaxXY");
         minXY = getConfig().getInt("MinXY");
         retries = getConfig().getInt("Retries");
+        doCommandz = getConfig().getBoolean("DoCommands");
     }
 
     public void wildMetrics() {

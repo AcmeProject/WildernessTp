@@ -5,5 +5,5 @@ Cooldown: 30
 DoCommands: false
 PostCommands:
   - 'title %PLAYER% times 20 100 20'
-  - 'title %PLAYER% title ["",{"text":"Wilderness","color":"green"]'
+  - 'title %PLAYER% title ["",{"text":"Wilderness","color":"green","bold":false}]'
   - 'title %PLAYER% subtitle ["",{"text":"Its too dangerous to go alone.","color":"yellow"}]'
