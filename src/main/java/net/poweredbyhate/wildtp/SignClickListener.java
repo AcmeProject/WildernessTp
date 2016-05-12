@@ -26,9 +26,9 @@ public class SignClickListener implements Listener {
     public void onBlockBreak(BlockBreakEvent ev) {
         if (ev.getBlock().getState() instanceof Sign) {
             if(ChatColor.stripColor(((Sign) ev.getBlock().getState()).getLine(1)).equalsIgnoreCase("[wild]") && ev.getPlayer().hasPermission("wild.wildtp.break.sign")) {
-                ev.getPlayer().sendMessage(ChatColor.GREEN + "You have broken a WildTP sign");
+                ev.getPlayer().sendMessage(TooWildForEnums.translate(TooWildForEnums.BREAK_SIGN));
             } else {
-                ev.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Hey! You may not break WildTP sign!"));
+                ev.getPlayer().sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_BREAK));
             }
         }
     }

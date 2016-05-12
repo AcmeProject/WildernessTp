@@ -37,7 +37,7 @@ public class AdminsGoneWild implements CommandExecutor {
         if (args.length >= 1) {
             if (args[0].equalsIgnoreCase("reload") && sender.hasPermission("wild.wildtp.reload")) {
                 tpWild.getWild();
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&0[&aWildnernessTP&0]&aPlugin config has successfuly been reload."));
+                sender.sendMessage(TooWildForEnums.translate(TooWildForEnums.RELOADED));
             }
             if (args[0].equalsIgnoreCase("gui") && sender.hasPermission("wild.wildtp.set") && sender instanceof Player) {
                 new GeeYouEye().openMenu((Player) sender);

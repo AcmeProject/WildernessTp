@@ -1,7 +1,6 @@
 package net.poweredbyhate.wildtp;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -15,13 +14,16 @@ public class TeleportGoneWild {
 
     public void WildTeleport(final Player p) {
         if (chacKer.isInCooldown(p.getUniqueId())) {
-            p.sendMessage(ChatColor.RED + "Please wait until your cooldown is over.");
+            p.sendMessage(TooWildForEnums.translate(TooWildForEnums.COOLDOWN.replace("%TIME", String.valueOf(chacKer.getTimeLeft(p)))));
             return;
         }
         final Location loc = getRandomeLocation(p.getWorld());
         PreWildTeleportEvent preWildTeleportEvent = new PreWildTeleportEvent(p, loc);
         Bukkit.getServer().getPluginManager().callEvent(preWildTeleportEvent);
         if (preWildTeleportEvent.isCancelled()) return;
+        if (loc == null) {
+            p.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_LOCATION));
+        }
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -34,9 +36,9 @@ public class TeleportGoneWild {
     }
 
     public Location getRandomeLocation(World world) {
-        for (int i = 0; i<10; i++) {
+        for (int i = 0; i<WildTP.retries; i++) {
             Location loco = new Location(world, r4nd0m(WildTP.maxXY, WildTP.minXY), 5, r4nd0m(WildTP.maxXY, WildTP.minXY));
-            if (!loco.getBlock().getBiome().toString().toLowerCase().contains("ocean") && n0tAGreifClam(loco) ) {
+            if (!loco.getBlock().getBiome().toString().toLowerCase().contains("ocean") && n0tAGreifClam(loco)) {
                 loco.setY(world.getHighestBlockYAt(loco)+2);
                 return loco;
             }

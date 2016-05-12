@@ -12,8 +12,11 @@ public class PreTeleportEvent implements Listener {
 
     @EventHandler
     public void onPreTeleport(PreWildTeleportEvent ev) {
-        if (!chargePlayer(ev.getWildLing())) {
-            ev.setCancelled(true);
+        if (WildTP.econ != null) {
+            if (!chargePlayer(ev.getWildLing())) {
+                ev.setCancelled(true);
+                ev.getWildLing().sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_MONEY));
+            }
         }
     }
 

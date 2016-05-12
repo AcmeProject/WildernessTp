@@ -1,5 +1,6 @@
 package net.poweredbyhate.wildtp;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -15,7 +16,12 @@ public class TooWildForEnums {
     public static String NO_SIGN_PERMS;
     public static String NO_BREAK;
     public static String NO_LOCATION;
+    public static String NO_BIOME;
+    public static String NO_MONEY;
+    public static String YES_SIGN;
+    public static String BREAK_SIGN;
     public static String COOLDOWN;
+    public static String RELOADED;
 
     File langFile;
     FileConfiguration langConf;
@@ -29,14 +35,22 @@ public class TooWildForEnums {
                 langConf.set("NO_PERMS", "&4You do not have permission!");
                 langConf.set("NO_SIGN_PERMS", "&4You do not have permission to make a wild sign");
                 langConf.set("NO_BREAK", "&4Hey! You can not break WildTp sign!");
-                langConf.set("NO_LOCATION", "&4No suitable locations found.")
-		langCong.set("COOLDOWN", "You must way %TIME% seconds until you can use the command/sign again ")
-		langConf.save(langFile);
+                langConf.set("NO_LOCATION", "&4No suitable locations found.");
+                langConf.set("NO_BIOME", "&4You may not put signs in %BIOME%");
+                langConf.set("YES_SIGN", "&aSuccessfully made a new WildTP sign");
+                langConf.set("BREAK_SIGN", "&aYou have broken a WildTP sign");
+		        langConf.set("COOLDOWN", "&4You must wait %TIME% seconds until you can use the command/sign again ");
+                langConf.set("RELOADED", "&0[&aWildnernessTP&0]&aPlugin config has successfuly been reloaded.");
+		        langConf.save(langFile);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InvalidConfigurationException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static String translate(String s) {
+        return ChatColor.translateAlternateColorCodes('&', s);
     }
 }

@@ -1,6 +1,7 @@
 package net.poweredbyhate.wildtp;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -27,6 +28,10 @@ public class ChecKar {
 
     public void addKewlzDown(UUID uuid) {
         kewwwlDown.put(uuid, (long)(WildTP.coolDownTeim * 1000) + System.currentTimeMillis());
+    }
+
+    public long getTimeLeft(Player p) {
+        return kewwwlDown.get(p.getUniqueId()) - System.currentTimeMillis();
     }
 
 

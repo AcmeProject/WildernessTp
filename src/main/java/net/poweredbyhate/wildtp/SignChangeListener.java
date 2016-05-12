@@ -12,7 +12,7 @@ public class SignChangeListener implements Listener {
     public void onSignChange(SignChangeEvent ev) {
         if (ev.getLine(0).equalsIgnoreCase("[wildtp]") || ev.getLine(1).equalsIgnoreCase("[wildtp]")) {
             if (ev.getPlayer().getLocation().getBlock().getBiome() == Biome.HELL || ev.getPlayer().getLocation().getBlock().getBiome() == Biome.SKY) {
-                ev.getPlayer().sendMessage(ChatColor.RED + "You may not put signs in " + ev.getPlayer().getLocation().getBlock().getBiome());
+                ev.getPlayer().sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_BIOME.replace("%BIOME%", ev.getPlayer().getLocation().getBlock().getBiome().toString())));
                 ev.setCancelled(true);
                 ev.getBlock().breakNaturally();
             }
@@ -20,9 +20,9 @@ public class SignChangeListener implements Listener {
                 ev.setLine(0, ChatColor.translateAlternateColorCodes('&', "&4===================="));
                 ev.setLine(1, ChatColor.translateAlternateColorCodes('&', "[&1Wild&0]"));
                 ev.setLine(2, ChatColor.translateAlternateColorCodes('&', "&4===================="));
-                ev.getPlayer().sendMessage(ChatColor.GREEN + "Successfully made a new WildTP sign");
+                ev.getPlayer().sendMessage(TooWildForEnums.translate(TooWildForEnums.YES_SIGN));
             } else {
-                ev.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', "&4You do not have permission to make a WildTP sign"));
+                ev.getPlayer().sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_SIGN_PERMS));
                 ev.setCancelled(true);
             }
         }

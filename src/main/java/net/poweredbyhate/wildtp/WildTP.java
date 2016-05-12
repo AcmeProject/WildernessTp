@@ -15,6 +15,7 @@ import java.io.IOException;
 public class WildTP extends JavaPlugin {
 
     public static WildTP instace;
+    public static TooWildForEnums enums = new TooWildForEnums();
     public static int maxXY = 5000;
     public static int minXY = -5000;
     public static int retries = 10;

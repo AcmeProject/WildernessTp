@@ -1,8 +1,8 @@
 name: Wild
-version: 1.10
+version: 1.11
 author: [LaxWasHere,RoboMWM]
 main: net.poweredbyhate.wildtp.WildTP
-softdepend: [GriefPrevention]
+softdepend: [GriefPrevention,Vault]
 commands:
   wild:
     aliases: [wilderness,rtp]
