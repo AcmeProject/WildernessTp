@@ -2,6 +2,7 @@ MaxXY: 5000
 MinXY: -5000
 Retries: 4
 Cooldown: 30
+Cost: 0
 DoCommands: false
 PostCommands:
   - 'title %PLAYER% times 20 100 20'
