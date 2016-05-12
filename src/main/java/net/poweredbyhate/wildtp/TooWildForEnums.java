@@ -3,6 +3,7 @@ package net.poweredbyhate.wildtp;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class TooWildForEnums {
 
     public void loadConfig() {
         langFile = new File(WildTP.instace.getDataFolder(), "Messages.yml");
+        langConf = new YamlConfiguration();
         if (!langFile.exists()) {
             try {
                 langFile.createNewFile();
@@ -40,16 +42,43 @@ public class TooWildForEnums {
                 langConf.set("YES_SIGN", "&aSuccessfully made a new WildTP sign");
                 langConf.set("BREAK_SIGN", "&aYou have broken a WildTP sign");
 		        langConf.set("COOLDOWN", "&4You must wait %TIME% seconds until you can use the command/sign again ");
-                langConf.set("RELOADED", "&0[&aWildnernessTP&0]&aPlugin config has successfuly been reloaded.");
+                langConf.set("RELOADED", "&aPlugin config has successfuly been reloaded.");
 		        langConf.save(langFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InvalidConfigurationException e) {
+            } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
         }
+        setStrings();
+        testPrint();
     }
 
+    public void setStrings() {
+        NO_PERMS = gS("NO_PERMS");
+        NO_SIGN_PERMS = gS("NO_SIGN_PERMS");
+        NO_BREAK = gS("NO_BREAK");
+        NO_LOCATION = gS("NO_LOCATION");
+        NO_BIOME = gS("NO_BIOME");
+        YES_SIGN = gS("YES_SIGN");
+        BREAK_SIGN = gS("BREAK_SIGN");
+        COOLDOWN = gS("COOLDOWN");
+        RELOADED = gS("RELOADED");
+    }
+
+    public void testPrint() {
+        System.out.println(NO_PERMS);
+        System.out.println(NO_SIGN_PERMS);
+        System.out.println(NO_BREAK);
+        System.out.println(NO_LOCATION);
+    }
+
+    public String gS(String s) {
+        try {
+            langConf.load(langFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+        return langConf.getString(s);
+    }
     public static String translate(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }

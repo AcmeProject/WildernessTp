@@ -15,6 +15,7 @@ public class SignChangeListener implements Listener {
                 ev.getPlayer().sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_BIOME.replace("%BIOME%", ev.getPlayer().getLocation().getBlock().getBiome().toString())));
                 ev.setCancelled(true);
                 ev.getBlock().breakNaturally();
+                return;
             }
             if (ev.getPlayer().hasPermission("wild.wildtp.create.sign")) {
                 ev.setLine(0, ChatColor.translateAlternateColorCodes('&', "&4===================="));

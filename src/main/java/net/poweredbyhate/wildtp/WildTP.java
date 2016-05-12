@@ -42,6 +42,7 @@ public class WildTP extends JavaPlugin {
 
     public void getWild() {
         saveDefaultConfig();
+        new TooWildForEnums().loadConfig();
         coolDownTeim = getConfig().getInt("Cooldown");
         maxXY = getConfig().getInt("MaxXY");
         minXY = getConfig().getInt("MinXY");
