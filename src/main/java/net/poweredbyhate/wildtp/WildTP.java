@@ -24,7 +24,6 @@ public class WildTP extends JavaPlugin {
     public static boolean doCommandz;
     public static boolean ifurwildandunoitclapurhands = true;
     public static Economy econ;
-    GriefPrevention antgreif;
     DataStore dataaaastorege;
 
     public void onEnable() {
@@ -52,7 +51,7 @@ public class WildTP extends JavaPlugin {
 
     public void wildDependencies() {
         if (getServer().getPluginManager().getPlugin("GriefPrevention") != null) {
-            antgreif = (GriefPrevention)getServer().getPluginManager().getPlugin("GriefPrevention");
+            GriefPrevention antgreif = (GriefPrevention)getServer().getPluginManager().getPlugin("GriefPrevention");
             dataaaastorege = antgreif.dataStore;
         }
         if (getServer().getPluginManager().getPlugin("Vault") != null) {
