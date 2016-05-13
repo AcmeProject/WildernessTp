@@ -4,10 +4,13 @@ import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by John on 5/5/2016.
@@ -41,7 +44,7 @@ public class WildTP extends JavaPlugin {
     }
 
     public void getWild() {
-        saveDefaultConfig();
+        wildConfig(getConfig());
         new TooWildForEnums().loadConfig();
         coolDownTeim = getConfig().getInt("Cooldown");
         maxXY = getConfig().getInt("MaxXY");
@@ -49,6 +52,24 @@ public class WildTP extends JavaPlugin {
         retries = getConfig().getInt("Retries");
         doCommandz = getConfig().getBoolean("DoCommands");
         cost = getConfig().getInt("Cost");
+    }
+
+    public void wildConfig(FileConfiguration fc) {
+        Map<String, Object> wildDefault = new LinkedHashMap<>();
+        String[] eh = {"title %PLAYER% times 20 100 20","title %PLAYER% title [\"\",{\"text\":\"Wilderness\",\"color\":\"green\",\"bold\":false}]","title %PLAYER% subtitle [\"\",{\"text\":\"Its too dangerous to go alone.\",\"color\":\"yellow\"}]"};
+        wildDefault.put("MaxXY", 5000);
+        wildDefault.put("MinXY", -5000);
+        wildDefault.put("Retries", 5);
+        wildDefault.put("Cooldown", 30);
+        wildDefault.put("Cost", 0);
+        wildDefault.put("DoCommands", false);
+        wildDefault.put("PostCommands", eh);
+        for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
+            if (!fc.contains(s.getKey(),false)) {
+                getConfig().set(s.getKey(), s.getValue());
+            }
+        }
+        saveConfig();
     }
 
     public void wildDependencies() {

@@ -49,7 +49,6 @@ public class TooWildForEnums {
             }
         }
         setStrings();
-        testPrint();
     }
 
     public void setStrings() {
@@ -62,13 +61,6 @@ public class TooWildForEnums {
         BREAK_SIGN = gS("BREAK_SIGN");
         COOLDOWN = gS("COOLDOWN");
         RELOADED = gS("RELOADED");
-    }
-
-    public void testPrint() {
-        System.out.println(NO_PERMS);
-        System.out.println(NO_SIGN_PERMS);
-        System.out.println(NO_BREAK);
-        System.out.println(NO_LOCATION);
     }
 
     public String gS(String s) {
