@@ -17,13 +17,21 @@ public class TeleportGoneWild {
             p.sendMessage(TooWildForEnums.translate(TooWildForEnums.COOLDOWN.replace("%TIME", String.valueOf(chacKer.getTimeLeft(p)))));
             return;
         }
-        final Location loc = getRandomeLocation(p.getWorld());
-        PreWildTeleportEvent preWildTeleportEvent = new PreWildTeleportEvent(p, loc);
+        Location locNotFinal = getRandomeLocation(p.getWorld());
+        PreWildTeleportEvent preWildTeleportEvent = new PreWildTeleportEvent(p, locNotFinal);
         Bukkit.getServer().getPluginManager().callEvent(preWildTeleportEvent);
         if (preWildTeleportEvent.isCancelled()) return;
-        if (loc == null) {
+        if (locNotFinal == null) {
             p.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_LOCATION));
         }
+        //feetare: dr0p dat playar in!1!
+        if (WildTP.instace.dr0p1n)
+        { //eet mah newline braces
+            locNotFinal.setY(256);
+            OuchieListener.plsSaveDisDood(p);
+        }
+        final Location loc = locNotFinal;
+
         new BukkitRunnable() {
             @Override
             public void run() {

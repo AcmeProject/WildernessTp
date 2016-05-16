@@ -28,6 +28,7 @@ public class WildTP extends JavaPlugin {
     public static boolean doCommandz;
     public static boolean ifurwildandunoitclapurhands = true;
     public static Economy econ;
+    public static boolean dr0p1n = false;
     DataStore dataaaastorege;
 
     public void onEnable() {
@@ -41,6 +42,7 @@ public class WildTP extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new GeeYouEye(), this);
         Bukkit.getPluginManager().registerEvents(new PostTeleportEvent(), this);
         Bukkit.getPluginManager().registerEvents(new PreTeleportEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new OuchieListener(), this);
     }
 
     public void getWild() {
@@ -52,6 +54,7 @@ public class WildTP extends JavaPlugin {
         retries = getConfig().getInt("Retries");
         doCommandz = getConfig().getBoolean("DoCommands");
         cost = getConfig().getInt("Cost");
+        dr0p1n = getConfig().getBoolean("dropPlayerFromAbove");
     }
 
     public void wildConfig(FileConfiguration fc) {
@@ -63,6 +66,7 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("Cooldown", 30);
         wildDefault.put("Cost", 0);
         wildDefault.put("DoCommands", false);
+        wildDefault.put("dropPlayerFromAbove", false);
         wildDefault.put("PostCommands", eh);
         for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
             if (!fc.contains(s.getKey(),false)) {
