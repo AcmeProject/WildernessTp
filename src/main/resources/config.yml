@@ -4,6 +4,7 @@ Retries: 4
 Cooldown: 30
 Cost: 0
 DoCommands: false
+dropPlayerFromAbove: false
 PostCommands:
   - 'title %PLAYER% times 20 100 20'
   - 'title %PLAYER% title ["",{"text":"Wilderness","color":"green","bold":false}]'

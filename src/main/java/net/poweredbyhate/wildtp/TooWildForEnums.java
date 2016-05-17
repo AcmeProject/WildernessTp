@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by John on 5/12/2016.
+ * Lol, Gotcha qball! Stop stealin our code!
  */
 public class TooWildForEnums {
 
