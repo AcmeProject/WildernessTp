@@ -60,6 +60,7 @@ public class WildTP extends JavaPlugin {
     public void wildConfig(FileConfiguration fc) {
         Map<String, Object> wildDefault = new LinkedHashMap<>();
         String[] eh = {"title %PLAYER% times 20 100 20","title %PLAYER% title [\"\",{\"text\":\"Wilderness\",\"color\":\"green\",\"bold\":false}]","title %PLAYER% subtitle [\"\",{\"text\":\"Its too dangerous to go alone.\",\"color\":\"yellow\"}]"};
+        String[] ehh = {"DEEP_OCEAN", "OCEAN","FROZEN_OCEAN"};
         wildDefault.put("MaxXY", 5000);
         wildDefault.put("MinXY", -5000);
         wildDefault.put("Retries", 5);
@@ -68,6 +69,7 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("DoCommands", false);
         wildDefault.put("dropPlayerFromAbove", false);
         wildDefault.put("PostCommands", eh);
+        wildDefault.put("BlockedBiomes", ehh);
         for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
             if (!fc.contains(s.getKey(),false)) {
                 getConfig().set(s.getKey(), s.getValue());
