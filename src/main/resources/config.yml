@@ -3,6 +3,7 @@ MinXY: -5000
 Retries: 4
 Cooldown: 30
 Cost: 0
+Wait: 5
 DoCommands: false
 dropPlayerFromAbove: false
 BlockedBiomes:

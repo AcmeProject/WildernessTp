@@ -23,6 +23,7 @@ public class TooWildForEnums {
     public static String BREAK_SIGN;
     public static String COOLDOWN;
     public static String RELOADED;
+    public static String WAIT_MSG;
 
     File langFile;
     FileConfiguration langConf;
@@ -43,6 +44,7 @@ public class TooWildForEnums {
                 langConf.set("BREAK_SIGN", "&aYou have broken a WildTP sign");
 		        langConf.set("COOLDOWN", "&4You must wait %TIME% seconds until you can use the command/sign again ");
                 langConf.set("RELOADED", "&aPlugin config has successfuly been reloaded.");
+                langConf.set("WAIT_MSG", "&6Teleporting in {wait} seconds'");
 		        langConf.save(langFile);
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
@@ -61,6 +63,7 @@ public class TooWildForEnums {
         BREAK_SIGN = gS("BREAK_SIGN");
         COOLDOWN = gS("COOLDOWN");
         RELOADED = gS("RELOADED");
+        WAIT_MSG = gS("WAIT_MSG");
     }
 
     public String gS(String s) {

@@ -23,7 +23,7 @@ public class WildTP extends JavaPlugin {
     public static int minXY = -5000;
     public static int retries = 10;
     public static int coolDownTeim = 30;
-    public static int wamuppah = 10;
+    public static int wamuppah = 1;
     public static int cost = 0;
     public static boolean doCommandz;
     public static boolean ifurwildandunoitclapurhands = true;
@@ -54,6 +54,7 @@ public class WildTP extends JavaPlugin {
         retries = getConfig().getInt("Retries");
         doCommandz = getConfig().getBoolean("DoCommands");
         cost = getConfig().getInt("Cost");
+        wamuppah = getConfig().getInt("Wait");
         dr0p1n = getConfig().getBoolean("dropPlayerFromAbove");
     }
 
@@ -66,6 +67,7 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("Retries", 5);
         wildDefault.put("Cooldown", 30);
         wildDefault.put("Cost", 0);
+        wildDefault.put("Wait", 5);
         wildDefault.put("DoCommands", false);
         wildDefault.put("dropPlayerFromAbove", false);
         wildDefault.put("PostCommands", eh);

@@ -1,6 +1,7 @@
 package net.poweredbyhate.wildtp;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -31,7 +32,7 @@ public class TeleportGoneWild {
             OuchieListener.plsSaveDisDood(p);
         }
         final Location loc = locNotFinal;
-
+        p.sendMessage(ChatColor.translateAlternateColorCodes('&', TooWildForEnums.WAIT_MSG.replace("{wait}",String.valueOf(WildTP.instace.wamuppah))));
         new BukkitRunnable() {
             @Override
             public void run() {
