@@ -41,7 +41,7 @@ public class TeleportGoneWild {
                 PostWildTeleportEvent postWildTeleportEvent = new PostWildTeleportEvent(p);
                 Bukkit.getServer().getPluginManager().callEvent(postWildTeleportEvent);
             }
-        }.runTaskLater(WildTP.instace, WildTP.instace.wamuppah);
+        }.runTaskLater(WildTP.instace, WildTP.instace.wamuppah*20);
     }
 
     public Location getRandomeLocation(World world) {
