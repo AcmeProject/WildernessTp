@@ -6,6 +6,7 @@ Cost: 0
 Wait: 5
 DoCommands: false
 dropPlayerFromAbove: false
+Sound: 'ENTITY_ENDERMEN_TELEPORT'
 BlockedBiomes:
   - 'DEEP_OCEAN'
   - 'OCEAN'

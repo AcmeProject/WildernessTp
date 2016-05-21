@@ -70,6 +70,7 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("Wait", 5);
         wildDefault.put("DoCommands", false);
         wildDefault.put("dropPlayerFromAbove", false);
+        wildDefault.put("Sound", "ENTITY_ENDERMEN_TELEPORT");
         wildDefault.put("PostCommands", eh);
         wildDefault.put("BlockedBiomes", ehh);
         for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
