@@ -43,6 +43,8 @@ public class WildTP extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PostTeleportEvent(), this);
         Bukkit.getPluginManager().registerEvents(new PreTeleportEvent(), this);
         Bukkit.getPluginManager().registerEvents(new OuchieListener(), this);
+        if (wamuppah > 0)
+            Bukkit.getPluginManager().registerEvents(new TooHot2Teleport(), this);
     }
 
     public void getWild() {

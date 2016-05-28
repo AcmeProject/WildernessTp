@@ -12,6 +12,7 @@ import java.util.Random;
 public class TeleportGoneWild {
 
     ChecKar chacKer = new ChecKar();
+    boolean needWait = WildTP.instace.wamuppah > 0;
 
     public void WildTeleport(final Player p) {
         if (chacKer.isInCooldown(p.getUniqueId())) {
@@ -33,9 +34,14 @@ public class TeleportGoneWild {
         }
         final Location loc = locNotFinal;
         p.sendMessage(ChatColor.translateAlternateColorCodes('&', TooWildForEnums.WAIT_MSG.replace("{wait}",String.valueOf(WildTP.instace.wamuppah))));
+        if (needWait)
+            TooHot2Teleport.addPlayer(p);
         new BukkitRunnable() {
             @Override
             public void run() {
+                if (needWait && !TooHot2Teleport.isCold(p))
+                    return;
+                TooHot2Teleport.makeHot(p);
                 p.teleport(loc);
                 chacKer.addKewlzDown(p.getUniqueId());
                 PostWildTeleportEvent postWildTeleportEvent = new PostWildTeleportEvent(p);
