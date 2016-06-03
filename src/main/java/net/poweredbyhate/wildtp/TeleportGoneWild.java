@@ -92,7 +92,7 @@ public class TeleportGoneWild {
             hesDaMap.put(totalChance, world);
         }
         //then call nextInt(total int) and then iterate through list until the key is or greater than the nextInt
-        int daChosenOne = new Random().nextInt(totalChance);
+        int daChosenOne = new Random().nextInt(++totalChance);
         for (Integer blah : hesDaMap.keySet())
         {
             if (blah >= daChosenOne)
