@@ -88,7 +88,7 @@ public class TeleportGoneWild {
                 instace.getLogger().warning("World \"" + worldString + "\" does not exist. We recommend removing the world from enabledWorlds in config.yml");
                 continue;
             }
-            totalChance = totalChance + imDaMap.get(world);
+            totalChance = totalChance + (Integer)imDaMap.get(worldString);
             hesDaMap.put(totalChance, world);
         }
         //then call nextInt(total int) and then iterate through list until the key is or greater than the nextInt
