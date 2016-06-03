@@ -28,10 +28,8 @@ public class OuchieListener implements Listener
 
         Player player = (Player)ouch.getEntity();
 
-        if (!dr0pp3dPuhlayars.contains(player))
-            return;
-        dr0pp3dPuhlayars.remove(player);
-        ouch.setCancelled(true);
+        if (dr0pp3dPuhlayars.remove(player))
+            ouch.setCancelled(true);
     }
 
     public static void plsSaveDisDood(final Player player)
@@ -44,9 +42,7 @@ public class OuchieListener implements Listener
             {
                 public void run()
                 {
-                    //idk if dis is even needed
-                    if (dr0pp3dPuhlayars.contains(player))
-                        dr0pp3dPuhlayars.remove(player);
+                    dr0pp3dPuhlayars.remove(player);
                 }
             }.runTaskLater(WildTP.instace, 400L);
         }

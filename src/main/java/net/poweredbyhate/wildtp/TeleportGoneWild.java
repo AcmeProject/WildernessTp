@@ -30,6 +30,7 @@ public class TeleportGoneWild {
         if (WildTP.instace.dr0p1n)
         { //eet mah newline braces
             locNotFinal.setY(256);
+            locNotFinal.setPitch(64);
             OuchieListener.plsSaveDisDood(p);
         }
         final Location loc = locNotFinal;
