@@ -4,6 +4,7 @@ import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,6 +30,7 @@ public class WildTP extends JavaPlugin {
     public static boolean ifurwildandunoitclapurhands = true;
     public static Economy econ;
     public static boolean dr0p1n = false;
+    public static ConfigurationSection randomeWorlds;
     DataStore dataaaastorege;
 
     public void onEnable() {
@@ -58,10 +60,14 @@ public class WildTP extends JavaPlugin {
         cost = getConfig().getInt("Cost");
         wamuppah = getConfig().getInt("Wait");
         dr0p1n = getConfig().getBoolean("dropPlayerFromAbove");
+        randomeWorlds = getConfig().getConfigurationSection("enabledWorlds");
     }
 
     public void wildConfig(FileConfiguration fc) {
         Map<String, Object> wildDefault = new LinkedHashMap<>();
+        Map<String, Integer> randomWorlds = new LinkedHashMap<>();
+        randomWorlds.put("world", 90);
+        randomWorlds.put("world_nether", 10);
         String[] eh = {"title %PLAYER% times 20 100 20","title %PLAYER% title [\"\",{\"text\":\"Wilderness\",\"color\":\"green\",\"bold\":false}]","title %PLAYER% subtitle [\"\",{\"text\":\"Its too dangerous to go alone.\",\"color\":\"yellow\"}]"};
         String[] ehh = {"DEEP_OCEAN", "OCEAN","FROZEN_OCEAN"};
         wildDefault.put("MaxXY", 5000);
@@ -80,6 +86,7 @@ public class WildTP extends JavaPlugin {
                 getConfig().set(s.getKey(), s.getValue());
             }
         }
+        wildDefault.put("enabledWorlds", randomWorlds);
         saveConfig();
     }
 
