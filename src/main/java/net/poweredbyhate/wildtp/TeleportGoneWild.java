@@ -25,6 +25,7 @@ public class TeleportGoneWild {
         if (preWildTeleportEvent.isCancelled()) return;
         if (locNotFinal == null) {
             p.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_LOCATION));
+            return;
         }
         //feetare: dr0p dat playar in!1!
         if (WildTP.instace.dr0p1n)
