@@ -1,9 +1,7 @@
 package net.poweredbyhate.wildtp;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -65,7 +63,7 @@ public class TeleportGoneWild {
     public Location getRandomeLocation(World world) {
         for (int i = 0; i<WildTP.retries; i++) {
             Location loco = new Location(world, r4nd0m(WildTP.maxXY, WildTP.minXY), 5, r4nd0m(WildTP.maxXY, WildTP.minXY));
-            if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString()) && n0tAGreifClam(loco)) {
+            if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString()) && n0tAGreifClam(loco) && n0) {
                 loco.setY(world.getHighestBlockYAt(loco)+2);
                 return loco;
             }
@@ -113,5 +111,13 @@ public class TeleportGoneWild {
         if (instace.dataaaastorege.getClaimAt(l0c0, instace.ifurwildandunoitclapurhands, null) == null)
             return instace.ifurwildandunoitclapurhands;
         return false;
+    }
+
+    public boolean n0tAB4dB10ck(Location l0c0)
+    {
+        Material block = l0c0.getBlock().getType();
+        return block != Material.LAVA &&
+                block != Material.STATIONARY_LAVA &&
+                block != Material.CACTUS;
     }
 }
