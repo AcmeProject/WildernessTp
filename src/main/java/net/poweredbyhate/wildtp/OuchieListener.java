@@ -43,7 +43,8 @@ public class OuchieListener implements Listener
 
     public static void plsSaveDisDood(final Player player)
     {
-        dr0pp3dPuhlayars.remove(player);
+        if (dr0pp3dPuhlayars.containsKey(player))
+            scheduler.cancelTask(dr0pp3dPuhlayars.remove(player));
         Integer bleh = scheduler.scheduleSyncDelayedTask(WildTP.instace, new Runnable() {
             @Override
             public void run()
