@@ -128,6 +128,7 @@ public class TeleportGoneWild {
                 blockType != Material.CACTUS &&
                 blockType != Material.FIRE;
     }
+    Location netherLocation(Location l0c0) //much testing resulted in this, plz no qball
     {
         l0c0.setY(1);
         while (l0c0.getY() < 127)
