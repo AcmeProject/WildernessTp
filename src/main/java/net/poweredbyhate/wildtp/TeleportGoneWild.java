@@ -1,7 +1,6 @@
 package net.poweredbyhate.wildtp;
 
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -66,8 +65,13 @@ public class TeleportGoneWild {
     public Location getRandomeLocation(World world) {
         for (int i = 0; i<WildTP.retries; i++) {
             Location loco = new Location(world, r4nd0m(WildTP.maxXY, WildTP.minXY), 5, r4nd0m(WildTP.maxXY, WildTP.minXY));
+            if (world.getEnvironment() == World.Environment.NETHER)
+                loco = netherLocation(loco);
+            if (loco == null)
+                continue;
             if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString()) && n0tAGreifClam(loco) && n0tAB4dB10ck(loco)) {
-                loco.setY(world.getHighestBlockYAt(loco)+2);
+                if (world.getEnvironment() != World.Environment.NETHER)
+                    loco.setY(world.getHighestBlockYAt(loco)+2);
                 return loco;
             }
         }
@@ -118,18 +122,28 @@ public class TeleportGoneWild {
 
     public boolean n0tAB4dB10ck(Location l0c0)
     {
-        Location location = new Location(l0c0.getWorld(), l0c0.getX(), l0c0.getWorld().getHighestBlockYAt(l0c0), l0c0.getZ());
-        Block block = location.getBlock();
-        Material blockType = location.getBlock().getType();
-        if (location.getWorld().getEnvironment() == World.Environment.NETHER)
-        {
-            if (block.getY() == 0 || block.getY() > 126)
-                return false;
-            block = block.getRelative(BlockFace.UP);
-        }
+        Material blockType = l0c0.getBlock().getType();
         return blockType != Material.LAVA &&
                 blockType != Material.STATIONARY_LAVA &&
                 blockType != Material.CACTUS &&
                 blockType != Material.FIRE;
+    }
+    {
+        l0c0.setY(1);
+        while (l0c0.getY() < 127)
+        {
+            //Is current block an air block?
+            if (l0c0.getBlock().getType() != Material.AIR) {
+                l0c0 = l0c0.getBlock().getRelative(BlockFace.UP).getLocation();
+                continue;
+            }
+            //Is block above also an air block?
+            if (l0c0.getBlock().getRelative(BlockFace.UP).getType() != Material.AIR) {
+                l0c0 = l0c0.getBlock().getRelative(BlockFace.UP).getLocation();
+                continue;
+            }
+            return l0c0.getBlock().getRelative(BlockFace.DOWN).getLocation();
+        }
+        return null;
     }
 }
