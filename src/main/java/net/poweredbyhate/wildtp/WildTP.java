@@ -61,7 +61,8 @@ public class WildTP extends JavaPlugin {
         cost = getConfig().getInt("Cost");
         wamuppah = getConfig().getInt("Wait");
         dr0p1n = getConfig().getBoolean("dropPlayerFromAbove");
-        randomeWorlds = getConfig().getConfigurationSection("enabledWorlds");
+        //Not "just" multiworld support, Qball
+        randomeWorlds = getConfig().getConfigurationSection("randomWorlds");
     }
 
     public void wildConfig(FileConfiguration fc) {
@@ -82,7 +83,7 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("Sound", "ENTITY_ENDERMEN_TELEPORT");
         wildDefault.put("PostCommands", eh);
         wildDefault.put("BlockedBiomes", ehh);
-        wildDefault.put("enabledWorlds", randomWorlds);
+        wildDefault.put("randomWorlds", randomWorlds);
         for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
             if (!fc.contains(s.getKey(),false)) {
                 getConfig().set(s.getKey(), s.getValue());
