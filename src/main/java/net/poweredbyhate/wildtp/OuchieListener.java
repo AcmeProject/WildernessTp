@@ -43,17 +43,14 @@ public class OuchieListener implements Listener
 
     public static void plsSaveDisDood(final Player player)
     {
-        //2 lazy 2 check if runnable exists 4 dis dood already, 2 bad so sad
-        if (!dr0pp3dPuhlayars.containsKey(player))
-        {
-            Integer bleh = scheduler.scheduleSyncDelayedTask(WildTP.instace, new Runnable() {
-                @Override
-                public void run()
-                {
-                    dr0pp3dPuhlayars.remove(player);
-                }
-            }, 400L);
-            dr0pp3dPuhlayars.put(player, bleh);
-        }
+        dr0pp3dPuhlayars.remove(player);
+        Integer bleh = scheduler.scheduleSyncDelayedTask(WildTP.instace, new Runnable() {
+            @Override
+            public void run()
+            {
+                dr0pp3dPuhlayars.remove(player);
+            }
+        }, 400L);
+        dr0pp3dPuhlayars.put(player, bleh);
     }
 }
