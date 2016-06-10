@@ -23,7 +23,7 @@ public class TooHot2Teleport implements Listener
             return;
         if (event.getFrom().distance(event.getTo()) == 0)
             return;
-        player.sendMessage(TooWildForEnums.DIDNT_WAIT);
+        player.sendMessage(TooWildForEnums.translate(TooWildForEnums.DIDNT_WAIT));
         coldPlayers.remove(player);
     }
 

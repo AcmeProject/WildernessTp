@@ -34,6 +34,7 @@ public class WildTP extends JavaPlugin {
     DataStore dataaaastorege;
 
     public void onEnable() {
+        saveDefaultConfig();
         instace = this;
         getWild();
         wildMetrics();
@@ -87,7 +88,6 @@ public class WildTP extends JavaPlugin {
                 getConfig().addDefault(s.getKey(), s.getValue());
             }
         }
-        getConfig().options().copyDefaults(true);
         saveConfig();
     }
 
