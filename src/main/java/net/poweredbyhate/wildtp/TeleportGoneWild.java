@@ -63,7 +63,7 @@ public class TeleportGoneWild {
     public Location getRandomeLocation(World world) {
         for (int i = 0; i<WildTP.retries; i++) {
             Location loco = new Location(world, r4nd0m(WildTP.maxXY, WildTP.minXY), 5, r4nd0m(WildTP.maxXY, WildTP.minXY));
-            if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString()) && n0tAGreifClam(loco) && n0) {
+            if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString()) && n0tAGreifClam(loco) && n0tAB4dB10ck(loco)) {
                 loco.setY(world.getHighestBlockYAt(loco)+2);
                 return loco;
             }
