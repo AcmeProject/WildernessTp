@@ -118,9 +118,10 @@ public class TeleportGoneWild {
 
     public boolean n0tAB4dB10ck(Location l0c0)
     {
-        Block block = l0c0.getBlock();
-        Material blockType = l0c0.getWorld().getHighestBlockAt(l0c0).getType();
-        if (l0c0.getWorld().getEnvironment() == World.Environment.NETHER)
+        Location location = new Location(l0c0.getWorld(), l0c0.getX(), l0c0.getWorld().getHighestBlockYAt(l0c0), l0c0.getZ());
+        Block block = location.getBlock();
+        Material blockType = location.getBlock().getType();
+        if (location.getWorld().getEnvironment() == World.Environment.NETHER)
         {
             if (block.getY() == 0 || block.getY() > 126)
                 return false;
