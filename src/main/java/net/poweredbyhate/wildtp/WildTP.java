@@ -85,7 +85,7 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("enabledWorlds", randomWorlds);
         for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
             if (!fc.contains(s.getKey(),false)) {
-                getConfig().addDefault(s.getKey(), s.getValue());
+                getConfig().set(s.getKey(), s.getValue());
             }
         }
         saveConfig();
