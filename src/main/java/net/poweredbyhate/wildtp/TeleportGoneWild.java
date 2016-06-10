@@ -38,7 +38,7 @@ public class TeleportGoneWild {
             return;
         }
         //feetare: dr0p dat playar in!1!
-        if (instace.dr0p1n)
+        if (instace.dr0p1n && locNotFinal.getWorld().getEnvironment() != World.Environment.NETHER)
         { //eet mah newline braces
             locNotFinal.setY(256);
             locNotFinal.setPitch(64);

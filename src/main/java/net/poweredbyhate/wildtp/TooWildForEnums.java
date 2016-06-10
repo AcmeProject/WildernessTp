@@ -43,9 +43,9 @@ public class TooWildForEnums {
                 langConf.set("NO_BIOME", "&4You may not put signs in %BIOME%");
                 langConf.set("YES_SIGN", "&aSuccessfully made a new WildTP sign");
                 langConf.set("BREAK_SIGN", "&aYou have broken a WildTP sign");
-		        langConf.set("COOLDOWN", "&4You must wait %TIME% seconds until you can use the command/sign again ");
+		        langConf.set("COOLDOWN", "&4You must wait %TIME% seconds until you can use the command/sign again");
                 langConf.set("RELOADED", "&aPlugin config has successfuly been reloaded.");
-                langConf.set("WAIT_MSG", "&6Teleporting in {wait} seconds'");
+                langConf.set("WAIT_MSG", "&6Teleporting in {wait} seconds");
                 langConf.set("DIDNT_WAIT", "&cYou need to hold still while you wait!");
 		        langConf.save(langFile);
             } catch (IOException | InvalidConfigurationException e) {
