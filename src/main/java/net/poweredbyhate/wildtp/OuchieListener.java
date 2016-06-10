@@ -1,13 +1,17 @@
 package net.poweredbyhate.wildtp;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 import sun.awt.CausedFocusEvent;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -15,7 +19,8 @@ import java.util.Set;
  */
 public class OuchieListener implements Listener
 {
-    private static Set<Player> dr0pp3dPuhlayars = new HashSet<Player>();
+    private static Map<Player, Integer> dr0pp3dPuhlayars = new HashMap<>();
+    static BukkitScheduler scheduler = Bukkit.getScheduler();
     @EventHandler(ignoreCancelled = true)
     void onPlayerTryingToBreakLegs(EntityDamageEvent ouch)
     {
@@ -28,23 +33,27 @@ public class OuchieListener implements Listener
 
         Player player = (Player)ouch.getEntity();
 
-        if (dr0pp3dPuhlayars.remove(player))
+        if (dr0pp3dPuhlayars.containsKey(player))
+        {
+            scheduler.cancelTask(dr0pp3dPuhlayars.remove(player));
             ouch.setCancelled(true);
+        }
+
     }
 
     public static void plsSaveDisDood(final Player player)
     {
         //2 lazy 2 check if runnable exists 4 dis dood already, 2 bad so sad
-        if (!dr0pp3dPuhlayars.contains(player))
+        if (!dr0pp3dPuhlayars.containsKey(player))
         {
-            dr0pp3dPuhlayars.add(player);
-            new BukkitRunnable()
-            {
+            Integer bleh = scheduler.scheduleSyncDelayedTask(WildTP.instace, new Runnable() {
+                @Override
                 public void run()
                 {
                     dr0pp3dPuhlayars.remove(player);
                 }
-            }.runTaskLater(WildTP.instace, 400L);
+            }, 400L);
+            dr0pp3dPuhlayars.put(player, bleh);
         }
     }
 }
