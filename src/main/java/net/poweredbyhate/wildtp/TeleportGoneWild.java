@@ -43,9 +43,11 @@ public class TeleportGoneWild {
             OuchieListener.plsSaveDisDood(p);
         }
         final Location loc = locNotFinal;
-        p.sendMessage(ChatColor.translateAlternateColorCodes('&', TooWildForEnums.WAIT_MSG.replace("{wait}",String.valueOf(instace.wamuppah))));
         if (needWait)
+        {
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', TooWildForEnums.WAIT_MSG.replace("{wait}",String.valueOf(instace.wamuppah))));
             TooHot2Teleport.addPlayer(p);
+        }
         new BukkitRunnable() {
             @Override
             public void run() {
