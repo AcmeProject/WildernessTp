@@ -81,12 +81,13 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("Sound", "ENTITY_ENDERMEN_TELEPORT");
         wildDefault.put("PostCommands", eh);
         wildDefault.put("BlockedBiomes", ehh);
+        wildDefault.put("enabledWorlds", randomWorlds);
         for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
             if (!fc.contains(s.getKey(),false)) {
                 getConfig().addDefault(s.getKey(), s.getValue());
             }
         }
-        wildDefault.put("enabledWorlds", randomWorlds);
+        getConfig().options().copyDefaults(true);
         saveConfig();
     }
 
