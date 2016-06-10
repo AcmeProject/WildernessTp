@@ -83,7 +83,7 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("BlockedBiomes", ehh);
         for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
             if (!fc.contains(s.getKey(),false)) {
-                getConfig().set(s.getKey(), s.getValue());
+                getConfig().addDefault(s.getKey(), s.getValue());
             }
         }
         wildDefault.put("enabledWorlds", randomWorlds);
