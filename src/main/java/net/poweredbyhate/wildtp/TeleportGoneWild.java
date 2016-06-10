@@ -2,6 +2,7 @@ package net.poweredbyhate.wildtp;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -117,9 +118,17 @@ public class TeleportGoneWild {
 
     public boolean n0tAB4dB10ck(Location l0c0)
     {
-        Material block = l0c0.getBlock().getType();
-        return block != Material.LAVA &&
-                block != Material.STATIONARY_LAVA &&
-                block != Material.CACTUS;
+        Block block = l0c0.getBlock();
+        Material blockType = l0c0.getWorld().getHighestBlockAt(l0c0).getType();
+        if (l0c0.getWorld().getEnvironment() == World.Environment.NETHER)
+        {
+            if (block.getY() == 0 || block.getY() > 126)
+                return false;
+            block = block.getRelative(BlockFace.UP);
+        }
+        return blockType != Material.LAVA &&
+                blockType != Material.STATIONARY_LAVA &&
+                blockType != Material.CACTUS &&
+                blockType != Material.FIRE;
     }
 }
