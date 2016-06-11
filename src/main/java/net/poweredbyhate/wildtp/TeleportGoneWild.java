@@ -74,7 +74,7 @@ public class TeleportGoneWild {
                 {
                     loco.setY(loco.getY() + 2);
                     loco.setX(loco.getX() + 0.5D);
-                    loco.setZ(loco.getZ() - 0.5D);
+                    loco.setZ(loco.getZ() + 0.5D);
                 }
                 else
                     loco.setY(world.getHighestBlockYAt(loco)+2);
