@@ -11,13 +11,11 @@ import java.util.Set;
 /**
  * Created by RoboMWM on 5/28/2016.
  */
-public class TooHot2Teleport implements Listener
-{
+public class TooHot2Teleport implements Listener {
     static Set<Player> coldPlayers = new HashSet<>();
 
     @EventHandler
-    void onPlayerThinkTheyAre2Hot(PlayerMoveEvent event)
-    {
+    void onPlayerThinkTheyAre2Hot(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (!coldPlayers.contains(player))
             return;
@@ -27,18 +25,15 @@ public class TooHot2Teleport implements Listener
         coldPlayers.remove(player);
     }
 
-    public static void addPlayer(Player player)
-    {
+    public static void addPlayer(Player player) {
         coldPlayers.add(player);
     }
 
-    public static boolean isCold(Player player)
-    {
+    public static boolean isCold(Player player) {
         return coldPlayers.contains(player);
     }
 
-    public static void makeHot(Player player)
-    {
+    public static void makeHot(Player player) {
         coldPlayers.remove(player);
     }
 }

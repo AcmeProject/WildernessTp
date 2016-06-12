@@ -18,6 +18,8 @@ import java.util.Map;
  */
 public class WildTP extends JavaPlugin {
 
+    static boolean isDebug = true;
+
     public static WildTP instace;
     public static TooWildForEnums enums = new TooWildForEnums();
     public static int maxXY = 5000;
@@ -101,6 +103,10 @@ public class WildTP extends JavaPlugin {
             RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
             econ = rsp.getProvider();
         }
+    }
+
+    public static void debug(Object o) {
+        if (isDebug) System.out.println("[WildTP] "+o);
     }
 
     public void wildMetrics() {

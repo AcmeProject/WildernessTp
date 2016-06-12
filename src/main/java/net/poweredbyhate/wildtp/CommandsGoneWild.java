@@ -20,16 +20,19 @@ public class CommandsGoneWild implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
+        WildTP.debug("Wild command called by " + sender);
         if (!(sender instanceof Player)) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.MAGIC + "One does not simply go wild.");
             return false;
         }
         if (sender.hasPermission("wild.wildtp") && args.length == 0) {
             Player p = (Player) sender;
+            WildTP.debug(p.getName() + " called /wild args 0");
             new TeleportGoneWild().WildTeleport(p);
         }
         if (args.length >= 1) {
             if (sender.getServer().getPlayer(args[0]) != null && sender.hasPermission("wild.wildtp.others")) {
+                WildTP.debug(sender.getName() + " Called /wild args " + args[0]);
                 new TeleportGoneWild().WildTeleport(sender.getServer().getPlayer(args[0]));
             }
         }
