@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class WildTP extends JavaPlugin {
 
-    static boolean isDebug = true;
+    static boolean isDebug = false;
 
     public static WildTP instace;
     public static TooWildForEnums enums = new TooWildForEnums();
@@ -70,8 +70,8 @@ public class WildTP extends JavaPlugin {
     public void wildConfig(FileConfiguration fc) {
         Map<String, Object> wildDefault = new LinkedHashMap<>();
         Map<String, Integer> randomWorlds = new LinkedHashMap<>();
-        randomWorlds.put("world", 90);
-        randomWorlds.put("world_nether", 10);
+        randomWorlds.put("world", 9001);
+        randomWorlds.put("world_nether", 3);
         String[] eh = {"title %PLAYER% times 20 100 20","title %PLAYER% title [\"\",{\"text\":\"Wilderness\",\"color\":\"green\",\"bold\":false}]","title %PLAYER% subtitle [\"\",{\"text\":\"Its too dangerous to go alone.\",\"color\":\"yellow\"}]"};
         String[] ehh = {"DEEP_OCEAN", "OCEAN","FROZEN_OCEAN"};
         wildDefault.put("MaxXY", 5000);
