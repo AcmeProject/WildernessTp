@@ -12,7 +12,9 @@ public class PostTeleportEvent implements Listener {
 
     @EventHandler
     public void onPostTele(PostWildTeleportEvent ev) {
-        ev.getWildLing().getWorld().playSound(ev.getWildLing().getLocation(), Sound.valueOf(WildTP.instace.getConfig().getString("Sound")),1,1);
+        if (Sound.valueOf(WildTP.instace.getConfig().getString("Sound")) != null) {
+            ev.getWildLing().getWorld().playSound(ev.getWildLing().getLocation(), Sound.valueOf(WildTP.instace.getConfig().getString("Sound")) , 1, 1);
+        }
         if (WildTP.doCommandz) {
             for (String cmds : WildTP.instace.getConfig().getStringList("PostCommands")) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmds.replace("%PLAYER%", ev.getWildLing().getName()));
