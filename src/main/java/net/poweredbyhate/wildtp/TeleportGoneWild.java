@@ -21,7 +21,19 @@ public class TeleportGoneWild {
     ChecKar chacKer = new ChecKar();
     boolean needWait = instace.wamuppah > 0;
 
-    public void WildTeleport(final Player p) {
+    public void WildTeleport(final Player p, String world) {
+        if (Bukkit.getWorld(world) == null) {
+            realTeleportt(p, p.getWorld());
+            return;
+        }
+        realTeleportt(p, Bukkit.getWorld(world));
+    }
+
+    public void WildTeleport(Player p) {
+        realTeleportt(p, p.getWorld());
+    }
+
+    public void realTeleportt(final Player p, World leWorld) {
         WildTP.debug("Wild teleport called for " + p.getName());
         if (chacKer.isInCooldown(p.getUniqueId())) {
             WildTP.debug("In cooldown: yes");
@@ -32,7 +44,7 @@ public class TeleportGoneWild {
         if (instace.randomeWorlds != null) {
             world = getRandomeWorld(instace.randomeWorlds);
         } else {
-            world = p.getWorld();
+            world = leWorld;
         }
         Location locNotFinal = getRandomeLocation(world);
         PreWildTeleportEvent preWildTeleportEvent = new PreWildTeleportEvent(p, locNotFinal);

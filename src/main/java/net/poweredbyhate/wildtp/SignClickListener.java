@@ -1,5 +1,6 @@
 package net.poweredbyhate.wildtp;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
@@ -17,6 +18,9 @@ public class SignClickListener implements Listener {
     public void onClick(PlayerInteractEvent ev) {
         if (ev.getAction() == Action.RIGHT_CLICK_BLOCK && ev.getClickedBlock().getState() instanceof Sign) {
             if (ChatColor.stripColor(((Sign) ev.getClickedBlock().getState()).getLine(1)).equalsIgnoreCase("[wild]")) {
+                if (Bukkit.getWorld(((Sign) ev.getClickedBlock().getState()).getLine(3)) != null) {
+                    new TeleportGoneWild().WildTeleport(ev.getPlayer(), ((Sign) ev.getClickedBlock().getState()).getLine(3));
+                }
                 new TeleportGoneWild().WildTeleport(ev.getPlayer());
             }
         }
