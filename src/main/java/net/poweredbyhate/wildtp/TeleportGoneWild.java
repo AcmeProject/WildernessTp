@@ -98,7 +98,7 @@ public class TeleportGoneWild {
                 loco = netherLocation(loco);
             if (loco == null)
                 continue;
-            if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString()) && n0tAGreifClam(loco) && n0tAB4dB10ck(loco)) {
+            if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString()) && n0tAGreifClam(loco)) {
                 if (world.getEnvironment() == World.Environment.NETHER)
                 {
                     loco.setY(loco.getY() + 2);
