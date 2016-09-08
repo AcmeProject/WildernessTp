@@ -107,7 +107,8 @@ public class TeleportGoneWild {
                 }
                 else
                     loco.setY(world.getHighestBlockYAt(loco)+2);
-                return loco;
+                if (n0tAB4dB10ck(loco))
+                    return loco;
             }
         }
         return null;
