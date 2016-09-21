@@ -129,7 +129,7 @@ public class TeleportGoneWild {
             totalChance = totalChance + (Integer)imDaMap.get(worldString);
             hesDaMap.put(totalChance, world);
         }
-        int daChosenOne = new Random().nextInt(++totalChance);
+        int daChosenOne = r4nd0m(totalChance, 0);
         for (Integer blah : hesDaMap.keySet()) {
             if (blah >= daChosenOne)
                 return hesDaMap.get(blah);
