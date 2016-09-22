@@ -70,15 +70,15 @@ public class TeleportGoneWild {
         if (needWait) {
             WildTP.debug("Player needs to wait more");
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', TooWildForEnums.WAIT_MSG.replace("{wait}",String.valueOf(instace.wamuppah))));
-            TooHot2Teleport.addPlayer(p);
+            TooCool2Teleport.addPlayer(p);
         }
         new BukkitRunnable() {
             @Override
             public void run() {
                 WildTP.debug("Starting Random Teleport");
-                if (needWait && !TooHot2Teleport.isCold(p))
+                if (needWait && !TooCool2Teleport.isCold(p))
                     return;
-                TooHot2Teleport.makeHot(p);
+                TooCool2Teleport.makeHot(p);
                 WildTP.debug("Teleporting " + p.getName());
                 p.teleport(loc);
                 WildTP.debug(p.getName()+ " Teleported");
