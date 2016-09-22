@@ -99,19 +99,15 @@ public class TeleportGoneWild {
             if (loco == null)
                 continue;
             if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString()) && n0tAGreifClam(loco)) {
-                if (world.getEnvironment() == World.Environment.NETHER)
-                {
-                    loco.setX(loco.getX() + 0.5D);
-                    loco.setZ(loco.getZ() + 0.5D);
-                }
-                else
+                if (world.getEnvironment() != World.Environment.NETHER)
                     loco.setY(world.getHighestBlockYAt(loco));
+                loco.setX(loco.getX() + 0.5D);
+                loco.setZ(loco.getZ() + 0.5D);
                 if (n0tAB4dB10ck(loco))
                 {
                     loco.setY(loco.getY() + 2);
                     return loco;
                 }
-                    
             }
         }
         return null;
@@ -172,6 +168,7 @@ public class TeleportGoneWild {
                 l0c0 = l0c0.getBlock().getRelative(BlockFace.UP).getLocation();
                 continue;
             }
+            l0c0 = l0c0.getBlock().getRelative(BlockFace.DOWN).getLocation();
             return l0c0.getBlock().getRelative(BlockFace.DOWN).getLocation();
         }
         return null;
