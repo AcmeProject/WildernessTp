@@ -82,9 +82,9 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("Cooldown", 30);
         wildDefault.put("Cost", 0);
         wildDefault.put("Wait", 5);
-        wildDefault.put("DoCommands", false);
         wildDefault.put("dropPlayerFromAbove", false);
         wildDefault.put("Sound", "ENTITY_ENDERMEN_TELEPORT");
+        wildDefault.put("DoCommands", false);
         wildDefault.put("PostCommands", eh);
         wildDefault.put("BlockedBiomes", ehh);
         wildDefault.put("useRandomWorlds", false);
