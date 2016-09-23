@@ -36,6 +36,7 @@ public class AdminsGoneWild implements CommandExecutor {
         }
         if (args.length >= 1) {
             if (args[0].equalsIgnoreCase("reload") && sender.hasPermission("wild.wildtp.reload")) {
+                tpWild.saveDefaultConfig();
                 tpWild.getWild();
                 sender.sendMessage(TooWildForEnums.translate(TooWildForEnums.RELOADED));
             }

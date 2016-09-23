@@ -98,7 +98,6 @@ public class TeleportGoneWild {
                     loco.setY(loco.getY() + 2);
                     return loco;
                 }
-                    
             }
         }
         return null;
