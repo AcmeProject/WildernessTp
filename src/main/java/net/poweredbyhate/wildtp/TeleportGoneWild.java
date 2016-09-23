@@ -9,6 +9,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -40,12 +41,13 @@ public class TeleportGoneWild {
             p.sendMessage(TooWildForEnums.translate(TooWildForEnums.COOLDOWN.replace("%TIME%", "Soon")));
             return;
         }
-        World world;
-        if (instace.randomeWorlds != null) {
+        World world = null;
+        if (instace.useRandomeWorldz) {
             world = getRandomeWorld(instace.randomeWorlds);
-        } else {
-            world = leWorld;
         }
+        if (world == null)
+            world = leWorld;
+
         Location locNotFinal = getRandomeLocation(world);
         PreWildTeleportEvent preWildTeleportEvent = new PreWildTeleportEvent(p, locNotFinal);
         WildTP.debug("Calling preTeleportEvent");
@@ -70,25 +72,10 @@ public class TeleportGoneWild {
         if (needWait) {
             WildTP.debug("Player needs to wait more");
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', TooWildForEnums.WAIT_MSG.replace("{wait}",String.valueOf(instace.wamuppah))));
-            TooCool2Teleport.addPlayer(p);
+            TooCool2Teleport.addPlayer(p, goWild(p, loc, instace.wamuppah*20L));
         }
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                WildTP.debug("Starting Random Teleport");
-                if (needWait && !TooCool2Teleport.isCold(p))
-                    return;
-                TooCool2Teleport.makeHot(p);
-                WildTP.debug("Teleporting " + p.getName());
-                p.teleport(loc);
-                WildTP.debug(p.getName()+ " Teleported");
-                WildTP.debug(p.getName() + " Adding to cooldown");
-                chacKer.addKewlzDown(p.getUniqueId());
-                WildTP.debug("Added to cooldown " + p.getUniqueId());
-                PostWildTeleportEvent postWildTeleportEvent = new PostWildTeleportEvent(p);
-                Bukkit.getServer().getPluginManager().callEvent(postWildTeleportEvent);
-            }
-        }.runTaskLater(instace, instace.wamuppah*20);
+        else
+            goWild(p, loc, 0L);
     }
 
     public Location getRandomeLocation(World world) {
@@ -175,5 +162,25 @@ public class TeleportGoneWild {
             return l0c0.getBlock().getRelative(BlockFace.DOWN).getLocation();
         }
         return null;
+    }
+    public BukkitTask goWild(final Player p, final Location loc, final Long time)
+    {
+        return new BukkitRunnable() {
+            @Override
+            public void run() {
+                WildTP.debug("Starting Random Teleport");
+                if (needWait && !TooCool2Teleport.isCold(p))
+                    return;
+                TooCool2Teleport.makeHot(p);
+                WildTP.debug("Teleporting " + p.getName());
+                p.teleport(loc);
+                WildTP.debug(p.getName()+ " Teleported");
+                WildTP.debug(p.getName() + " Adding to cooldown");
+                chacKer.addKewlzDown(p.getUniqueId());
+                WildTP.debug("Added to cooldown " + p.getUniqueId());
+                PostWildTeleportEvent postWildTeleportEvent = new PostWildTeleportEvent(p);
+                Bukkit.getServer().getPluginManager().callEvent(postWildTeleportEvent);
+            }
+        }.runTaskLater(instace, time);
     }
 }

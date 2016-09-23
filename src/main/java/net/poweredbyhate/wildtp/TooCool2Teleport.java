@@ -5,16 +5,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by RoboMWM on 5/28/2016.
  */
 public class TooCool2Teleport implements Listener {
+    static Map<Player, BukkitTask> coldTaxs = new HashMap<>();
     static Map<Player, Location> coldPlayers = new HashMap<>();
 
     @EventHandler
@@ -25,18 +25,28 @@ public class TooCool2Teleport implements Listener {
         if (coldPlayers.get(player).distanceSquared(event.getTo()) < 0.3D)
             return;
         player.sendMessage(TooWildForEnums.translate(TooWildForEnums.DIDNT_WAIT));
-        makeHot(player);
+        microwave(player);
     }
 
-    public static void addPlayer(Player player) {
+    public static void addPlayer(Player player, BukkitTask taxs) {
+        if (coldPlayers.containsKey(player))
+            microwave(player);
         coldPlayers.put(player, player.getLocation());
+        coldTaxs.put(player, taxs);
     }
 
     public static boolean isCold(Player player) {
         return coldPlayers.containsKey(player);
     }
 
+    public static void microwave(Player player) {
+        coldPlayers.remove(player);
+        coldTaxs.get(player).cancel();
+        coldTaxs.remove(player);
+    }
+
     public static void makeHot(Player player) {
         coldPlayers.remove(player);
+        coldTaxs.remove(player);
     }
 }

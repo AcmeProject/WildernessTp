@@ -31,8 +31,9 @@ public class WildTP extends JavaPlugin {
     public static boolean doCommandz;
     public static boolean ifurwildandunoitclapurhands = true;
     public static Economy econ;
-    public static boolean dr0p1n = false;
+    public static boolean dr0p1n;
     public static ConfigurationSection randomeWorlds;
+    public static boolean useRandomeWorldz;
     DataStore dataaaastorege;
 
     public void onEnable() {
@@ -64,6 +65,7 @@ public class WildTP extends JavaPlugin {
         wamuppah = getConfig().getInt("Wait");
         dr0p1n = getConfig().getBoolean("dropPlayerFromAbove");
         //Not "just" multiworld support, Qball
+        useRandomeWorldz = getConfig().getBoolean("useRandomWorlds");
         randomeWorlds = getConfig().getConfigurationSection("randomWorlds");
     }
 
@@ -85,6 +87,7 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("Sound", "ENTITY_ENDERMEN_TELEPORT");
         wildDefault.put("PostCommands", eh);
         wildDefault.put("BlockedBiomes", ehh);
+        wildDefault.put("useRandomWorlds", false);
         wildDefault.put("randomWorlds", randomWorlds);
         for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
             if (!fc.contains(s.getKey(),false)) {
