@@ -123,7 +123,7 @@ public class TeleportGoneWild {
         for (String worldString : imDaMap.getKeys(false)) {
             World world = Bukkit.getWorld(worldString);
             if (world == null) {
-                instace.getLogger().warning("World \"" + worldString + "\" does not exist. We recommend removing the world from enabledWorlds in config.yml");
+                instace.getLogger().warning("World \"" + worldString + "\" does not exist. We recommend removing the world from randomWorlds in config.yml");
                 continue;
             }
             totalChance = totalChance + (Integer)imDaMap.get(worldString);
