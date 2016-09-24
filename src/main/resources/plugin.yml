@@ -1,6 +1,6 @@
 name: Wild
 version: 1.25
-author: [LaxWasHere,RoboMWM]
+author: RoboMWM
 main: net.poweredbyhate.wildtp.WildTP
 softdepend: [GriefPrevention,Vault]
 commands:
