@@ -23,7 +23,8 @@ public class ChecKar {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Bukkit.getPlayer(uuid).removeMetadata("wild.Cooldown", WildTP.instace);
+                if (Bukkit.getPlayer(uuid) != null)
+                    Bukkit.getPlayer(uuid).removeMetadata("wild.Cooldown", WildTP.instace);
             }
         }.runTaskLater(WildTP.instace, WildTP.coolDownTeim * 20);
     }
