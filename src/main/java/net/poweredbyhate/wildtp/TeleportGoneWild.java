@@ -14,6 +14,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static net.poweredbyhate.wildtp.WildTP.instace;
 
@@ -121,8 +122,7 @@ public class TeleportGoneWild {
     }
 
     public static int r4nd0m(int max, int min) {
-        Random rand = new Random();
-        return rand.nextInt(max - min + 1) + min;
+        return ThreadLocalRandom.current().nextInt(min - max + 1);
     }
 
     public boolean n0tAGreifClam(Location l0c0) {
