@@ -125,6 +125,7 @@ public class WildTP extends JavaPlugin {
                 version = "2_7";
             }
             if (version == null) {
+                debug("Factions version is null");
                 fractions = null;
                 return;
             }
@@ -135,6 +136,7 @@ public class WildTP extends JavaPlugin {
                 deps.append("Factions " + version + ", ");
             } catch (Exception e) {
                 fractions = null;
+                debug("weird stuff " + version + "\n" + e.getStackTrace());
             }
         }
         String d3p5 = deps.toString();
