@@ -43,6 +43,7 @@ public class WildTP extends JavaPlugin {
         saveDefaultConfig();
         instace = this;
         getWild();
+        wildDependencies();
         wildMetrics();
         getCommand("wild").setExecutor(new CommandsGoneWild(this));
         getCommand("wildtp").setExecutor(new AdminsGoneWild(this));
