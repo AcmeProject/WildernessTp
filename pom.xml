@@ -29,6 +29,22 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <repositories>
@@ -66,6 +82,34 @@
             <version>2.1.8</version>
             <scope>system</scope>
             <systemPath>${basedir}/lib/whatchalookingat.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.originmc</groupId>
+            <artifactId>fbasics.factions.v1_6</artifactId>
+            <version>2.1.8</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/whatchalookingatv1_6.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.originmc</groupId>
+            <artifactId>fbasics.factions.v1_8</artifactId>
+            <version>2.1.8</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/whatchalookingatv1_8.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.originmc</groupId>
+            <artifactId>fbasics.factions.v2_6</artifactId>
+            <version>2.1.8</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/whatchalookingatv2_6.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.originmc</groupId>
+            <artifactId>fbasics.factions.v2_7</artifactId>
+            <version>2.1.8</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/whatchalookingatv2_7.jar</systemPath>
         </dependency>
     </dependencies>
 </project>
