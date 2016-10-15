@@ -2,7 +2,7 @@ name: Wild
 version: 1.27
 author: [LaxWasHere,RoboMWM]
 main: net.poweredbyhate.wildtp.WildTP
-softdepend: [GriefPrevention,Vault]
+softdepend: [GriefPrevention,Vault,Factions,MassiveCore]
 commands:
   wild:
     aliases: [wilderness,rtp]
