@@ -109,7 +109,7 @@ public class WildTP extends JavaPlugin {
             RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
             econ = rsp.getProvider();
         }
-        if (getServer().getPluginManager().getPlugin("Factions") != null);
+        if (getServer().getPluginManager().getPlugin("Factions") != null)
         {
             //Thx Sudzzy
             String version;
