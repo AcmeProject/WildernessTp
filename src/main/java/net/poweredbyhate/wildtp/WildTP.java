@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class WildTP extends JavaPlugin {
 
-    static boolean isDebug = false;
+    static boolean isDebug = true;
 
     public static WildTP instace;
     public static TooWildForEnums enums = new TooWildForEnums();
