@@ -60,4 +60,4 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
-!lib/GriefPrevention.jar
+!lib/*.jar

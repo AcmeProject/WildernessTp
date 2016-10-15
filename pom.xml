@@ -60,5 +60,12 @@
             <scope>system</scope>
             <systemPath>${basedir}/lib/GriefPrevention.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.originmc</groupId>
+            <artifactId>fbasics.factions.api</artifactId>
+            <version>2.1.8</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/whatchalookingat.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

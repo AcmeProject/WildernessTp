@@ -85,7 +85,7 @@ public class TeleportGoneWild {
                 loco = netherLocation(loco);
             if (loco == null)
                 continue;
-            if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString()) && n0tAGreifClam(loco)) {
+            if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString()) && n0tAGreifClam(loco) && n0tAFractionClam(loco)) {
                 if (world.getEnvironment() != World.Environment.NETHER)
                     loco.setY(world.getHighestBlockYAt(loco));
                 loco.setX(loco.getX() + 0.5D);
@@ -127,9 +127,14 @@ public class TeleportGoneWild {
     public boolean n0tAGreifClam(Location l0c0) {
         if (instace.dataaaastorege == null)
             return true;
-        if (instace.dataaaastorege.getClaimAt(l0c0, instace.ifurwildandunoitclapurhands, null) == null)
-            return instace.ifurwildandunoitclapurhands;
-        return false;
+        return instace.dataaaastorege.getClaimAt(l0c0, true, null) == null;
+    }
+
+    public boolean n0tAFractionClam(Location l0c0)
+    {
+        if (instace.fractions == null)
+            return true;
+        return instace.fractions.isWilderness(l0c0);
     }
 
     public boolean n0tAB4dB10ck(Location l0c0) {

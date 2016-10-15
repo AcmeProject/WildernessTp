@@ -6,8 +6,11 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.originmc.fbasics.factions.api.FactionsHook;
+import org.originmc.fbasics.factions.api.IFactionsHook;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -29,11 +32,11 @@ public class WildTP extends JavaPlugin {
     public static int wamuppah = 1;
     public static int cost = 0;
     public static boolean doCommandz;
-    public static boolean ifurwildandunoitclapurhands = true;
     public static Economy econ;
     public static boolean dr0p1n;
     public static ConfigurationSection randomeWorlds;
     public static boolean useRandomeWorldz;
+    public static IFactionsHook fractions;
     DataStore dataaaastorege;
 
     public void onEnable() {
@@ -105,6 +108,33 @@ public class WildTP extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("Vault") != null) {
             RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
             econ = rsp.getProvider();
+        }
+        if (getServer().getPluginManager().getPlugin("Factions") != null);
+        {
+            //Thx Sudzzy
+            String version;
+            Plugin plugin = getServer().getPluginManager().getPlugin("Factions");
+            String[] v = plugin.getDescription().getVersion().split("\\.");
+            version = v[0] + "_" + v[1];
+            if (version.compareTo("1_6") < 0) {
+                version = "1_6";
+            } else if (version.compareTo("2_7") > 0) {
+                version = "2_7";
+            }
+            if (version == null) {
+                fractions = null;
+                getLogger().info("FYI, not using Factions support.");
+                return;
+            }
+            String className = "org.originmc.fbasics.factions.v" + version + ".FactionsHook";
+
+            try {
+                fractions = (IFactionsHook) Class.forName(className).newInstance();
+                getLogger().info("Using Factions v" + version + " support.");
+            } catch (Exception e) {
+                getLogger().info("FYI, not using Factions support.");
+                fractions = null;
+            }
         }
     }
 
