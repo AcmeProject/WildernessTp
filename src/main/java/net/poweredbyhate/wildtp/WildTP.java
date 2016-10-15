@@ -101,13 +101,16 @@ public class WildTP extends JavaPlugin {
     }
 
     public void wildDependencies() {
+        StringBuilder deps = new StringBuilder();
         if (getServer().getPluginManager().getPlugin("GriefPrevention") != null) {
             GriefPrevention antgreif = (GriefPrevention)getServer().getPluginManager().getPlugin("GriefPrevention");
             dataaaastorege = antgreif.dataStore;
+            deps.append("GriefPrevention, ");
         }
         if (getServer().getPluginManager().getPlugin("Vault") != null) {
             RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
             econ = rsp.getProvider();
+            deps.append("Vault, ");
         }
         if (getServer().getPluginManager().getPlugin("Factions") != null)
         {
@@ -123,19 +126,20 @@ public class WildTP extends JavaPlugin {
             }
             if (version == null) {
                 fractions = null;
-                getLogger().info("FYI, not using Factions support.");
                 return;
             }
             String className = "org.originmc.fbasics.factions.v" + version + ".FactionsHook";
 
             try {
                 fractions = (IFactionsHook) Class.forName(className).newInstance();
-                getLogger().info("Using Factions v" + version + " support.");
+                deps.append("Factions " + version + ", ");
             } catch (Exception e) {
-                getLogger().info("FYI, not using Factions support.");
                 fractions = null;
             }
         }
+        String d3p5 = deps.toString();
+        if (d3p5 != null && !d3p5.isEmpty())
+            getLogger().info("Hooked into " + d3p5.substring(0, d3p5.length() - 3));
     }
 
     public static void debug(Object o) {
