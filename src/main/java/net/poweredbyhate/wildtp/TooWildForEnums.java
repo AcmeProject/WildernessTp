@@ -25,6 +25,7 @@ public class TooWildForEnums {
     public static String RELOADED;
     public static String WAIT_MSG;
     public static String DIDNT_WAIT;
+    public static String NO_WE;
 
     File langFile;
     FileConfiguration langConf;
@@ -47,6 +48,7 @@ public class TooWildForEnums {
                 langConf.set("RELOADED", "&aPlugin config has successfuly been reloaded.");
                 langConf.set("WAIT_MSG", "&6Teleporting in {wait} seconds");
                 langConf.set("DIDNT_WAIT", "&cYou need to hold still while you wait!");
+                langConf.set("NO_WE", "&cWorldEdit must be installed for this command.");
 		        langConf.save(langFile);
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
@@ -67,6 +69,7 @@ public class TooWildForEnums {
         RELOADED = gS("RELOADED");
         WAIT_MSG = gS("WAIT_MSG");
         DIDNT_WAIT = gS("DIDNT_WAIT");
+        NO_WE = gS("NO_WE");
     }
 
     public String gS(String s) {
@@ -77,6 +80,7 @@ public class TooWildForEnums {
         }
         return langConf.getString(s);
     }
+
     public static String translate(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }

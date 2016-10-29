@@ -1,5 +1,6 @@
 package net.poweredbyhate.wildtp;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -42,6 +43,14 @@ public class AdminsGoneWild implements CommandExecutor {
             }
             if (args[0].equalsIgnoreCase("gui") && sender.hasPermission("wild.wildtp.set") && sender instanceof Player) {
                 new GeeYouEye().openMenu((Player) sender);
+            }
+            if (args[0].equalsIgnoreCase("create") && sender.hasPermission("wild.wildtp.create.portal")) {
+                if (Bukkit.getServer().getPluginManager().getPlugin("WorldEdit") == null) {
+                    TooWildForEnums.translate(TooWildForEnums.NO_WE);
+                    WildTP.debug(sender.getName() + " Tried to make a portal without WE");
+                    return true;
+                }
+                tpWild.getPortalz().createPortal((Player) sender, args[1]);
             }
         }
         return false;

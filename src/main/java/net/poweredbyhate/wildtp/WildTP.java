@@ -22,6 +22,7 @@ public class WildTP extends JavaPlugin {
 
     public static WildTP instace;
     public static TooWildForEnums enums = new TooWildForEnums();
+    public static PortalzGoneWild portalz = new PortalzGoneWild();
     public static int maxXY = 5000;
     public static int minXY = -5000;
     public static int retries = 10;
@@ -49,6 +50,7 @@ public class WildTP extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PostTeleportEvent(), this);
         Bukkit.getPluginManager().registerEvents(new PreTeleportEvent(), this);
         Bukkit.getPluginManager().registerEvents(new OuchieListener(), this);
+        Bukkit.getPluginManager().registerEvents(portalz, this);
         if (wamuppah > 0)
             Bukkit.getPluginManager().registerEvents(new TooCool2Teleport(), this);
     }
@@ -56,6 +58,7 @@ public class WildTP extends JavaPlugin {
     public void getWild() {
         wildConfig(getConfig());
         new TooWildForEnums().loadConfig();
+        portalz.loadConfig();
         coolDownTeim = getConfig().getInt("Cooldown");
         maxXY = getConfig().getInt("MaxXY");
         minXY = getConfig().getInt("MinXY");
@@ -110,6 +113,10 @@ public class WildTP extends JavaPlugin {
 
     public static void debug(Object o) {
         if (isDebug) System.out.println("[WildTP] "+o);
+    }
+
+    public PortalzGoneWild getPortalz() {
+        return portalz;
     }
 
     public void wildMetrics() {
