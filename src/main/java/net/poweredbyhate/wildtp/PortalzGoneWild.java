@@ -75,10 +75,6 @@ public class PortalzGoneWild implements Listener {
             }
         }
         if (portalConf.getConfigurationSection("Portals") == null) {
-            WildTP.debug("Lax screwed up.");
-            return;
-        }
-        if (portalConf.getConfigurationSection("Portals").getKeys(false) == null) {
             WildTP.debug("No portals saved.");
             return;
         }
