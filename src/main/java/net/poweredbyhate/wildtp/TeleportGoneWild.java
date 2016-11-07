@@ -20,7 +20,7 @@ import static net.poweredbyhate.wildtp.WildTP.instace;
 public class TeleportGoneWild {
 
     ChecKar chacKer = new ChecKar();
-    boolean needWait = instace.wamuppah > 0;
+    boolean needWait = WildTP.wamuppah > 0;
 
     public void WildTeleport(final Player p, String world) {
         if (Bukkit.getWorld(world) == null) {
@@ -38,12 +38,12 @@ public class TeleportGoneWild {
         WildTP.debug("Wild teleport called for " + p.getName());
         if (chacKer.isInCooldown(p.getUniqueId())) {
             WildTP.debug("In cooldown: yes");
-            p.sendMessage(TooWildForEnums.translate(TooWildForEnums.COOLDOWN.replace("%TIME%", "Soon")));
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', TooWildForEnums.COOLDOWN.replace("%TIME%",String.valueOf(ChecKar.getTimeLeft(p)))));
             return;
         }
         World world = null;
-        if (instace.useRandomeWorldz) {
-            world = getRandomeWorld(instace.randomeWorlds);
+        if (WildTP.useRandomeWorldz) {
+            world = getRandomeWorld(WildTP.randomeWorlds);
         }
         if (world == null)
             world = leWorld;
@@ -62,7 +62,7 @@ public class TeleportGoneWild {
             WildTP.debug("No suitable locations found");
             return;
         }
-        if (instace.dr0p1n && locNotFinal.getWorld().getEnvironment() != World.Environment.NETHER) {
+        if (WildTP.dr0p1n && locNotFinal.getWorld().getEnvironment() != World.Environment.NETHER) {
             WildTP.debug("Drop in feature enabled: Setting y=256");
             locNotFinal.setY(256);
             locNotFinal.setPitch(64);
@@ -71,8 +71,8 @@ public class TeleportGoneWild {
         final Location loc = locNotFinal;
         if (needWait) {
             WildTP.debug("Player needs to wait more");
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', TooWildForEnums.WAIT_MSG.replace("{wait}",String.valueOf(instace.wamuppah))));
-            TooCool2Teleport.addPlayer(p, goWild(p, loc, instace.wamuppah*20L));
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', TooWildForEnums.WAIT_MSG.replace("{wait}",String.valueOf(WildTP.wamuppah))));
+            TooCool2Teleport.addPlayer(p, goWild(p, loc, WildTP.wamuppah*20L));
         }
         else
             goWild(p, loc, 0L);
@@ -127,8 +127,8 @@ public class TeleportGoneWild {
     public boolean n0tAGreifClam(Location l0c0) {
         if (instace.dataaaastorege == null)
             return true;
-        if (instace.dataaaastorege.getClaimAt(l0c0, instace.ifurwildandunoitclapurhands, null) == null)
-            return instace.ifurwildandunoitclapurhands;
+        if (instace.dataaaastorege.getClaimAt(l0c0, WildTP.ifurwildandunoitclapurhands, null) == null)
+            return WildTP.ifurwildandunoitclapurhands;
         return false;
     }
 
