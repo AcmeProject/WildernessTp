@@ -23,9 +23,9 @@ public class TeleportGoneWild {
     boolean needWait = instace.wamuppah > 0;
 
     public void WildTeleport(final Player p, String world) {
-        if (Bukkit.getWorld(world) == null) {
-            realTeleportt(p, p.getWorld());
-            return;
+        World world1 = Bukkit.getWorld(world);
+        if (world1 == null) {
+            world1 = p.getWorld();
         }
         if (!realTeleportt(p, Bukkit.getWorld(world)));
             WildTeleport(p, world);
