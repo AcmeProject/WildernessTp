@@ -21,7 +21,8 @@ public class SignClickListener implements Listener {
                 if (Bukkit.getWorld(((Sign) ev.getClickedBlock().getState()).getLine(3)) != null) {
                     new TeleportGoneWild().WildTeleport(ev.getPlayer(), ((Sign) ev.getClickedBlock().getState()).getLine(3));
                 }
-                new TeleportGoneWild().WildTeleport(ev.getPlayer());
+                else
+                    new TeleportGoneWild().WildTeleport(ev.getPlayer());
             }
         }
     }

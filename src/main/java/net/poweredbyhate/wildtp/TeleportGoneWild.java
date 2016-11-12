@@ -21,6 +21,7 @@ public class TeleportGoneWild {
 
     ChecKar chacKer = new ChecKar();
     boolean needWait = instace.wamuppah > 0;
+    int retries = 0;
 
     public void WildTeleport(final Player p, String world) {
         World world1 = Bukkit.getWorld(world);
@@ -43,6 +44,7 @@ public class TeleportGoneWild {
     }
 
     public boolean realTeleportt(final Player p, World world) {
+        retries++;
         WildTP.debug("Wild teleport called for " + p.getName());
         if (chacKer.isInCooldown(p.getUniqueId())) {
             WildTP.debug("In cooldown: yes");
