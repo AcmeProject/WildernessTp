@@ -27,26 +27,28 @@ public class TeleportGoneWild {
             realTeleportt(p, p.getWorld());
             return;
         }
-        realTeleportt(p, Bukkit.getWorld(world));
+        if (!realTeleportt(p, Bukkit.getWorld(world)));
+            WildTeleport(p, world);
     }
 
     public void WildTeleport(Player p) {
-        realTeleportt(p, p.getWorld());
-    }
-
-    public void realTeleportt(final Player p, World leWorld) {
-        WildTP.debug("Wild teleport called for " + p.getName());
-        if (chacKer.isInCooldown(p.getUniqueId())) {
-            WildTP.debug("In cooldown: yes");
-            p.sendMessage(TooWildForEnums.translate(TooWildForEnums.COOLDOWN.replace("%TIME%", "Soon")));
-            return;
-        }
         World world = null;
         if (instace.useRandomeWorldz) {
             world = getRandomeWorld(instace.randomeWorlds);
         }
         if (world == null)
-            world = leWorld;
+            world = p.getWorld();
+        if (!realTeleportt(p, world));
+            WildTeleport(p);
+    }
+
+    public boolean realTeleportt(final Player p, World world) {
+        WildTP.debug("Wild teleport called for " + p.getName());
+        if (chacKer.isInCooldown(p.getUniqueId())) {
+            WildTP.debug("In cooldown: yes");
+            p.sendMessage(TooWildForEnums.translate(TooWildForEnums.COOLDOWN.replace("%TIME%", "Soon")));
+            return true;
+        }
 
         Location locNotFinal = getRandomeLocation(world);
         PreWildTeleportEvent preWildTeleportEvent = new PreWildTeleportEvent(p, locNotFinal);
@@ -55,12 +57,12 @@ public class TeleportGoneWild {
         WildTP.debug("Called preWildTeleportEvent");
         if (preWildTeleportEvent.isCancelled()) {
             WildTP.debug("preWildTeleport Cancelled");
-            return;
+            return !preWildTeleportEvent.isRetry();
         }
         if (locNotFinal == null) {
             p.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_LOCATION));
             WildTP.debug("No suitable locations found");
-            return;
+            return true;
         }
         if (instace.dr0p1n && locNotFinal.getWorld().getEnvironment() != World.Environment.NETHER) {
             WildTP.debug("Drop in feature enabled: Setting y=256");
@@ -76,6 +78,7 @@ public class TeleportGoneWild {
         }
         else
             goWild(p, loc, 0L);
+        return true;
     }
 
     public Location getRandomeLocation(World world) {

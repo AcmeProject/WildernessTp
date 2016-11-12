@@ -15,10 +15,17 @@ public class PreWildTeleportEvent extends Event implements Cancellable {
     private boolean cancelled;
     private Player wildLing;
     private Location locoLocation;
+    private boolean retry;
 
-    public PreWildTeleportEvent(Player p, Location location) {
+    public PreWildTeleportEvent(Player p, Location location, boolean retry) {
         this.wildLing = p;
         this.locoLocation = location;
+        this.cancelled = false;
+        this.retry = retry;
+    }
+
+    public PreWildTeleportEvent(Player p, Location location) {
+        this(p, location, false);
     }
 
     public Player getWildLing() {
@@ -46,5 +53,13 @@ public class PreWildTeleportEvent extends Event implements Cancellable {
     @Override
     public void setCancelled(boolean b) {
         this.cancelled = b;
+    }
+
+    public void setRetry(boolean b) {
+        this.retry = b;
+    }
+
+    public boolean isRetry() {
+        return retry;
     }
 }
