@@ -27,7 +27,7 @@ public class TeleportGoneWild {
         if (world1 == null) {
             world1 = p.getWorld();
         }
-        if (!realTeleportt(p, Bukkit.getWorld(world)));
+        if (!realTeleportt(p, Bukkit.getWorld(world)))
             WildTeleport(p, world);
     }
 
@@ -38,7 +38,7 @@ public class TeleportGoneWild {
         }
         if (world == null)
             world = p.getWorld();
-        if (!realTeleportt(p, world));
+        if (!realTeleportt(p, world))
             WildTeleport(p);
     }
 
@@ -51,6 +51,11 @@ public class TeleportGoneWild {
         }
 
         Location locNotFinal = getRandomeLocation(world);
+        if (locNotFinal == null) {
+            p.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_LOCATION));
+            WildTP.debug("No suitable locations found");
+            return true;
+        }
         PreWildTeleportEvent preWildTeleportEvent = new PreWildTeleportEvent(p, locNotFinal);
         WildTP.debug("Calling preTeleportEvent");
         Bukkit.getServer().getPluginManager().callEvent(preWildTeleportEvent);
@@ -59,11 +64,7 @@ public class TeleportGoneWild {
             WildTP.debug("preWildTeleport Cancelled");
             return !preWildTeleportEvent.isRetry();
         }
-        if (locNotFinal == null) {
-            p.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_LOCATION));
-            WildTP.debug("No suitable locations found");
-            return true;
-        }
+
         if (instace.dr0p1n && locNotFinal.getWorld().getEnvironment() != World.Environment.NETHER) {
             WildTP.debug("Drop in feature enabled: Setting y=256");
             locNotFinal.setY(256);
