@@ -48,7 +48,7 @@ public class TeleportGoneWild {
         WildTP.debug("Wild teleport called for " + p.getName());
         if (chacKer.isInCooldown(p.getUniqueId())) {
             WildTP.debug("In cooldown: yes");
-            p.sendMessage(TooWildForEnums.translate(TooWildForEnums.COOLDOWN.replace("%TIME%", "Soon")));
+            p.sendMessage(TooWildForEnums.translate(TooWildForEnums.COOLDOWN.replace("%TIME%", chacKer.getTimeLeft(p))));
             return true;
         }
 
