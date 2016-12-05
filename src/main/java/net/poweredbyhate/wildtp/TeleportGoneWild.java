@@ -19,7 +19,6 @@ import static net.poweredbyhate.wildtp.WildTP.instace;
 
 public class TeleportGoneWild {
 
-    ChecKar chacKer = new ChecKar();
     boolean needWait = instace.wamuppah > 0;
     int retries = 0;
 
@@ -46,9 +45,9 @@ public class TeleportGoneWild {
     public boolean realTeleportt(final Player p, World world) {
         retries++;
         WildTP.debug("Wild teleport called for " + p.getName());
-        if (chacKer.isInCooldown(p.getUniqueId())) {
+        if (WildTP.checKar.isInCooldown(p.getUniqueId())) {
             WildTP.debug("In cooldown: yes");
-            p.sendMessage(TooWildForEnums.translate(TooWildForEnums.COOLDOWN.replace("%TIME%", chacKer.getTimeLeft(p))));
+            p.sendMessage(TooWildForEnums.translate(TooWildForEnums.COOLDOWN.replace("%TIME%", WildTP.checKar.getTimeLeft(p))));
             return true;
         }
 
@@ -178,7 +177,7 @@ public class TeleportGoneWild {
                 p.teleport(loc);
                 WildTP.debug(p.getName()+ " Teleported");
                 WildTP.debug(p.getName() + " Adding to cooldown");
-                chacKer.addKewlzDown(p.getUniqueId());
+                WildTP.checKar.addKewlzDown(p.getUniqueId());
                 WildTP.debug("Added to cooldown " + p.getUniqueId());
                 PostWildTeleportEvent postWildTeleportEvent = new PostWildTeleportEvent(p);
                 Bukkit.getServer().getPluginManager().callEvent(postWildTeleportEvent);

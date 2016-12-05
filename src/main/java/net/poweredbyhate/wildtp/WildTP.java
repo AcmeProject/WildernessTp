@@ -18,11 +18,12 @@ import java.util.Map;
  */
 public class WildTP extends JavaPlugin {
 
-    static boolean isDebug = false;
+    static boolean isDebug;
 
     public static WildTP instace;
     public static TooWildForEnums enums = new TooWildForEnums();
     public static PortalzGoneWild portalz = new PortalzGoneWild();
+    public static ChecKar checKar = new ChecKar();
     public static int maxXY = 5000;
     public static int minXY = -5000;
     public static int retries = 10;
@@ -67,9 +68,9 @@ public class WildTP extends JavaPlugin {
         cost = getConfig().getInt("Cost");
         wamuppah = getConfig().getInt("Wait");
         dr0p1n = getConfig().getBoolean("dropPlayerFromAbove");
-        //Not "just" multiworld support, Qball
         useRandomeWorldz = getConfig().getBoolean("useRandomWorlds");
         randomeWorlds = getConfig().getConfigurationSection("randomWorlds");
+        isDebug = getConfig().getBoolean("debug");
     }
 
     public void wildConfig(FileConfiguration fc) {
@@ -91,6 +92,7 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("PostCommands", eh);
         wildDefault.put("BlockedBiomes", ehh);
         wildDefault.put("useRandomWorlds", false);
+        wildDefault.put("debug", false);
         wildDefault.put("randomWorlds", randomWorlds);
         for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
             if (!fc.contains(s.getKey(),false)) {

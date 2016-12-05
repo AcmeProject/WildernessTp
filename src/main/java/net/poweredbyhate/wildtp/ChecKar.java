@@ -30,7 +30,7 @@ public class ChecKar {
 
     public boolean isInCooldown(UUID youyouEyeDee) {
         WildTP.debug("Printing kewwldown");
-        for (UUID u :kewwwlDown.keySet()) {
+        for (UUID u : kewwwlDown.keySet()) {
             WildTP.debug(u + " " + kewwwlDown.get(u));
         }
         WildTP.debug("Cooldown check requested for " + youyouEyeDee);
@@ -42,7 +42,7 @@ public class ChecKar {
             WildTP.debug("Player not in cooldown");
             return false;
         }
-        if (kewwwlDown.get(youyouEyeDee) > System.currentTimeMillis()) {
+        if (kewwwlDown.get(youyouEyeDee) > getEpoch()) {
             WildTP.debug("Player in cooldown");
             return true;
         } else {
@@ -53,11 +53,11 @@ public class ChecKar {
 
     public void addKewlzDown(UUID uuid) {
         WildTP.debug("Adding cooldown for " + uuid);
-        kewwwlDown.put(uuid, (long)WildTP.coolDownTeim * 1000 + System.currentTimeMillis());
+        kewwwlDown.put(uuid, (long)WildTP.coolDownTeim + getEpoch());
     }
 
     public String getTimeLeft(Player p) {
-        return formatTime(kewwwlDown.get(p.getUniqueId()) - System.currentTimeMillis());
+        return formatTime(kewwwlDown.get(p.getUniqueId()) - getEpoch());
     }
 
 
@@ -112,6 +112,10 @@ public class ChecKar {
             return res + ", " + formatTime(seconds % 86400, --depth);
         }
         return res;
+    }
+
+    public long getEpoch() {
+        return System.currentTimeMillis() / 1000;
     }
 
 }
