@@ -46,12 +46,13 @@ public class PortalzGoneWild implements Listener {
         Selection sel = we.getSelection(p);
         if (name == null) {
             p.sendMessage("Invalid Name");
+            return;
         }
         if (sel == null) {
             p.sendMessage("Invalid Selection");
             return;
         }
-        savePortal("Portals."+name,stringConvert(sel.getMaximumPoint())+"~"+stringConvert(sel.getMinimumPoint()));
+        savePortal("Portals."+name,stringConvert(sel.getMaximumPoint())+"~"+stringConvert(sel.getMinimumPoint()), p);
     }
 
     public void loadConfig() {
@@ -85,7 +86,7 @@ public class PortalzGoneWild implements Listener {
         }
     }
 
-    public void savePortal(String name, String portal) {
+    public void savePortal(String name, String portal, Player p) {
         WildTP.debug("Got save portal " + name + " " + portal);
         portalFile = new File(WildTP.instace.getDataFolder(), "Portals.yml");
         portalConf = new YamlConfiguration();
@@ -95,7 +96,10 @@ public class PortalzGoneWild implements Listener {
             portalConf.save(portalFile);
         } catch (InvalidConfigurationException | IOException e) {
             e.printStackTrace();
+            p.sendMessage("Error occurred, check console logs");
+            return;
         }
+        p.sendMessage("Portal " + name + " created!");
     }
 
     public boolean hasMoved(PlayerMoveEvent ev) {
