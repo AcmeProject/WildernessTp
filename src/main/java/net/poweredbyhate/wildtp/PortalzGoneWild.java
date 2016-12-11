@@ -49,7 +49,7 @@ public class PortalzGoneWild implements Listener {
             return;
         }
         if (sel == null) {
-            p.sendMessage("Invalid Selection");
+            p.sendMessage("Invalid WorldEdit Selection");
             return;
         }
         savePortal("Portals."+name,stringConvert(sel.getMaximumPoint())+"~"+stringConvert(sel.getMinimumPoint()), p);
