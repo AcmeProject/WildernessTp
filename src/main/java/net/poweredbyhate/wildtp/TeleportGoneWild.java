@@ -142,7 +142,8 @@ public class TeleportGoneWild {
         return blockType != Material.LAVA &&
                 blockType != Material.STATIONARY_LAVA &&
                 blockType != Material.CACTUS &&
-                blockType != Material.FIRE;
+                blockType != Material.FIRE &&
+                blockType != Material.AIR;
     }
 
     Location netherLocation(Location l0c0) {

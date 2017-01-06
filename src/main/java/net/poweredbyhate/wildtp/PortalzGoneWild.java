@@ -11,10 +11,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Created by Lax on 10/4/2016.
@@ -22,19 +24,31 @@ import java.util.HashMap;
 public class PortalzGoneWild implements Listener {
 
     public HashMap<String,String[]> ports = new HashMap<>();
+    public HashSet<Player> recentTPs = new HashSet<>();
     File portalFile;
     FileConfiguration portalConf;
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent ev) {
-        Player p = ev.getPlayer();
+        final Player p = ev.getPlayer();
         for (String s : ports.keySet()) {
             //Bukkit.broadcastMessage(String.valueOf(isInside(p.getLocation(), locationConvert(ports.get(s)[0]), locationConvert(ports.get(s)[1]))));
             if(!hasMoved(ev)){
                 return;
             }
+            if (recentTPs.contains(p))
+                return;
             if (isInside(p.getLocation(), locationConvert(ports.get(s)[0]), locationConvert(ports.get(s)[1]))) {
                 WildTP.debug("Player: " + p.getDisplayName() + " entered a portal");
+                recentTPs.add(p);
+                new BukkitRunnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        recentTPs.remove(p);
+                    }
+                }.runTaskLater(WildTP.instace, 60L);
                 new TeleportGoneWild().WildTeleport(p);
             }
         }
@@ -49,7 +63,7 @@ public class PortalzGoneWild implements Listener {
             return;
         }
         if (sel == null) {
-            p.sendMessage("Invalid Selection");
+            p.sendMessage("Invalid WorldEdit Selection");
             return;
         }
         savePortal("Portals."+name,stringConvert(sel.getMaximumPoint())+"~"+stringConvert(sel.getMinimumPoint()), p);
