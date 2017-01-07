@@ -21,6 +21,7 @@ public class TeleportGoneWild {
 
     boolean needWait = instace.wamuppah > 0;
     int retries = 0;
+    boolean bypass;
 
     public void WildTeleport(final Player p, String world) {
         World world1 = Bukkit.getWorld(world);
@@ -33,6 +34,18 @@ public class TeleportGoneWild {
 
     public void WildTeleport(Player p) {
         World world = null;
+        if (instace.useRandomeWorldz) {
+            world = getRandomeWorld(instace.randomeWorlds);
+        }
+        if (world == null)
+            world = p.getWorld();
+        if (!realTeleportt(p, world))
+            WildTeleport(p);
+    }
+
+    public void WildTeleport(Player p, boolean bypass) {
+        World world = null;
+        this.bypass = bypass;
         if (instace.useRandomeWorldz) {
             world = getRandomeWorld(instace.randomeWorlds);
         }
@@ -171,9 +184,11 @@ public class TeleportGoneWild {
             @Override
             public void run() {
                 WildTP.debug("Starting Random Teleport");
-                if (needWait && !TooCool2Teleport.isCold(p))
-                    return;
-                TooCool2Teleport.makeHot(p);
+                if (!bypass) {
+                    if (needWait && !TooCool2Teleport.isCold(p))
+                        return;
+                    TooCool2Teleport.makeHot(p);
+                }
                 WildTP.debug("Teleporting " + p.getName());
                 p.teleport(loc);
                 WildTP.debug(p.getName()+ " Teleported");
