@@ -108,10 +108,10 @@ public class TeleportGoneWild {
                     loco.setY(world.getHighestBlockYAt(loco) - 1);
                 loco.setX(loco.getX() + 0.5D);
                 loco.setZ(loco.getZ() + 0.5D);
-                if (n0tAB4dB10ck(loco))
+                if (n0tAB4dB10ck(loco, true))
                 {
                     loco.setY(loco.getY() + 1);
-                    if (n0tAB4dB10ck(loco))
+                    if (n0tAB4dB10ck(loco, false))
                     {
                         loco.setY(loco.getY() + 2);
                         return loco;
@@ -154,13 +154,13 @@ public class TeleportGoneWild {
         return false;
     }
 
-    public boolean n0tAB4dB10ck(Location l0c0) {
+    public boolean n0tAB4dB10ck(Location l0c0, boolean checkAir) {
         Material blockType = l0c0.getBlock().getType();
         return blockType != Material.LAVA &&
                 blockType != Material.STATIONARY_LAVA &&
                 blockType != Material.CACTUS &&
                 blockType != Material.FIRE &&
-                blockType != Material.AIR;
+                (!checkAir || blockType != Material.AIR);
     }
 
     Location netherLocation(Location l0c0) {
