@@ -20,19 +20,28 @@ import static net.poweredbyhate.wildtp.WildTP.instace;
 public class TeleportGoneWild {
 
     boolean needWait = instace.wamuppah > 0;
-    int retries = 0;
+    int retries = instace.retries;
     boolean bypass;
 
-    public void WildTeleport(final Player p, String world) {
+    public void WildTeleport(final Player p, final String world) {
         World world1 = Bukkit.getWorld(world);
         if (world1 == null) {
             world1 = p.getWorld();
         }
-        if (!realTeleportt(p, Bukkit.getWorld(world)))
-            WildTeleport(p, world);
+        if (!realTeleportt(p, world1))
+        {
+            new BukkitRunnable()
+            {
+                @Override
+                public void run()
+                {
+                    WildTeleport(p, world);
+                }
+            }.runTaskLater(instace, 1L);
+        }
     }
 
-    public void WildTeleport(Player p) {
+    public void WildTeleport(final Player p) {
         World world = null;
         if (instace.useRandomeWorldz) {
             world = getRandomeWorld(instace.randomeWorlds);
@@ -40,23 +49,26 @@ public class TeleportGoneWild {
         if (world == null)
             world = p.getWorld();
         if (!realTeleportt(p, world))
-            WildTeleport(p);
+        {
+            new BukkitRunnable()
+            {
+                @Override
+                public void run()
+                {
+                    WildTeleport(p);
+                }
+            }.runTaskLater(instace, 1L);
+        }
+
     }
 
     public void WildTeleport(Player p, boolean bypass) {
-        World world = null;
         this.bypass = bypass;
-        if (instace.useRandomeWorldz) {
-            world = getRandomeWorld(instace.randomeWorlds);
-        }
-        if (world == null)
-            world = p.getWorld();
-        if (!realTeleportt(p, world))
-            WildTeleport(p);
+        WildTeleport(p);
     }
 
     public boolean realTeleportt(final Player p, World world) {
-        retries++;
+        retries--;
         WildTP.debug("Wild teleport called for " + p.getName());
         if (WildTP.checKar.isInCooldown(p.getUniqueId())) {
             WildTP.debug("In cooldown: yes");
@@ -66,10 +78,13 @@ public class TeleportGoneWild {
 
         Location locNotFinal = getRandomeLocation(world);
         if (locNotFinal == null) {
+            if (retries >= 0)
+                return false;
             p.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_LOCATION));
             WildTP.debug("No suitable locations found");
             return true;
         }
+
         PreWildTeleportEvent preWildTeleportEvent = new PreWildTeleportEvent(p, locNotFinal);
         WildTP.debug("Calling preTeleportEvent");
         Bukkit.getServer().getPluginManager().callEvent(preWildTeleportEvent);
@@ -86,7 +101,7 @@ public class TeleportGoneWild {
             OuchieListener.plsSaveDisDood(p);
         }
         final Location loc = locNotFinal;
-        if (needWait) {
+        if (needWait && !bypass) {
             WildTP.debug("Player needs to wait more");
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', TooWildForEnums.WAIT_MSG.replace("{wait}",String.valueOf(instace.wamuppah))));
             TooCool2Teleport.addPlayer(p, goWild(p, loc, instace.wamuppah*20L));
@@ -97,7 +112,7 @@ public class TeleportGoneWild {
     }
 
     public Location getRandomeLocation(World world) {
-        for (int i = 0; i<WildTP.retries; i++) {
+        for (int i = 0; i < 4; i++) {
             Location loco = new Location(world, r4nd0m(WildTP.maxXY, WildTP.minXY), 5, r4nd0m(WildTP.maxXY, WildTP.minXY));
             if (world.getEnvironment() == World.Environment.NETHER)
                 loco = netherLocation(loco);

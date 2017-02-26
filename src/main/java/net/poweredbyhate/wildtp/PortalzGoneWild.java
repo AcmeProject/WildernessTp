@@ -114,6 +114,7 @@ public class PortalzGoneWild implements Listener {
             return;
         }
         p.sendMessage("Portal " + name + " created!");
+        loadConfig(); //dum lax
     }
 
     public boolean hasMoved(PlayerMoveEvent ev) {

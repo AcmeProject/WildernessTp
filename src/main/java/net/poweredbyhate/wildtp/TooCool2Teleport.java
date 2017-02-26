@@ -22,8 +22,12 @@ public class TooCool2Teleport implements Listener {
         Player player = event.getPlayer();
         if (!isCold(player))
             return;
-        if (coldPlayers.get(player).distanceSquared(event.getTo()) < 0.3D)
-            return;
+        try
+        {
+            if (coldPlayers.get(player).distanceSquared(event.getTo()) < 0.3D)
+                return;
+        }
+        catch (IllegalArgumentException e) {} //Teleported to another world via another plugin
         player.sendMessage(TooWildForEnums.translate(TooWildForEnums.DIDNT_WAIT));
         microwave(player);
     }
