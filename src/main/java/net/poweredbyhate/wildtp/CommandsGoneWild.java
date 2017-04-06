@@ -24,7 +24,7 @@ public class CommandsGoneWild implements CommandExecutor {
 
         if (args.length >= 1 && sender.getServer().getPlayer(args[0]) != null && sender.hasPermission("wild.wildtp.others")) {
             WildTP.debug(sender.getName() + " Called /wild args " + args[0]);
-            new TeleportGoneWild().WildTeleport(sender.getServer().getPlayer(args[0]));
+            new TeleportGoneWild().WildTeleport(sender.getServer().getPlayer(args[0]), true);
         }
         else if (sender.hasPermission("wild.wildtp")) {
             if (!(sender instanceof Player)) {
@@ -33,7 +33,7 @@ public class CommandsGoneWild implements CommandExecutor {
             }
             Player p = (Player) sender;
             WildTP.debug(p.getName() + " called /wild args 0");
-            new TeleportGoneWild().WildTeleport(p);
+            new TeleportGoneWild().WildTeleport(p, p.hasPermission("wild.wildtp.delay.bypass"));
         }
         else
             sender.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_PERMS));
