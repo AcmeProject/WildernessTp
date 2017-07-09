@@ -26,7 +26,7 @@ public class CommandsGoneWild implements CommandExecutor {
             WildTP.debug(sender.getName() + " Called /wild args " + args[0]);
             new TeleportGoneWild().WildTeleport(sender.getServer().getPlayer(args[0]), true);
         }
-        else if (sender.hasPermission("wild.wildtp") && args.length >= 1 && isADirection(args[0]))
+        else if (sender.hasPermission("wild.wildtp.direction") && args.length >= 1 && isADirection(args[0]))
         {
             if (!(sender instanceof Player)) {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.MAGIC + "One does not simply go wild.");
@@ -55,7 +55,7 @@ public class CommandsGoneWild implements CommandExecutor {
             WildTP.debug(p.getName() + " called /wild <direction>");
             new TeleportGoneWild().WildTeleport(p, maxX, minX, maxZ, minZ, p.hasPermission("wild.wildtp.delay.bypass"));
         }
-        else if (sender.hasPermission("wild.wildtp") && args.length >= 1 && Bukkit.getWorld(args[0]) != null)
+        else if (sender.hasPermission("wild.wildtp.world") && args.length >= 1 && Bukkit.getWorld(args[0]) != null)
         {
             if (!(sender instanceof Player)) {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.MAGIC + "One does not simply go wild.");
