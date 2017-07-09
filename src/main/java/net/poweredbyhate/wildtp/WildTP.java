@@ -49,6 +49,8 @@ public class WildTP extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PreTeleportEvent(), this);
         Bukkit.getPluginManager().registerEvents(new OuchieListener(), this);
         Bukkit.getPluginManager().registerEvents(portalz, this);
+        Bukkit.getPluginManager().registerEvents(new CNNListener(), this);
+        Bukkit.getPluginManager().registerEvents(new NoobieListener(), this);
         if (wamuppah > 0)
             Bukkit.getPluginManager().registerEvents(new TooCool2Teleport(), this);
     }

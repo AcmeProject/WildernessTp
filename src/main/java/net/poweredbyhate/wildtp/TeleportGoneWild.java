@@ -186,10 +186,10 @@ public class TeleportGoneWild {
     }
 
     public boolean n0tAGreifClam(Location l0c0, Player player) {
-        player.setMetadata("nocheatplus.exempt", new FixedMetadataValue(instace, true));
+        player.setMetadata("nocheat.exempt", new FixedMetadataValue(instace, true));
         BlurredBlockBreakEvent iHopePluginsDontFreakOutOverThis = new BlurredBlockBreakEvent(l0c0.getBlock(), player);
         instace.getServer().getPluginManager().callEvent(iHopePluginsDontFreakOutOverThis);
-        player.removeMetadata("nocheatplus.exempt", instace);
+        player.removeMetadata("nocheat.exempt", instace);
         return !iHopePluginsDontFreakOutOverThis.isExposed();
     }
 
