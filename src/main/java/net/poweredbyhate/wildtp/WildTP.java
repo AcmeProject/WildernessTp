@@ -33,6 +33,7 @@ public class WildTP extends JavaPlugin {
     public static boolean dr0p1n;
     public static ConfigurationSection randomeWorlds;
     public static boolean useRandomeWorldz;
+    public static boolean newPlayersTeleported;
 
     public void onEnable() {
         saveDefaultConfig();
@@ -67,6 +68,7 @@ public class WildTP extends JavaPlugin {
         useRandomeWorldz = getConfig().getBoolean("useRandomWorlds");
         randomeWorlds = getConfig().getConfigurationSection("randomWorlds");
         isDebug = getConfig().getBoolean("debug");
+        newPlayersTeleported = getConfig().getBoolean("teleportNewPlayers");
     }
 
     public void wildConfig(FileConfiguration fc) {
@@ -90,6 +92,7 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("useRandomWorlds", false);
         wildDefault.put("debug", false);
         wildDefault.put("randomWorlds", randomWorlds);
+        wildDefault.put("teleportNewPlayers", false);
         for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
             if (!fc.contains(s.getKey(),false)) {
                 getConfig().set(s.getKey(), s.getValue());
