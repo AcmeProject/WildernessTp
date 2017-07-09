@@ -8,7 +8,6 @@ import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -26,7 +25,8 @@ public class TeleportGoneWild {
     int retries = instace.retries;
     boolean bypass;
 
-    public void WildTeleport(final Player p, final String world) {
+    public void WildTeleport(final Player p, final String world, final boolean bypass) {
+        this.bypass = bypass;
         World world1 = Bukkit.getWorld(world);
         if (world1 == null) {
             world1 = p.getWorld();
@@ -38,13 +38,14 @@ public class TeleportGoneWild {
                 @Override
                 public void run()
                 {
-                    WildTeleport(p, world);
+                    WildTeleport(p, world, bypass);
                 }
             }.runTaskLater(instace, 5L);
         }
     }
 
-    public void WildTeleport(final Player p) {
+    public void WildTeleport(final Player p, final boolean bypass) {
+        this.bypass = bypass;
         World world = null;
         if (instace.useRandomeWorldz) {
             world = getRandomeWorld(instace.randomeWorlds);
@@ -58,16 +59,11 @@ public class TeleportGoneWild {
                 @Override
                 public void run()
                 {
-                    WildTeleport(p);
+                    WildTeleport(p, bypass);
                 }
             }.runTaskLater(instace, 5L);
         }
 
-    }
-
-    public void WildTeleport(Player p, boolean bypass) {
-        this.bypass = bypass;
-        WildTeleport(p);
     }
 
     public void WildTeleport(final Player p, final int maxX, final int minX, final int maxZ, final int minZ, final boolean bypass)
