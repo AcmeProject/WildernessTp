@@ -85,11 +85,11 @@ public class PortalzGoneWild implements Listener {
 
     public void listPortals(CommandSender p)
     {
-        StringBuilder yesIusedeez = new StringBuilder();
+        StringBuilder yesIusedeez = new StringBuilder("Portals:  ");
         for (String name : ports.keySet())
             yesIusedeez.append(name + ", ");
         yesIusedeez.setLength(yesIusedeez.length() - 2);
-        p.sendMessage("Portals: " + yesIusedeez.toString());
+        p.sendMessage(yesIusedeez.toString());
     }
 
     public void loadConfig() {
