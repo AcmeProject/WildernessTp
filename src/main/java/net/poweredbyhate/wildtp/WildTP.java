@@ -1,7 +1,5 @@
 package net.poweredbyhate.wildtp;
 
-import me.ryanhamshire.GriefPrevention.DataStore;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -31,12 +29,10 @@ public class WildTP extends JavaPlugin {
     public static int wamuppah = 1;
     public static int cost = 0;
     public static boolean doCommandz;
-    public static boolean ifurwildandunoitclapurhands = true;
     public static Economy econ;
     public static boolean dr0p1n;
     public static ConfigurationSection randomeWorlds;
     public static boolean useRandomeWorldz;
-    DataStore dataaaastorege;
 
     public void onEnable() {
         saveDefaultConfig();
@@ -103,10 +99,6 @@ public class WildTP extends JavaPlugin {
     }
 
     public void wildDependencies() {
-        if (getServer().getPluginManager().getPlugin("GriefPrevention") != null) {
-            GriefPrevention antgreif = (GriefPrevention)getServer().getPluginManager().getPlugin("GriefPrevention");
-            dataaaastorege = antgreif.dataStore;
-        }
         if (getServer().getPluginManager().getPlugin("Vault") != null) {
             RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
             econ = rsp.getProvider();

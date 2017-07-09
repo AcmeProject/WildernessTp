@@ -8,6 +8,8 @@ import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -15,6 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static net.poweredbyhate.wildtp.WildTP.checKar;
 import static net.poweredbyhate.wildtp.WildTP.instace;
 
 public class TeleportGoneWild {
@@ -37,7 +40,7 @@ public class TeleportGoneWild {
                 {
                     WildTeleport(p, world);
                 }
-            }.runTaskLater(instace, 1L);
+            }.runTaskLater(instace, 5L);
         }
     }
 
@@ -57,7 +60,7 @@ public class TeleportGoneWild {
                 {
                     WildTeleport(p);
                 }
-            }.runTaskLater(instace, 1L);
+            }.runTaskLater(instace, 5L);
         }
 
     }
@@ -76,7 +79,7 @@ public class TeleportGoneWild {
             return true;
         }
 
-        Location locNotFinal = getRandomeLocation(world);
+        Location locNotFinal = getRandomeLocation(world, p);
         if (locNotFinal == null) {
             if (retries >= 0)
                 return false;
@@ -111,20 +114,23 @@ public class TeleportGoneWild {
         return true;
     }
 
-    public Location getRandomeLocation(World world) {
+    public Location getRandomeLocation(World world, Player player) {
         for (int i = 0; i < 4; i++) {
             Location loco = new Location(world, r4nd0m(WildTP.maxXY, WildTP.minXY), 5, r4nd0m(WildTP.maxXY, WildTP.minXY));
             if (world.getEnvironment() == World.Environment.NETHER)
                 loco = netherLocation(loco);
             if (loco == null)
                 continue;
-            if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString()) && n0tAGreifClam(loco)) {
+            if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString())) {
                 if (world.getEnvironment() != World.Environment.NETHER)
                     loco.setY(world.getHighestBlockYAt(loco) - 1);
                 loco.setX(loco.getX() + 0.5D);
                 loco.setZ(loco.getZ() + 0.5D);
+
                 if (n0tAB4dB10ck(loco, true))
                 {
+                    if (!n0tAGreifClam(loco, player))
+                        continue;
                     loco.setY(loco.getY() + 1);
                     if (n0tAB4dB10ck(loco, false))
                     {
@@ -161,12 +167,12 @@ public class TeleportGoneWild {
         return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
-    public boolean n0tAGreifClam(Location l0c0) {
-        if (instace.dataaaastorege == null)
-            return true;
-        if (instace.dataaaastorege.getClaimAt(l0c0, instace.ifurwildandunoitclapurhands, null) == null)
-            return instace.ifurwildandunoitclapurhands;
-        return false;
+    public boolean n0tAGreifClam(Location l0c0, Player player) {
+        player.setMetadata("nocheatplus.exempt", new FixedMetadataValue(instace, true));
+        BlurredBlockBreakEvent iHopePluginsDontFreakOutOverThis = new BlurredBlockBreakEvent(l0c0.getBlock(), player);
+        instace.getServer().getPluginManager().callEvent(iHopePluginsDontFreakOutOverThis);
+        player.removeMetadata("nocheatplus.exempt", instace);
+        return !iHopePluginsDontFreakOutOverThis.isExposed();
     }
 
     public boolean n0tAB4dB10ck(Location l0c0, boolean checkAir) {
