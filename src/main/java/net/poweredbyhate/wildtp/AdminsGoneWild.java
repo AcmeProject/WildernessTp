@@ -17,6 +17,7 @@ public class AdminsGoneWild implements CommandExecutor {
             "&6* Command:          Description:                *",
             "&6* /Wild - Teleports player to random location  *",
             "&6* /Wild [player] - Random teleport a player    *",
+            "&6* /Wild [world] - Random teleport to a world   *",
             "&6* /WildTP reload - Reloads the plugin's config *",
             "&6* /WildTP create <name> - Creates a portal     *",
             "&6* /WildTP delete <name> - Deletes a portal     *",
