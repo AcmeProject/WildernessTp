@@ -19,6 +19,8 @@ public class AdminsGoneWild implements CommandExecutor {
             "&6* /Wild [player] - Random teleport a player    *",
             "&6* /WildTP reload - Reloads the plugin's config *",
             "&6* /WildTP create <name> - Creates a portal     *",
+            "&6* /WildTP delete <name> - Deletes a portal     *",
+            "&6* /WildTP list - Lists portals                 *",
             "&6* /WildTP - shows this help message            *",
             "&6------------------------------------------------"
     };
@@ -52,6 +54,14 @@ public class AdminsGoneWild implements CommandExecutor {
                     return true;
                 }
                 tpWild.getPortalz().createPortal((Player) sender, args[1]);
+            }
+            if (args[0].equalsIgnoreCase("delete") && sender.hasPermission("wild.wildtp.create.portal"))
+            {
+                tpWild.getPortalz().deletePortal(sender, args[1]);
+            }
+            if (args[0].equalsIgnoreCase("list") && sender.hasPermission("wild.wildtp.create.portal"))
+            {
+                tpWild.getPortalz().listPortals(sender);
             }
         }
         return false;

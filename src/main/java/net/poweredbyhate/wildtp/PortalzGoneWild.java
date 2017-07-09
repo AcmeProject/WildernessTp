@@ -4,6 +4,7 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.bukkit.selections.Selection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -67,6 +68,28 @@ public class PortalzGoneWild implements Listener {
             return;
         }
         savePortal("Portals."+name,stringConvert(sel.getMaximumPoint())+"~"+stringConvert(sel.getMinimumPoint()), p);
+    }
+
+    public void deletePortal(CommandSender p, String name)
+    {
+        try {
+            portalConf.load(portalFile);
+            portalConf.getConfigurationSection("Portals").set(name, null);
+            portalConf.save(portalFile);
+        } catch (InvalidConfigurationException | IOException e) {
+            e.printStackTrace();
+            p.sendMessage("Error occurred, check console logs");
+            return;
+        }
+    }
+
+    public void listPortals(CommandSender p)
+    {
+        StringBuilder yesIusedeez = new StringBuilder();
+        for (String name : ports.keySet())
+            yesIusedeez.append(name + ", ");
+        yesIusedeez.setLength(yesIusedeez.length() - 2);
+        p.sendMessage("Portals: " + yesIusedeez.toString());
     }
 
     public void loadConfig() {
