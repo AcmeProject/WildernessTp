@@ -31,7 +31,7 @@ public class TeleportGoneWild {
         if (world1 == null) {
             world1 = p.getWorld();
         }
-        if (!realTeleportt(p, world1))
+        if (!realTeleportt(p, world1, WildTP.maxXY, WildTP.minXY, WildTP.maxXY, WildTP.minXY))
         {
             new BukkitRunnable()
             {
@@ -51,7 +51,7 @@ public class TeleportGoneWild {
         }
         if (world == null)
             world = p.getWorld();
-        if (!realTeleportt(p, world))
+        if (!realTeleportt(p, world, WildTP.maxXY, WildTP.minXY, WildTP.maxXY, WildTP.minXY))
         {
             new BukkitRunnable()
             {
@@ -70,7 +70,29 @@ public class TeleportGoneWild {
         WildTeleport(p);
     }
 
-    public boolean realTeleportt(final Player p, World world) {
+    public void WildTeleport(final Player p, final int maxX, final int minX, final int maxZ, final int minZ, final boolean bypass)
+    {
+        this.bypass = bypass;
+        World world = null;
+        if (instace.useRandomeWorldz) {
+            world = getRandomeWorld(instace.randomeWorlds);
+        }
+        if (world == null)
+            world = p.getWorld();
+        if (!realTeleportt(p, world, maxX, minX, maxZ, minZ))
+        {
+            new BukkitRunnable()
+            {
+                @Override
+                public void run()
+                {
+                    WildTeleport(p, maxX, minX, maxZ, minZ, bypass);
+                }
+            }.runTaskLater(instace, 5L);
+        }
+    }
+
+    public boolean realTeleportt(final Player p, World world, int maxX, int minX, int maxZ, int minZ) {
         retries--;
         WildTP.debug("Wild teleport called for " + p.getName());
         if (WildTP.checKar.isInCooldown(p.getUniqueId())) {
@@ -79,7 +101,7 @@ public class TeleportGoneWild {
             return true;
         }
 
-        Location locNotFinal = getRandomeLocation(world, p);
+        Location locNotFinal = getRandomeLocation(world, p, maxX, minX, maxZ, minZ);
         if (locNotFinal == null) {
             if (retries >= 0)
                 return false;
@@ -114,9 +136,9 @@ public class TeleportGoneWild {
         return true;
     }
 
-    public Location getRandomeLocation(World world, Player player) {
+    public Location getRandomeLocation(World world, Player player, int maxX, int minX, int maxZ, int minZ) {
         for (int i = 0; i < 4; i++) {
-            Location loco = new Location(world, r4nd0m(WildTP.maxXY, WildTP.minXY), 5, r4nd0m(WildTP.maxXY, WildTP.minXY));
+            Location loco = new Location(world, r4nd0m(maxX, minX), 5, r4nd0m(maxZ, minZ));
             if (world.getEnvironment() == World.Environment.NETHER)
                 loco = netherLocation(loco);
             if (loco == null)

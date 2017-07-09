@@ -22,9 +22,38 @@ public class CommandsGoneWild implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         WildTP.debug("Wild command called by " + sender);
 
-        if (args.length >= 1 && sender.getServer().getPlayer(args[0]) != null && sender.hasPermission("wild.wildtp.others")) {
+        if (args.length >= 1 && sender.getServer().getPlayerExact(args[0]) != null && sender.hasPermission("wild.wildtp.others")) {
             WildTP.debug(sender.getName() + " Called /wild args " + args[0]);
             new TeleportGoneWild().WildTeleport(sender.getServer().getPlayer(args[0]), true);
+        }
+        else if (sender.hasPermission("wild.wildtp") && args.length >= 1 && isADirection(args[0]))
+        {
+            if (!(sender instanceof Player)) {
+                Bukkit.getConsoleSender().sendMessage(ChatColor.MAGIC + "One does not simply go wild.");
+                return false;
+            }
+            Player p = (Player) sender;
+            int maxX = WildTP.maxXY;
+            int maxZ = WildTP.maxXY;
+            int minX = WildTP.minXY;
+            int minZ = WildTP.minXY;
+            switch (args[0].toLowerCase())
+            {
+                case "north":
+                    maxZ = p.getLocation().getBlockZ();
+                    break;
+                case "south":
+                    minZ = p.getLocation().getBlockZ();
+                    break;
+                case "east":
+                    minX = p.getLocation().getBlockX();
+                    break;
+                case "west":
+                    maxX = p.getLocation().getBlockX();
+            }
+
+            WildTP.debug(p.getName() + " called /wild <direction>");
+            new TeleportGoneWild().WildTeleport(p, maxX, minX, maxZ, minZ, p.hasPermission("wild.wildtp.delay.bypass"));
         }
         else if (sender.hasPermission("wild.wildtp")) {
             if (!(sender instanceof Player)) {
@@ -37,6 +66,19 @@ public class CommandsGoneWild implements CommandExecutor {
         }
         else
             sender.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_PERMS));
+        return false;
+    }
+
+    private boolean isADirection(String direction)
+    {
+        switch(direction.toLowerCase())
+        {
+            case "north":
+            case "south":
+            case "east":
+            case "west":
+                return true;
+        }
         return false;
     }
 }
