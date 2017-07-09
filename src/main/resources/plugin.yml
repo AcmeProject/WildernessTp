@@ -1,5 +1,5 @@
 name: Wild
-version: 1.40
+version: 1.41
 author: [LaxWasHere,RoboMWM]
 main: net.poweredbyhate.wildtp.WildTP
 softdepend: [GriefPrevention,Vault]
