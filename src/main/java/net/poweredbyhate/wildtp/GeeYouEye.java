@@ -41,12 +41,16 @@ public class GeeYouEye implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent ev) {
-        if (ev.getInventory().getHolder() instanceof  IInventoryHolder) {
-            ev.setCancelled(true);
-            if (ev.getClickedInventory().getName().contains("Unnecessary Feature") && ev.getInventory().getItem(ev.getRawSlot()).getItemMeta().getDisplayName().toLowerCase().contains("wild teleport")) {
-                ev.getWhoClicked().closeInventory();
-                new TeleportGoneWild().WildTeleport((Player) ev.getWhoClicked());
+        try
+        {
+            if (ev.getInventory().getHolder() instanceof  IInventoryHolder) {
+                ev.setCancelled(true);
+                if (ev.getClickedInventory().getName().contains("Unnecessary Feature") && ev.getInventory().getItem(ev.getRawSlot()).getItemMeta().getDisplayName().toLowerCase().contains("wild teleport")) {
+                    ev.getWhoClicked().closeInventory();
+                    new TeleportGoneWild().WildTeleport((Player) ev.getWhoClicked(), ev.getWhoClicked().hasPermission("wild.wildtp.delay.bypass"));
+                }
             }
         }
+        catch (Exception PhanaticD){}
     }
 }
