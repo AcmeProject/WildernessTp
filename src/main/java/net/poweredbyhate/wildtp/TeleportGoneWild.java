@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static net.poweredbyhate.wildtp.WildTP.checKar;
+import static net.poweredbyhate.wildtp.WildTP.dataaaastorege;
 import static net.poweredbyhate.wildtp.WildTP.instace;
 
 public class TeleportGoneWild {
@@ -186,11 +187,21 @@ public class TeleportGoneWild {
     }
 
     public boolean n0tAGreifClam(Location l0c0, Player player) {
-        player.setMetadata("nocheat.exempt", new FixedMetadataValue(instace, true));
-        BlurredBlockBreakEvent iHopePluginsDontFreakOutOverThis = new BlurredBlockBreakEvent(l0c0.getBlock(), player);
-        instace.getServer().getPluginManager().callEvent(iHopePluginsDontFreakOutOverThis);
-        player.removeMetadata("nocheat.exempt", instace);
-        return !iHopePluginsDontFreakOutOverThis.isExposed();
+        if (instace.useExperimentalChekar)
+        {
+            player.setMetadata("nocheat.exempt", new FixedMetadataValue(instace, true));
+            BlurredBlockBreakEvent iHopePluginsDontFreakOutOverThis = new BlurredBlockBreakEvent(l0c0.getBlock(), new JohnBonifield(player));
+            instace.getServer().getPluginManager().callEvent(iHopePluginsDontFreakOutOverThis);
+            player.removeMetadata("nocheat.exempt", instace);
+            return !iHopePluginsDontFreakOutOverThis.isExposed();
+        }
+
+        if (dataaaastorege != null)
+        {
+            return instace.dataaaastorege.getClaimAt(l0c0, true, null) == null;
+        }
+
+        return true;
     }
 
     public boolean n0tAB4dB10ck(Location l0c0, boolean checkAir) {
