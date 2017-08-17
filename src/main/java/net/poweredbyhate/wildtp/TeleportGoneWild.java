@@ -136,12 +136,12 @@ public class TeleportGoneWild {
     public Location getRandomeLocation(World world, Player player, int maxX, int minX, int maxZ, int minZ) {
         for (int i = 0; i < 4; i++) {
             Location loco = new Location(world, r4nd0m(maxX, minX), 5, r4nd0m(maxZ, minZ));
-            if (world.getEnvironment() == World.Environment.NETHER)
+            if (bonelessIceScream(loco))
                 loco = netherLocation(loco);
             if (loco == null)
                 continue;
             if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString())) {
-                if (world.getEnvironment() != World.Environment.NETHER)
+                if (bonelessIceScream(loco))
                     loco.setY(world.getHighestBlockYAt(loco) - 1);
                 loco.setX(loco.getX() + 0.5D);
                 loco.setZ(loco.getZ() + 0.5D);
@@ -212,6 +212,15 @@ public class TeleportGoneWild {
                 blockType != Material.CACTUS &&
                 blockType != Material.FIRE &&
                 (!checkAir || blockType != Material.AIR);
+    }
+
+    private boolean bonelessIceScream(Location location)
+    {
+        if (location.getWorld().getEnvironment() != World.Environment.NETHER)
+            return false;
+        location = location.clone();
+        location.setY(128);
+        return location.getBlock().getType() == Material.BEDROCK;
     }
 
     Location netherLocation(Location l0c0) {
