@@ -986,7 +986,7 @@ public class JohnBonifield implements Player
     @Override
     public World getWorld()
     {
-        return null;
+        return p.getWorld();
     }
 
     @Override
@@ -1317,7 +1317,7 @@ public class JohnBonifield implements Player
     @Override
     public PlayerInventory getInventory()
     {
-        return null;
+        return p.getInventory();
     }
 
     @Override
@@ -1329,7 +1329,7 @@ public class JohnBonifield implements Player
     @Override
     public MainHand getMainHand()
     {
-        return null;
+        return p.getMainHand();
     }
 
     @Override
@@ -1341,7 +1341,7 @@ public class JohnBonifield implements Player
     @Override
     public InventoryView getOpenInventory()
     {
-        return null;
+        return p.getOpenInventory();
     }
 
     @Override
