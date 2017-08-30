@@ -60,6 +60,7 @@ public class WildTP extends JavaPlugin {
     }
 
     public void getWild() {
+        wildDependencies();
         wildConfig(getConfig());
         new TooWildForEnums().loadConfig();
         portalz.loadConfig();
@@ -100,7 +101,7 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("debug", false);
         wildDefault.put("randomWorlds", randomWorlds);
         wildDefault.put("teleportNewPlayers", false);
-        wildDefault.put("useExperimentalClaimCheck", false);
+        wildDefault.put("useExperimentalClaimCheck", dataaaastorege == null);
         for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
             if (!fc.contains(s.getKey(),false)) {
                 getConfig().set(s.getKey(), s.getValue());
