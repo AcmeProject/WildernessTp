@@ -20,6 +20,7 @@ import static net.poweredbyhate.wildtp.WildTP.checKar;
 import static net.poweredbyhate.wildtp.WildTP.dataaaastorege;
 import static net.poweredbyhate.wildtp.WildTP.instace;
 import static net.poweredbyhate.wildtp.WildTP.isDebug;
+import static net.poweredbyhate.wildtp.WildTP.outdatedServer;
 
 public class TeleportGoneWild {
 
@@ -220,7 +221,7 @@ public class TeleportGoneWild {
         Material blockType = l0c0.getBlock().getType();
         return blockType != Material.LAVA &&
                 blockType != Material.STATIONARY_LAVA &&
-                blockType != Material.MAGMA &&
+                (outdatedServer || blockType != Material.MAGMA) &&
                 blockType != Material.CACTUS &&
                 blockType != Material.FIRE &&
                 (!checkAir || blockType != Material.AIR);
