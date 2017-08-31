@@ -102,11 +102,20 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("randomWorlds", randomWorlds);
         wildDefault.put("teleportNewPlayers", false);
         wildDefault.put("useExperimentalClaimCheck", dataaaastorege == null);
-        for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
-            if (!fc.contains(s.getKey(),false)) {
-                getConfig().set(s.getKey(), s.getValue());
+        try
+        {
+            for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
+                if (!fc.contains(s.getKey(),false)) {
+                    getConfig().set(s.getKey(), s.getValue());
+                }
             }
         }
+        catch (NoSuchMethodError updateUrSerburz)
+        {
+            fc.addDefaults(fc);
+            fc.options().copyDefaults(true);
+        }
+
         saveConfig();
     }
 

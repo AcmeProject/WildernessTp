@@ -19,6 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static net.poweredbyhate.wildtp.WildTP.checKar;
 import static net.poweredbyhate.wildtp.WildTP.dataaaastorege;
 import static net.poweredbyhate.wildtp.WildTP.instace;
+import static net.poweredbyhate.wildtp.WildTP.isDebug;
 
 public class TeleportGoneWild {
 
@@ -116,7 +117,7 @@ public class TeleportGoneWild {
             return !preWildTeleportEvent.isRetry();
         }
 
-        if (instace.dr0p1n && locNotFinal.getWorld().getEnvironment() != World.Environment.NETHER) {
+        if (instace.dr0p1n && !bonelessIceScream(locNotFinal)) {
             WildTP.debug("Drop in feature enabled: Setting y=256");
             locNotFinal.setY(256);
             locNotFinal.setPitch(64);
@@ -141,7 +142,7 @@ public class TeleportGoneWild {
             if (loco == null)
                 continue;
             if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString())) {
-                if (bonelessIceScream(loco))
+                if (!bonelessIceScream(loco))
                     loco.setY(world.getHighestBlockYAt(loco) - 1);
                 loco.setX(loco.getX() + 0.5D);
                 loco.setZ(loco.getZ() + 0.5D);
@@ -189,11 +190,22 @@ public class TeleportGoneWild {
     public boolean n0tAGreifClam(Location l0c0, Player player) {
         if (instace.useExperimentalChekar)
         {
-            player.setMetadata("nocheat.exempt", new FixedMetadataValue(instace, true));
-            BlurredBlockBreakEvent iHopePluginsDontFreakOutOverThis = new BlurredBlockBreakEvent(l0c0.getBlock(), new JohnBonifield(player));
-            instace.getServer().getPluginManager().callEvent(iHopePluginsDontFreakOutOverThis);
-            player.removeMetadata("nocheat.exempt", instace);
-            return !iHopePluginsDontFreakOutOverThis.isExposed();
+            try
+            {
+                player.setMetadata("nocheat.exempt", new FixedMetadataValue(instace, true));
+                BlurredBlockBreakEvent iHopePluginsDontFreakOutOverThis = new BlurredBlockBreakEvent(l0c0.getBlock(), new JohnBonifield(player));
+                instace.getServer().getPluginManager().callEvent(iHopePluginsDontFreakOutOverThis);
+                player.removeMetadata("nocheat.exempt", instace);
+                return !iHopePluginsDontFreakOutOverThis.isExposed();
+            }
+            catch (Throwable rock)
+            {
+                if (!isDebug)
+                    instace.getLogger().warning("Unable to useExperimentalClaimCheck. For more details, add the following in the config.yml: debug: true");
+                else
+                    rock.printStackTrace();
+
+            }
         }
 
         if (dataaaastorege != null)
