@@ -16,7 +16,11 @@ public class Cashier
     {
         instace.cash = location;
         if (location == null)
+        {
+            if (instace.isDebug)
+                instace.getLogger().info("couldn't get da cash");
             return;
+        }
         if (instace.isDebug)
             instace.getLogger().info(location.toString());
         new BukkitRunnable()
