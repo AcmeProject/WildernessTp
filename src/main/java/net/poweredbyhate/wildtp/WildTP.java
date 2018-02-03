@@ -4,6 +4,7 @@ import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -39,6 +40,7 @@ public class WildTP extends JavaPlugin {
     public static boolean useExperimentalChekar;
     public static DataStore dataaaastorege;
     public static boolean outdatedServer = false;
+    public static Location cash;
 
     public void onEnable() {
         saveDefaultConfig();

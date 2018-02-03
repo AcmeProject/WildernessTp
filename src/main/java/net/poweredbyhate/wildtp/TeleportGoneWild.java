@@ -20,6 +20,7 @@ import static net.poweredbyhate.wildtp.WildTP.checKar;
 import static net.poweredbyhate.wildtp.WildTP.dataaaastorege;
 import static net.poweredbyhate.wildtp.WildTP.instace;
 import static net.poweredbyhate.wildtp.WildTP.isDebug;
+import static net.poweredbyhate.wildtp.WildTP.newPlayersTeleported;
 import static net.poweredbyhate.wildtp.WildTP.outdatedServer;
 
 public class TeleportGoneWild {
@@ -31,9 +32,6 @@ public class TeleportGoneWild {
     public void WildTeleport(final Player p, final String world, final boolean bypass) {
         this.bypass = bypass;
         World world1 = Bukkit.getWorld(world);
-        if (world1 == null) {
-            world1 = p.getWorld();
-        }
         if (!realTeleportt(p, world1, WildTP.maxXY, WildTP.minXY, WildTP.maxXY, WildTP.minXY))
         {
             new BukkitRunnable()
@@ -49,13 +47,7 @@ public class TeleportGoneWild {
 
     public void WildTeleport(final Player p, final boolean bypass) {
         this.bypass = bypass;
-        World world = null;
-        if (instace.useRandomeWorldz) {
-            world = getRandomeWorld(instace.randomeWorlds);
-        }
-        if (world == null)
-            world = p.getWorld();
-        if (!realTeleportt(p, world, WildTP.maxXY, WildTP.minXY, WildTP.maxXY, WildTP.minXY))
+        if (!realTeleportt(p, null, WildTP.maxXY, WildTP.minXY, WildTP.maxXY, WildTP.minXY))
         {
             new BukkitRunnable()
             {
@@ -72,13 +64,7 @@ public class TeleportGoneWild {
     public void WildTeleport(final Player p, final int maxX, final int minX, final int maxZ, final int minZ, final boolean bypass)
     {
         this.bypass = bypass;
-        World world = null;
-        if (instace.useRandomeWorldz) {
-            world = getRandomeWorld(instace.randomeWorlds);
-        }
-        if (world == null)
-            world = p.getWorld();
-        if (!realTeleportt(p, world, maxX, minX, maxZ, minZ))
+        if (!realTeleportt(p, null, maxX, minX, maxZ, minZ))
         {
             new BukkitRunnable()
             {
@@ -93,6 +79,7 @@ public class TeleportGoneWild {
 
     public boolean realTeleportt(final Player p, World world, int maxX, int minX, int maxZ, int minZ) {
         retries--;
+
         WildTP.debug("Wild teleport called for " + p.getName());
         if (WildTP.checKar.isInCooldown(p.getUniqueId())) {
             WildTP.debug("In cooldown: yes");
@@ -100,7 +87,14 @@ public class TeleportGoneWild {
             return true;
         }
 
-        Location locNotFinal = getRandomeLocation(world, p, maxX, minX, maxZ, minZ);
+        Location locNotFinal;
+        if (instace.cash != null && (world == null || world == instace.cash.getWorld()) && n0tAGreifClam(instace.cash, p))
+        {
+            locNotFinal = instace.cash;
+            instace.cash = null;
+        }
+        else
+            locNotFinal = getRandomeLocation(world, p, maxX, minX, maxZ, minZ);
         if (locNotFinal == null) {
             if (retries >= 0)
                 return false;
@@ -132,10 +126,20 @@ public class TeleportGoneWild {
         }
         else
             goWild(p, loc, 0L);
+        new Cashier(getRandomeLocation(null, p, maxX, minX, maxZ, minZ));
         return true;
     }
 
     public Location getRandomeLocation(World world, Player player, int maxX, int minX, int maxZ, int minZ) {
+        if (world == null)
+        {
+            if (instace.useRandomeWorldz)
+                world = getRandomeWorld(instace.randomeWorlds);
+            else if (player != null)
+                world = player.getWorld();
+            else
+                return null;
+        }
         for (int i = 0; i < 4; i++) {
             Location loco = new Location(world, r4nd0m(maxX, minX), 5, r4nd0m(maxZ, minZ));
             if (bonelessIceScream(loco))
@@ -189,7 +193,7 @@ public class TeleportGoneWild {
     }
 
     public boolean n0tAGreifClam(Location l0c0, Player player) {
-        if (instace.useExperimentalChekar)
+        if (instace.useExperimentalChekar && player != null)
         {
             try
             {
