@@ -17,12 +17,10 @@ public class Cashier
         instace.cash = location;
         if (location == null)
         {
-            if (instace.isDebug)
-                instace.getLogger().info("couldn't get da cash");
+            WildTP.debug("couldn't get da cash");
             return;
         }
-        if (instace.isDebug)
-            instace.getLogger().info(location.toString());
+        WildTP.debug(location.toString());
         new BukkitRunnable()
         {
             int x = location.getChunk().getX();
@@ -70,8 +68,7 @@ public class Cashier
                     default:
                         cancel();
                 }
-                if (instace.isDebug)
-                    instace.getLogger().info(String.valueOf(x) + " " + String.valueOf(z));
+                WildTP.debug(String.valueOf(x) + " " + String.valueOf(z));
             }
         }.runTaskTimer(instace, 300L, 40L);
     }
