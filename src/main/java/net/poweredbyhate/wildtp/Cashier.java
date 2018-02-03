@@ -68,6 +68,7 @@ public class Cashier
                     default:
                         cancel();
                 }
+                stage++;
                 WildTP.debug(String.valueOf(x) + " " + String.valueOf(z));
             }
         }.runTaskTimer(instace, 300L, 40L);
