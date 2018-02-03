@@ -39,6 +39,7 @@ public class Cashier
                 if (distance == 0)
                 {
                     location.getChunk().load(true);
+                    WildTP.debug(String.valueOf(x) + " " + String.valueOf(z));
                     distance++;
                     return;
                 }
@@ -59,12 +60,16 @@ public class Cashier
                 {
                     case 1:
                         location.getWorld().getChunkAt(x, --z).load(true);
+                        break;
                     case 2:
                         location.getWorld().getChunkAt(--x, z).load(true);
+                        break;
                     case 3:
                         location.getWorld().getChunkAt(x, ++z).load(true);
+                        break;
                     case 4:
                         location.getWorld().getChunkAt(++x, z).load(true);
+                        break;
                     default:
                         cancel();
                 }
