@@ -43,7 +43,7 @@ public class Cashier
                     distance++;
                     return;
                 }
-                if (stage % distance + 2 == 0) //corner
+                if (stage % (distance + 2) == 0) //corner
                 {
                     if (stage >= distance * 8) //done with this radius
                     {
