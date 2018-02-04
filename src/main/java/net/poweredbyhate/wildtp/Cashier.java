@@ -14,6 +14,8 @@ public class Cashier
 {
     public Cashier(final Location location)
     {
+        if (!instace.noCreditJustCash)
+            return;
         instace.cash = location;
         if (location == null)
         {

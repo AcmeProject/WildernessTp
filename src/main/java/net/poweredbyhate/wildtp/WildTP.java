@@ -38,6 +38,7 @@ public class WildTP extends JavaPlugin {
     public static boolean useRandomeWorldz;
     public static boolean newPlayersTeleported;
     public static boolean useExperimentalChekar;
+    public static boolean noCreditJustCash;
     public static DataStore dataaaastorege;
     public static boolean outdatedServer = false;
     public static Location cash;
@@ -86,6 +87,7 @@ public class WildTP extends JavaPlugin {
         isDebug = getConfig().getBoolean("debug");
         newPlayersTeleported = getConfig().getBoolean("teleportNewPlayers");
         useExperimentalChekar = getConfig().getBoolean("useExperimentalClaimCheck");
+        noCreditJustCash = getConfig().getBoolean("preloadChunks");
     }
 
     public void wildConfig(FileConfiguration fc) {
@@ -111,6 +113,7 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("randomWorlds", randomWorlds);
         wildDefault.put("teleportNewPlayers", false);
         wildDefault.put("useExperimentalClaimCheck", dataaaastorege == null);
+        wildDefault.put("preloadChunks", true);
         try
         {
             for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
