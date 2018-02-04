@@ -76,7 +76,7 @@ public class Cashier
                         location.getWorld().getChunkAt(x, z++).load(true);
                         break;
                     case 4:
-                        location.getWorld().getChunkAt(x--, z).load(true);
+                        location.getWorld().getChunkAt(x++, z).load(true);
                         break;
                     default:
                         cancel();
