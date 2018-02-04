@@ -26,8 +26,8 @@ public class Cashier
             int x = location.getChunk().getX();
             int z = location.getChunk().getZ();
             int distance = 0;
-            int stage = 1;
-            int direction = 1;
+            int stage = 0;
+            int direction = 0;
             @Override
             public void run()
             {
@@ -46,12 +46,12 @@ public class Cashier
                     return;
                 }
 
-                if (++stage % (distance + 2) == 0) //corner
+                if (stage % (distance + 1) == 0) //corner
                 {
                     if (stage >= distance * 8) //done with this radius
                     {
                         distance++;
-                        stage = 1;
+                        stage = 0;
                         direction = 1;
                         x = location.getChunk().getX() + distance;
                         z = location.getChunk().getZ() + distance;
@@ -59,6 +59,8 @@ public class Cashier
                     }
                     direction++;
                 }
+
+                WildTP.debug(String.valueOf(x) + " " + String.valueOf(z) + " distance: " + distance + " stage: " + stage + " direction: " + direction);
 
                 switch(direction)
                 {
@@ -77,8 +79,7 @@ public class Cashier
                     default:
                         cancel();
                 }
-
-                WildTP.debug(String.valueOf(x) + " " + String.valueOf(z) + " distance: " + distance + " stage: " + stage + " direction: " + direction);
+                stage++;
             }
         }.runTaskTimer(instace, 300L, 40L);
     }
