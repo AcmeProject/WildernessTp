@@ -52,7 +52,7 @@ public class Cashier
                     {
                         distance++;
                         stage = 0;
-                        direction = 1;
+                        direction = 0;
                         x = location.getChunk().getX() + distance;
                         z = location.getChunk().getZ() + distance;
                         return;
