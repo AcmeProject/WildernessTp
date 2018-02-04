@@ -14,6 +14,8 @@ public class Cashier
 {
     public Cashier(final Location location)
     {
+        if (!instace.noCreditJustCash)
+            return;
         instace.cash = location;
         if (location == null)
         {
@@ -46,7 +48,7 @@ public class Cashier
                     return;
                 }
 
-                if (stage % (distance + 1) == 0) //corner
+                if (stage % (distance * 2) == 0) //corner
                 {
                     if (stage >= distance * 8) //done with this radius
                     {
