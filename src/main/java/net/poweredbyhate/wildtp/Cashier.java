@@ -41,9 +41,12 @@ public class Cashier
                     location.getChunk().load(true);
                     WildTP.debug(String.valueOf(x) + " " + String.valueOf(z));
                     distance++;
+                    x++;
+                    z++;
                     return;
                 }
-                if (stage % (distance + 2) == 0) //corner
+
+                if (++stage % (distance + 2) == 0) //corner
                 {
                     if (stage >= distance * 8) //done with this radius
                     {
@@ -56,25 +59,26 @@ public class Cashier
                     }
                     direction++;
                 }
+
                 switch(direction)
                 {
                     case 1:
-                        location.getWorld().getChunkAt(x, --z).load(true);
+                        location.getWorld().getChunkAt(x, z--).load(true);
                         break;
                     case 2:
-                        location.getWorld().getChunkAt(--x, z).load(true);
+                        location.getWorld().getChunkAt(x--, z).load(true);
                         break;
                     case 3:
-                        location.getWorld().getChunkAt(x, ++z).load(true);
+                        location.getWorld().getChunkAt(x, z++).load(true);
                         break;
                     case 4:
-                        location.getWorld().getChunkAt(++x, z).load(true);
+                        location.getWorld().getChunkAt(x--, z).load(true);
                         break;
                     default:
                         cancel();
                 }
-                stage++;
-                WildTP.debug(String.valueOf(x) + " " + String.valueOf(z));
+
+                WildTP.debug(String.valueOf(x) + " " + String.valueOf(z) + " distance: " + distance + " stage: " + stage + " direction: " + direction);
             }
         }.runTaskTimer(instace, 300L, 40L);
     }
