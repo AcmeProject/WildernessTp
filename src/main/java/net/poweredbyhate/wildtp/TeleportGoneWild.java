@@ -122,11 +122,10 @@ public class TeleportGoneWild {
         if (needWait && !bypass) {
             WildTP.debug("Player needs to wait more");
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', TooWildForEnums.WAIT_MSG.replace("{wait}",String.valueOf(instace.wamuppah))));
-            TooCool2Teleport.addPlayer(p, goWild(p, loc, instace.wamuppah*20L));
+            TooCool2Teleport.addPlayer(p, goWild(p, loc, instace.wamuppah*20L), maxX, minX, maxZ, minZ);
         }
         else
-            goWild(p, loc, 0L);
-        new Cashier(getRandomeLocation(null, p, maxX, minX, maxZ, minZ));
+            goWild(p, loc, 0L, maxX, minX, maxZ, minZ);
         return true;
     }
 
@@ -259,7 +258,7 @@ public class TeleportGoneWild {
         }
         return null;
     }
-    public BukkitTask goWild(final Player p, final Location loc, final Long time)
+    public BukkitTask goWild(final Player p, final Location loc, final Long time, final int maxX, final int minX, final int maxZ, final int minZ)
     {
         return new BukkitRunnable() {
             @Override
@@ -278,6 +277,7 @@ public class TeleportGoneWild {
                 WildTP.debug("Added to cooldown " + p.getUniqueId());
                 PostWildTeleportEvent postWildTeleportEvent = new PostWildTeleportEvent(p);
                 Bukkit.getServer().getPluginManager().callEvent(postWildTeleportEvent);
+                new Cashier(getRandomeLocation(null, p, maxX, minX, maxZ, minZ));
             }
         }.runTaskLater(instace, time);
     }
