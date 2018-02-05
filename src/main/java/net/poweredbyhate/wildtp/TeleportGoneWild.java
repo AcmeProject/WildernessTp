@@ -122,7 +122,7 @@ public class TeleportGoneWild {
         if (needWait && !bypass) {
             WildTP.debug("Player needs to wait more");
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', TooWildForEnums.WAIT_MSG.replace("{wait}",String.valueOf(instace.wamuppah))));
-            TooCool2Teleport.addPlayer(p, goWild(p, loc, instace.wamuppah*20L), maxX, minX, maxZ, minZ);
+            TooCool2Teleport.addPlayer(p, goWild(p, loc, instace.wamuppah*20L, maxX, minX, maxZ, minZ));
         }
         else
             goWild(p, loc, 0L, maxX, minX, maxZ, minZ);
