@@ -22,6 +22,8 @@ import static net.poweredbyhate.wildtp.WildTP.instace;
 import static net.poweredbyhate.wildtp.WildTP.isDebug;
 import static net.poweredbyhate.wildtp.WildTP.newPlayersTeleported;
 import static net.poweredbyhate.wildtp.WildTP.outdatedServer;
+import static net.poweredbyhate.wildtp.WildTP.randomeWorlds;
+import static net.poweredbyhate.wildtp.WildTP.useRandomeWorldz;
 
 public class TeleportGoneWild {
 
@@ -88,7 +90,7 @@ public class TeleportGoneWild {
         }
 
         Location locNotFinal;
-        if (instace.cash != null && (world == null || world == instace.cash.getWorld()) && n0tAGreifClam(instace.cash, p))
+        if (instace.cash != null && ((world == null && ((useRandomeWorldz && randomeWorlds.contains(instace.cash.getWorld().getName())) || (!useRandomeWorldz && p.getWorld() == instace.cash.getWorld()))) || world == instace.cash.getWorld()) && n0tAGreifClam(instace.cash, p))
         {
             locNotFinal = instace.cash;
             instace.cash = null;
@@ -205,7 +207,7 @@ public class TeleportGoneWild {
             catch (Throwable rock)
             {
                 if (!isDebug)
-                    instace.getLogger().warning("Unable to useExperimentalClaimCheck. For more details, add the following in the config.yml: debug: true");
+                    instace.getLogger().warning("Unable to useExperimentalClaimCheck. For more details, set the following in the config.yml: debug: true");
                 else
                     rock.printStackTrace();
 
@@ -270,7 +272,11 @@ public class TeleportGoneWild {
                     TooCool2Teleport.makeHot(p);
                 }
                 WildTP.debug("Teleporting " + p.getName());
-                p.teleport(loc);
+                if (!p.teleport(loc))
+                {
+                    WildTP.debug("teleport was canceled.");
+                    return;
+                }
                 WildTP.debug(p.getName()+ " Teleported");
                 WildTP.debug(p.getName() + " Adding to cooldown");
                 WildTP.checKar.addKewlzDown(p.getUniqueId());
