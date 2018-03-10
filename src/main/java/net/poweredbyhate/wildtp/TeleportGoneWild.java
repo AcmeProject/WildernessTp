@@ -237,13 +237,13 @@ public class TeleportGoneWild {
         if (location.getWorld().getEnvironment() != World.Environment.NETHER)
             return false;
         location = location.clone();
-        location.setY(128);
+        location.setY(127);
         return location.getBlock().getType() == Material.BEDROCK;
     }
 
     Location netherLocation(Location l0c0) {
         l0c0.setY(1);
-        while (l0c0.getY() < 127)
+        while (l0c0.getY() < 125)
         {
             //Is current block an air block?
             if (l0c0.getBlock().getType() != Material.AIR) {
