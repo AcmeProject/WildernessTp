@@ -160,7 +160,7 @@ public class TeleportGoneWild {
                     loco.setY(loco.getY() + 1);
                     if (n0tAB4dB10ck(loco, false))
                     {
-                        loco.setY(loco.getY() + 2);
+                        loco.setY(loco.getY() + 2.5);
                         return loco;
                     }
                 }
