@@ -28,7 +28,7 @@ public class NoobieListener implements Listener
                 @Override
                 public void run()
                 {
-                    event.getPlayer().performCommand("wild");
+                    new TeleportGoneWild().WildTeleport(event.getPlayer(), true);
                 }
             }.runTaskLater(instace, 1L);
         }
