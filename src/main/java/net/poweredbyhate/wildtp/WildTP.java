@@ -96,7 +96,7 @@ public class WildTP extends JavaPlugin {
         randomWorlds.put("world", 1337);
         randomWorlds.put("world_nether", 42);
         String[] eh = {"title %PLAYER% times 20 100 20","title %PLAYER% title [\"\",{\"text\":\"Wilderness\",\"color\":\"green\",\"bold\":false}]","title %PLAYER% subtitle [\"\",{\"text\":\"Its too dangerous to go alone.\",\"color\":\"yellow\"}]"};
-        String[] ehh = {"DEEP_OCEAN", "OCEAN","FROZEN_OCEAN"};
+        String[] ehh = {"DEEP_OCEAN", "OCEAN","FROZEN_OCEAN","DEEP_COLD_OCEAN","DEEP_FROZEN_OCEAN","DEEP_LUKEWARM_OCEAN", "DEEP_WARM_OCEAN","COLD_OCEAN","FROZEN_OCEAN","WARM_OCEAN","LUKEWARM_OCEAN","RIVER"};
         wildDefault.put("MaxXY", 5000);
         wildDefault.put("MinXY", -5000);
         wildDefault.put("Retries", 5);

@@ -20,7 +20,9 @@ import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.PistonMoveReaction;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.entity.Entity;
@@ -50,7 +52,6 @@ import org.bukkit.util.Vector;
 
 import java.net.InetSocketAddress;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -98,6 +99,36 @@ public class JohnBonifield implements Player
 
     @Override
     public void setPlayerListName(String s)
+    {
+
+    }
+
+    @Override
+    public String getPlayerListHeader()
+    {
+        return null;
+    }
+
+    @Override
+    public String getPlayerListFooter()
+    {
+        return null;
+    }
+
+    @Override
+    public void setPlayerListHeader(String s)
+    {
+
+    }
+
+    @Override
+    public void setPlayerListFooter(String s)
+    {
+
+    }
+
+    @Override
+    public void setPlayerListHeaderFooter(String s, String s1)
     {
 
     }
@@ -318,6 +349,12 @@ public class JohnBonifield implements Player
 
     }
 
+    @Override
+    public void sendBlockChange(Location location, BlockData blockData)
+    {
+
+    }
+
     /**
      * @param location
      * @param i
@@ -330,18 +367,6 @@ public class JohnBonifield implements Player
     public boolean sendChunkChange(Location location, int i, int i1, int i2, byte[] bytes)
     {
         return false;
-    }
-
-    /**
-     * @param location
-     * @param i
-     * @param b
-     * @deprecated
-     */
-    @Override
-    public void sendBlockChange(Location location, int i, byte b)
-    {
-
     }
 
     @Override
@@ -717,7 +742,19 @@ public class JohnBonifield implements Player
     }
 
     @Override
+    public void hidePlayer(Plugin plugin, Player player)
+    {
+
+    }
+
+    @Override
     public void showPlayer(Player player)
+    {
+
+    }
+
+    @Override
+    public void showPlayer(Plugin plugin, Player player)
     {
 
     }
@@ -942,6 +979,12 @@ public class JohnBonifield implements Player
     }
 
     @Override
+    public void updateCommands()
+    {
+
+    }
+
+    @Override
     public Location getLocation()
     {
         return p.getLocation();
@@ -1077,6 +1120,18 @@ public class JohnBonifield implements Player
     public Server getServer()
     {
         return null;
+    }
+
+    @Override
+    public boolean isPersistent()
+    {
+        return false;
+    }
+
+    @Override
+    public void setPersistent(boolean b)
+    {
+
     }
 
     /**
@@ -1292,6 +1347,12 @@ public class JohnBonifield implements Player
 
     @Override
     public PistonMoveReaction getPistonMoveReaction()
+    {
+        return null;
+    }
+
+    @Override
+    public BlockFace getFacing()
     {
         return null;
     }
@@ -1533,30 +1594,8 @@ public class JohnBonifield implements Player
         return null;
     }
 
-    /**
-     * @param hashSet
-     * @param i
-     * @deprecated
-     */
-    @Override
-    public Block getTargetBlock(HashSet<Byte> hashSet, int i)
-    {
-        return null;
-    }
-
     @Override
     public Block getTargetBlock(Set<Material> set, int i)
-    {
-        return null;
-    }
-
-    /**
-     * @param hashSet
-     * @param i
-     * @deprecated
-     */
-    @Override
-    public List<Block> getLastTwoTargetBlocks(HashSet<Byte> hashSet, int i)
     {
         return null;
     }
@@ -1739,6 +1778,24 @@ public class JohnBonifield implements Player
     public void setGliding(boolean b)
     {
 
+    }
+
+    @Override
+    public boolean isSwimming()
+    {
+        return false;
+    }
+
+    @Override
+    public void setSwimming(boolean b)
+    {
+
+    }
+
+    @Override
+    public boolean isRiptiding()
+    {
+        return false;
     }
 
     @Override

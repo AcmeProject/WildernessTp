@@ -33,7 +33,7 @@ public class Cashier
             @Override
             public void run()
             {
-                if (instace.cash != location || distance > instace.getServer().getViewDistance())
+                if (instace.cash != location || distance > 2)
                 {
                     cancel();
                     return;

@@ -16,7 +16,7 @@ public class SignChangeListener implements Listener {
             if (ev.getLine(2) != null) {
                 world = ev.getLine(2);
             }
-            if (ev.getPlayer().getLocation().getBlock().getBiome() == Biome.HELL || ev.getPlayer().getLocation().getBlock().getBiome() == Biome.SKY) {
+            if (ev.getPlayer().getLocation().getBlock().getBiome() == Biome.NETHER || ev.getPlayer().getLocation().getBlock().getBiome() == Biome.THE_END) {
                 ev.getPlayer().sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_BIOME.replace("%BIOME%", ev.getPlayer().getLocation().getBlock().getBiome().toString())));
                 ev.setCancelled(true);
                 ev.getBlock().breakNaturally();
