@@ -49,6 +49,7 @@ public class TooWildForEnums {
                 langConf.set("WAIT_MSG", "&6Teleporting in {wait} seconds");
                 langConf.set("DIDNT_WAIT", "&cYou need to hold still while you wait!");
                 langConf.set("NO_WE", "&cWorldEdit must be installed for this command.");
+                langConf.set("NO_MONEY", "&cYou are too poor to deserve a teleport at this time.");
 		        langConf.save(langFile);
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
