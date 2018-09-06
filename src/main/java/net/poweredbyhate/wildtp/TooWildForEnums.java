@@ -71,6 +71,7 @@ public class TooWildForEnums {
         WAIT_MSG = gS("WAIT_MSG");
         DIDNT_WAIT = gS("DIDNT_WAIT");
         NO_WE = gS("NO_WE");
+        NO_MONEY = gS("NO_MONEY");
     }
 
     public String gS(String s) {
