@@ -54,11 +54,13 @@ public class AdminsGoneWild implements CommandExecutor {
                     WildTP.debug(sender.getName() + " Tried to make a portal without WE");
                     return true;
                 }
-                tpWild.getPortalz().createPortal((Player) sender, args[1]);
+                if (args.length > 1)
+                    tpWild.getPortalz().createPortal((Player) sender, args[1]);
             }
             if (args[0].equalsIgnoreCase("delete") && sender.hasPermission("wild.wildtp.create.portal"))
             {
-                tpWild.getPortalz().deletePortal(sender, args[1]);
+                if (args.length > 1)
+                    tpWild.getPortalz().deletePortal(sender, args[1]);
             }
             if (args[0].equalsIgnoreCase("list") && sender.hasPermission("wild.wildtp.create.portal"))
             {
