@@ -1,5 +1,6 @@
 package net.poweredbyhate.wildtp;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -25,64 +26,69 @@ public class Cashier
         WildTP.debug(location.toString());
         new BukkitRunnable()
         {
-            int x = location.getChunk().getX();
-            int z = location.getChunk().getZ();
+            final int X = location.getChunk().getX();
+            final int Z = location.getChunk().getZ();
+            int x = X;
+            int z = Z;
             int distance = 0;
             int stage = 0;
             int direction = 0;
+            final int viewDistance = Bukkit.getViewDistance();
             @Override
             public void run()
             {
-                if (instace.cash != location || distance > 2)
+                while(true)
                 {
-                    cancel();
-                    return;
-                }
-                if (distance == 0)
-                {
-                    location.getChunk().load(true);
-                    WildTP.debug(String.valueOf(x) + " " + String.valueOf(z));
-                    distance++;
-                    x++;
-                    z++;
-                    return;
-                }
-
-                if (stage % (distance * 2) == 0) //corner
-                {
-                    if (stage >= distance * 8) //done with this radius
+                    if (instace.cash != location || distance > viewDistance)
                     {
-                        distance++;
-                        stage = 0;
-                        direction = 0;
-                        x = location.getChunk().getX() + distance;
-                        z = location.getChunk().getZ() + distance;
                         return;
                     }
-                    direction++;
-                }
+                    if (distance == 0)
+                    {
+                        location.getWorld().getChunkAtAsync(location, true);
+                        WildTP.debug(String.valueOf(x) + " " + String.valueOf(z));
+                        distance++;
+                        x++;
+                        z++;
+                        return;
+                    }
 
-                WildTP.debug(String.valueOf(x) + " " + String.valueOf(z) + " distance: " + distance + " stage: " + stage + " direction: " + direction);
+                    if (stage % (distance * 2) == 0) //corner
+                    {
+                        if (stage >= distance * 8) //done with this radius
+                        {
+                            distance++;
+                            stage = 0;
+                            direction = 0;
+                            x = X + distance;
+                            z = Z + distance;
+                            return;
+                        }
+                        direction++;
+                    }
 
-                switch(direction)
-                {
-                    case 1:
-                        location.getWorld().getChunkAt(x, z--).load(true);
-                        break;
-                    case 2:
-                        location.getWorld().getChunkAt(x--, z).load(true);
-                        break;
-                    case 3:
-                        location.getWorld().getChunkAt(x, z++).load(true);
-                        break;
-                    case 4:
-                        location.getWorld().getChunkAt(x++, z).load(true);
-                        break;
-                    default:
-                        cancel();
+                    WildTP.debug(String.valueOf(x) + " " + String.valueOf(z) + " distance: " + distance + " stage: " + stage + " direction: " + direction);
+
+                    switch(direction)
+                    {
+                        case 1:
+                            location.getWorld().getChunkAtAsync(x, z--, true);
+                            break;
+                        case 2:
+                            location.getWorld().getChunkAtAsync(x--, z, true);
+                            break;
+                        case 3:
+                            location.getWorld().getChunkAtAsync(x, z++, true);
+                            break;
+                        case 4:
+                            location.getWorld().getChunkAtAsync(x++, z, true);
+                            break;
+                        default:
+                            return;
+                    }
+                    stage++;
                 }
-                stage++;
             }
-        }.runTaskTimer(instace, 300L, 40L);
+        }.runTaskLaterAsynchronously(instace, 300L);
     }
 }

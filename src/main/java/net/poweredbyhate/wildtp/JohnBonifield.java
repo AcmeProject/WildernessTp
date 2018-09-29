@@ -1,6 +1,11 @@
 package net.poweredbyhate.wildtp;
 
+import com.destroystokyo.paper.Title;
+import com.destroystokyo.paper.block.TargetBlockInfo;
+import com.destroystokyo.paper.profile.PlayerProfile;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Achievement;
+import org.bukkit.Chunk;
 import org.bukkit.Effect;
 import org.bukkit.EntityEffect;
 import org.bukkit.GameMode;
@@ -22,6 +27,7 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.PistonMoveReaction;
+import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
@@ -31,6 +37,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.Inventory;
@@ -50,6 +58,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 
+import javax.annotation.Nullable;
 import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.List;
@@ -147,6 +156,19 @@ public class JohnBonifield implements Player
 
     @Override
     public InetSocketAddress getAddress()
+    {
+        return null;
+    }
+
+    @Override
+    public int getProtocolVersion()
+    {
+        return 0;
+    }
+
+    @Nullable
+    @Override
+    public InetSocketAddress getVirtualHost()
     {
         return null;
     }
@@ -382,6 +404,90 @@ public class JohnBonifield implements Player
     }
 
     @Override
+    public void sendActionBar(String s)
+    {
+
+    }
+
+    @Override
+    public void sendActionBar(char c, String s)
+    {
+
+    }
+
+    @Override
+    public void setPlayerListHeaderFooter(BaseComponent[] baseComponents, BaseComponent[] baseComponents1)
+    {
+
+    }
+
+    @Override
+    public void setPlayerListHeaderFooter(BaseComponent baseComponent, BaseComponent baseComponent1)
+    {
+
+    }
+
+    @Override
+    public void setTitleTimes(int i, int i1, int i2)
+    {
+
+    }
+
+    @Override
+    public void setSubtitle(BaseComponent[] baseComponents)
+    {
+
+    }
+
+    @Override
+    public void setSubtitle(BaseComponent baseComponent)
+    {
+
+    }
+
+    @Override
+    public void showTitle(BaseComponent[] baseComponents)
+    {
+
+    }
+
+    @Override
+    public void showTitle(BaseComponent baseComponent)
+    {
+
+    }
+
+    @Override
+    public void showTitle(BaseComponent[] baseComponents, BaseComponent[] baseComponents1, int i, int i1, int i2)
+    {
+
+    }
+
+    @Override
+    public void showTitle(BaseComponent baseComponent, BaseComponent baseComponent1, int i, int i1, int i2)
+    {
+
+    }
+
+    @Override
+    public void sendTitle(Title title)
+    {
+
+    }
+
+    @Override
+    public void updateTitle(Title title)
+    {
+
+    }
+
+    @Override
+    public void hideTitle()
+    {
+
+    }
+
+    @Override
     public void updateInventory()
     {
 
@@ -577,6 +683,18 @@ public class JohnBonifield implements Player
     public void giveExp(int i)
     {
 
+    }
+
+    @Override
+    public void giveExp(int i, boolean b)
+    {
+
+    }
+
+    @Override
+    public int applyMending(int i)
+    {
+        return 0;
     }
 
     @Override
@@ -979,9 +1097,111 @@ public class JohnBonifield implements Player
     }
 
     @Override
+    public boolean getAffectsSpawning()
+    {
+        return false;
+    }
+
+    @Override
+    public void setAffectsSpawning(boolean b)
+    {
+
+    }
+
+    @Override
     public void updateCommands()
     {
 
+    }
+
+    @Override
+    public int getViewDistance()
+    {
+        return 0;
+    }
+
+    @Override
+    public void setViewDistance(int i)
+    {
+
+    }
+
+    @Override
+    public void setResourcePack(String s, String s1)
+    {
+
+    }
+
+    @Override
+    public PlayerResourcePackStatusEvent.Status getResourcePackStatus()
+    {
+        return null;
+    }
+
+    @Override
+    public String getResourcePackHash()
+    {
+        return null;
+    }
+
+    @Override
+    public boolean hasResourcePack()
+    {
+        return false;
+    }
+
+    @Override
+    public PlayerProfile getPlayerProfile()
+    {
+        return null;
+    }
+
+    @Override
+    public void setPlayerProfile(PlayerProfile playerProfile)
+    {
+
+    }
+
+    @Override
+    public float getCooldownPeriod()
+    {
+        return 0;
+    }
+
+    @Override
+    public float getCooledAttackStrength(float v)
+    {
+        return 0;
+    }
+
+    @Override
+    public void resetCooldown()
+    {
+
+    }
+
+    @Override
+    public Spigot spigot()
+    {
+        return null;
+    }
+
+    @Override
+    public Location getOrigin()
+    {
+        return null;
+    }
+
+    @Override
+    public boolean fromMobSpawner()
+    {
+        return false;
+    }
+
+    @Override
+    public Chunk getChunk()
+    {
+        return null;
     }
 
     @Override
@@ -1441,6 +1661,12 @@ public class JohnBonifield implements Player
 
     }
 
+    @Override
+    public void closeInventory(InventoryCloseEvent.Reason reason)
+    {
+
+    }
+
     /**
      * @deprecated
      */
@@ -1532,6 +1758,18 @@ public class JohnBonifield implements Player
         return 0;
     }
 
+    @Override
+    public Entity releaseLeftShoulderEntity()
+    {
+        return null;
+    }
+
+    @Override
+    public Entity releaseRightShoulderEntity()
+    {
+        return null;
+    }
+
     /**
      * @deprecated
      */
@@ -1571,6 +1809,12 @@ public class JohnBonifield implements Player
     }
 
     @Override
+    public void openSign(Sign sign)
+    {
+
+    }
+
+    @Override
     public double getEyeHeight()
     {
         return 0;
@@ -1596,6 +1840,27 @@ public class JohnBonifield implements Player
 
     @Override
     public Block getTargetBlock(Set<Material> set, int i)
+    {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public Block getTargetBlock(int i, TargetBlockInfo.FluidMode fluidMode)
+    {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public BlockFace getTargetBlockFace(int i, TargetBlockInfo.FluidMode fluidMode)
+    {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public TargetBlockInfo getTargetBlockInfo(int i, TargetBlockInfo.FluidMode fluidMode)
     {
         return null;
     }
@@ -1670,6 +1935,12 @@ public class JohnBonifield implements Player
     public Player getKiller()
     {
         return null;
+    }
+
+    @Override
+    public void setKiller(@Nullable Player player)
+    {
+
     }
 
     @Override
@@ -1820,6 +2091,48 @@ public class JohnBonifield implements Player
     public boolean isCollidable()
     {
         return false;
+    }
+
+    @Override
+    public int getArrowsStuck()
+    {
+        return 0;
+    }
+
+    @Override
+    public void setArrowsStuck(int i)
+    {
+
+    }
+
+    @Override
+    public int getShieldBlockingDelay()
+    {
+        return 0;
+    }
+
+    @Override
+    public void setShieldBlockingDelay(int i)
+    {
+
+    }
+
+    @Override
+    public ItemStack getActiveItem()
+    {
+        return null;
+    }
+
+    @Override
+    public int getItemUseRemainingTime()
+    {
+        return 0;
+    }
+
+    @Override
+    public int getHandRaisedTime()
+    {
+        return 0;
     }
 
     @Override

@@ -14,6 +14,8 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static net.poweredbyhate.wildtp.WildTP.checKar;
@@ -34,54 +36,21 @@ public class TeleportGoneWild {
     public void WildTeleport(final Player p, final String world, final boolean bypass) {
         this.bypass = bypass;
         World world1 = Bukkit.getWorld(world);
-        if (!realTeleportt(p, world1, WildTP.maxXY, WildTP.minXY, WildTP.maxXY, WildTP.minXY))
-        {
-            new BukkitRunnable()
-            {
-                @Override
-                public void run()
-                {
-                    WildTeleport(p, world, bypass);
-                }
-            }.runTaskLater(instace, 5L);
-        }
+        realTeleportt(p, world1, WildTP.maxXY, WildTP.minXY, WildTP.maxXY, WildTP.minXY);
     }
 
     public void WildTeleport(final Player p, final boolean bypass) {
         this.bypass = bypass;
-        if (!realTeleportt(p, null, WildTP.maxXY, WildTP.minXY, WildTP.maxXY, WildTP.minXY))
-        {
-            new BukkitRunnable()
-            {
-                @Override
-                public void run()
-                {
-                    WildTeleport(p, bypass);
-                }
-            }.runTaskLater(instace, 5L);
-        }
-
+        realTeleportt(p, null, WildTP.maxXY, WildTP.minXY, WildTP.maxXY, WildTP.minXY);
     }
 
     public void WildTeleport(final Player p, final int maxX, final int minX, final int maxZ, final int minZ, final boolean bypass)
     {
         this.bypass = bypass;
-        if (!realTeleportt(p, null, maxX, minX, maxZ, minZ))
-        {
-            new BukkitRunnable()
-            {
-                @Override
-                public void run()
-                {
-                    WildTeleport(p, maxX, minX, maxZ, minZ, bypass);
-                }
-            }.runTaskLater(instace, 5L);
-        }
+        realTeleportt(p, null, maxX, minX, maxZ, minZ);
     }
 
     public boolean realTeleportt(final Player p, World world, int maxX, int minX, int maxZ, int minZ) {
-        retries--;
-
         WildTP.debug("Wild teleport called for " + p.getName());
         if (WildTP.checKar.isInCooldown(p.getUniqueId())) {
             WildTP.debug("In cooldown: yes");
@@ -94,17 +63,19 @@ public class TeleportGoneWild {
         {
             locNotFinal = instace.cash;
             instace.cash = null;
+            return realTeleportt2(p, world, maxX, minX, maxZ, minZ, locNotFinal);
         }
         else
-            locNotFinal = getRandomeLocation(world, p, maxX, minX, maxZ, minZ);
+            getRandomeLocation(world, p, maxX, minX, maxZ, minZ);
         if (locNotFinal == null) {
-            if (retries >= 0)
-                return false;
-            p.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_LOCATION));
-            WildTP.debug("No suitable locations found");
-            return true;
+
         }
 
+
+    }
+
+    public boolean realTeleportt2(final Player p, World world, final int maxX, final int minX, final int maxZ, final int minZ, Location locNotFinal)
+    {
         PreWildTeleportEvent preWildTeleportEvent = new PreWildTeleportEvent(p, locNotFinal);
         WildTP.debug("Calling preTeleportEvent");
         Bukkit.getServer().getPluginManager().callEvent(preWildTeleportEvent);
@@ -131,7 +102,8 @@ public class TeleportGoneWild {
         return true;
     }
 
-    public Location getRandomeLocation(World world, Player player, int maxX, int minX, int maxZ, int minZ) {
+    public void getRandomeLocation(World world, Player player, int maxX, int minX, int maxZ, int minZ)
+    {
         if (world == null)
         {
             if (instace.useRandomeWorldz)
@@ -139,30 +111,72 @@ public class TeleportGoneWild {
             else if (player != null)
                 world = player.getWorld();
             else
-                return null;
+                return;
         }
-        for (int i = 0; i < 4; i++) {
-            Location loco = new Location(world, r4nd0m(maxX, minX), 5, r4nd0m(maxZ, minZ));
-            if (bonelessIceScream(loco))
-                loco = netherLocation(loco);
-            if (loco == null)
-                continue;
-            if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString())) {
-                if (!bonelessIceScream(loco))
-                    loco.setY(world.getHighestBlockYAt(loco) - 1);
-                loco.setX(loco.getX() + 0.5D);
-                loco.setZ(loco.getZ() + 0.5D);
-
-                if (n0tAB4dB10ck(loco, true))
+        World finalWorld = world;
+        new BukkitRunnable()
+        {
+            @Override
+            public void run()
+            {
+                while (retries-- >= 0)
                 {
-                    if (!n0tAGreifClam(loco, player))
-                        continue;
-                    loco.setY(loco.getY() + 1);
-                    if (n0tAB4dB10ck(loco, false))
+                    Location loco = new Location(finalWorld, r4nd0m(maxX, minX), 5, r4nd0m(maxZ, minZ));
+                    try
                     {
-                        loco.setY(loco.getY() + 2.5);
-                        return loco;
+                        finalWorld.getChunkAtAsync(loco, true).get();
+                        if (instace.getServer().getScheduler().callSyncMethod(instace, new Callable<Object>()
+                        {
+                            @Override
+                            public Object call() throws Exception
+                            {
+                                return chekar(loco);
+                            }
+                        }).get() != null)
+                            if (instace.getServer().getScheduler().callSyncMethod(instace, new Callable<Boolean>()
+                        {
+                            @Override
+                            public Boolean call() throws Exception
+                            {
+                                return realTeleportt2(player, finalWorld, maxX, minX, maxZ, minZ, loco);
+                            }
+                        }).get())
+                                return;
+
                     }
+                    catch (InterruptedException | ExecutionException e)
+                    {
+                        if (isDebug)
+                            e.printStackTrace();
+                        continue;
+                    }
+
+                }
+                player.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_LOCATION));
+                WildTP.debug("No suitable locations found");
+            }
+        }.runTaskAsynchronously(instace);
+    }
+
+    public Location chekar(Location loco)
+    {
+        if (bonelessIceScream(loco))
+            loco = netherLocation(loco);
+        if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString())) {
+            if (!bonelessIceScream(loco))
+                loco.setY(loco.getWorld().getHighestBlockYAt(loco) - 1);
+            loco.setX(loco.getX() + 0.5D);
+            loco.setZ(loco.getZ() + 0.5D);
+
+            if (n0tAB4dB10ck(loco, true))
+            {
+                if (!n0tAGreifClam(loco, player))
+                    return null;
+                loco.setY(loco.getY() + 1);
+                if (n0tAB4dB10ck(loco, false))
+                {
+                    loco.setY(loco.getY() + 2.5);
+                    return loco;
                 }
             }
         }
@@ -198,19 +212,19 @@ public class TeleportGoneWild {
         {
             try
             {
-                player.setMetadata("nocheat.exempt", new FixedMetadataValue(instace, true));
                 BlurredBlockBreakEvent iHopePluginsDontFreakOutOverThis = new BlurredBlockBreakEvent(l0c0.getBlock(), new JohnBonifield(player));
+                player.setMetadata("nocheat.exempt", new FixedMetadataValue(instace, true));
                 instace.getServer().getPluginManager().callEvent(iHopePluginsDontFreakOutOverThis);
                 player.removeMetadata("nocheat.exempt", instace);
                 return !iHopePluginsDontFreakOutOverThis.isExposed();
             }
             catch (Throwable rock)
             {
-                if (!isDebug)
-                    instace.getLogger().warning("Unable to useExperimentalClaimCheck. For more details, set the following in the config.yml: debug: true");
-                else
+                if (isDebug)
+                {
+                    instace.getLogger().warning("You need to be using Paper in order to check for and avoid claimed regions.");
                     rock.printStackTrace();
-
+                }
             }
         }
 
