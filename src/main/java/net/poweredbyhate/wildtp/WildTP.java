@@ -4,6 +4,7 @@ import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -42,10 +43,28 @@ public class WildTP extends JavaPlugin {
     public static boolean useExperimentalChekar;
     public static boolean noCreditJustCash;
     public static DataStore dataaaastorege;
-    public static boolean outdatedServer = false;
+    public static boolean notPaper;
     public static Location cash;
 
     public void onEnable() {
+        try
+        {
+            if (Integer.valueOf(Bukkit.getBukkitVersion().split("\\.")[1]) < 12)
+            {
+                new BukkitRunnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        getLogger().severe("This version of Wilderness-TP does not support your ancient server version.");
+                        getLogger().warning("Either update your server to 1.13, or use Wild 1.51");
+                        getLogger().warning("http://r.robomwm.com/oldwild");
+                    }
+                }.runTaskTimer(instace, 1L, 6000L);
+                return;
+            }
+        }
+        catch (Throwable ball){}
         saveDefaultConfig();
         instace = this;
         getWild();
@@ -63,12 +82,6 @@ public class WildTP extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new NoobieListener(), this);
         if (wamuppah > 0)
             Bukkit.getPluginManager().registerEvents(new TooCool2Teleport(), this);
-        try
-        {
-            if (Integer.valueOf(Bukkit.getBukkitVersion().split("\\.")[1]) < 12)
-                outdatedServer = true;
-        }
-        catch (Throwable ball){}
     }
 
     public void getWild() {
@@ -88,8 +101,22 @@ public class WildTP extends JavaPlugin {
         randomeWorlds = getConfig().getConfigurationSection("randomWorlds");
         isDebug = getConfig().getBoolean("debug");
         newPlayersTeleported = getConfig().getBoolean("teleportNewPlayers");
-        useExperimentalChekar = getConfig().getBoolean("useExperimentalClaimCheck");
-        noCreditJustCash = getConfig().getBoolean("preloadChunks");
+        useExperimentalChekar = getConfig().getBoolean("useGlobalClaimCheck");
+        //noCreditJustCash = getConfig().getBoolean("preloadChunks");
+        try
+        {
+            Chunk.getChunkKey(0,0);
+        }
+        catch (Throwable cue)
+        {
+            if (useExperimentalChekar)
+            {
+                instace.getLogger().warning("Claim checking is disabled since you are not using Paper.");
+                instace.getLogger().info("Upgrade to Paper at http://papermc.io");
+            }
+            useExperimentalChekar = false;
+            notPaper = true;
+        }
     }
 
     public void wildConfig(FileConfiguration fc) {
@@ -114,8 +141,8 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("debug", false);
         wildDefault.put("randomWorlds", randomWorlds);
         wildDefault.put("teleportNewPlayers", false);
-        wildDefault.put("useExperimentalClaimCheck", dataaaastorege == null);
-        wildDefault.put("preloadChunks", true);
+        wildDefault.put("useGlobalClaimCheck", dataaaastorege == null);
+        //wildDefault.put("preloadChunks", true);
         try
         {
             for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
@@ -183,9 +210,9 @@ public class WildTP extends JavaPlugin {
             }));
             for (final String key : getConfig().getKeys(false))
             {
-                if (getConfig().isConfigurationSection(key) || getConfig().isList(key) || getConfig().isSet(key))
+                if (!getConfig().isBoolean(key) && !getConfig().isInt(key) && !getConfig().isString(key))
                     continue;
-                metrics.addCustomChart(new Metrics.SimplePie(key, new Callable<String>()
+                metrics.addCustomChart(new Metrics.SimplePie(key.toLowerCase(), new Callable<String>()
                 {
                     @Override
                     public String call() throws Exception

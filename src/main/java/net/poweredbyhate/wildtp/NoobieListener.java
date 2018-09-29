@@ -34,7 +34,7 @@ public class NoobieListener implements Listener
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    //@EventHandler(ignoreCancelled = true)
     void atm(ChunkUnloadEvent event)
     {
         if (instace.cash == null)

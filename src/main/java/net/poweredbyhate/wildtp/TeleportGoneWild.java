@@ -18,14 +18,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static net.poweredbyhate.wildtp.WildTP.checKar;
 import static net.poweredbyhate.wildtp.WildTP.dataaaastorege;
 import static net.poweredbyhate.wildtp.WildTP.instace;
 import static net.poweredbyhate.wildtp.WildTP.isDebug;
-import static net.poweredbyhate.wildtp.WildTP.newPlayersTeleported;
-import static net.poweredbyhate.wildtp.WildTP.outdatedServer;
-import static net.poweredbyhate.wildtp.WildTP.randomeWorlds;
-import static net.poweredbyhate.wildtp.WildTP.useRandomeWorldz;
 
 public class TeleportGoneWild {
 
@@ -58,23 +53,19 @@ public class TeleportGoneWild {
             return true;
         }
 
-        Location locNotFinal;
-        if (instace.cash != null && ((world == null && ((useRandomeWorldz && randomeWorlds.contains(instace.cash.getWorld().getName())) || (!useRandomeWorldz && p.getWorld() == instace.cash.getWorld()))) || world == instace.cash.getWorld()) && n0tAGreifClam(instace.cash, p))
-        {
-            locNotFinal = instace.cash;
-            instace.cash = null;
-            return realTeleportt2(p, world, maxX, minX, maxZ, minZ, locNotFinal);
-        }
-        else
+//        Location locNotFinal;
+//        if (instace.cash != null && ((world == null && ((useRandomeWorldz && randomeWorlds.contains(instace.cash.getWorld().getName())) || (!useRandomeWorldz && p.getWorld() == instace.cash.getWorld()))) || world == instace.cash.getWorld()) && n0tAGreifClam(instace.cash, p))
+//        {
+//            locNotFinal = instace.cash;
+//            instace.cash = null;
+//            return realTeleportt2(p, world, maxX, minX, maxZ, minZ, locNotFinal);
+//        }
+//        else
             getRandomeLocation(world, p, maxX, minX, maxZ, minZ);
-        if (locNotFinal == null) {
-
-        }
-
-
+        return true;
     }
 
-    public boolean realTeleportt2(final Player p, World world, final int maxX, final int minX, final int maxZ, final int minZ, Location locNotFinal)
+    public boolean realTeleportt2(final Player p, Location locNotFinal)
     {
         PreWildTeleportEvent preWildTeleportEvent = new PreWildTeleportEvent(p, locNotFinal);
         WildTP.debug("Calling preTeleportEvent");
@@ -95,10 +86,10 @@ public class TeleportGoneWild {
         if (needWait && !bypass) {
             WildTP.debug("Player needs to wait more");
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', TooWildForEnums.WAIT_MSG.replace("{wait}",String.valueOf(instace.wamuppah))));
-            TooCool2Teleport.addPlayer(p, goWild(p, loc, instace.wamuppah*20L, maxX, minX, maxZ, minZ));
+            TooCool2Teleport.addPlayer(p, goWild(p, loc, instace.wamuppah*20L));
         }
         else
-            goWild(p, loc, 0L, maxX, minX, maxZ, minZ);
+            goWild(p, loc, 0L);
         return true;
     }
 
@@ -114,6 +105,38 @@ public class TeleportGoneWild {
                 return;
         }
         World finalWorld = world;
+        if (WildTP.notPaper)
+        {
+            for (int i = 0; i < Math.min(retries, 4); i++) {
+                Location loco = new Location(world, r4nd0m(maxX, minX), 5, r4nd0m(maxZ, minZ));
+                if (bonelessIceScream(loco))
+                    loco = netherLocation(loco);
+                if (loco == null)
+                    continue;
+                if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString())) {
+                    if (!bonelessIceScream(loco))
+                        loco.setY(world.getHighestBlockYAt(loco) - 1);
+                    loco.setX(loco.getX() + 0.5D);
+                    loco.setZ(loco.getZ() + 0.5D);
+
+                    if (n0tAB4dB10ck(loco, true))
+                    {
+                        if (!n0tAGreifClam(loco, player))
+                            continue;
+                        loco.setY(loco.getY() + 1);
+                        if (n0tAB4dB10ck(loco, false))
+                        {
+                            loco.setY(loco.getY() + 2.5);
+                            realTeleportt2(player, loco);
+                            return;
+                        }
+                    }
+                }
+            }
+            player.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_LOCATION));
+            WildTP.debug("No suitable locations found");
+            return;
+        }
         new BukkitRunnable()
         {
             @Override
@@ -125,20 +148,23 @@ public class TeleportGoneWild {
                     try
                     {
                         finalWorld.getChunkAtAsync(loco, true).get();
-                        if (instace.getServer().getScheduler().callSyncMethod(instace, new Callable<Object>()
+                        Location l0c0 = loco;
+                        loco = instace.getServer().getScheduler().callSyncMethod(instace, new Callable<Location>()
                         {
                             @Override
-                            public Object call() throws Exception
+                            public Location call() throws Exception
                             {
-                                return chekar(loco);
+                                return chekar(l0c0, player);
                             }
-                        }).get() != null)
+                        }).get();
+                        Location l0co = loco;
+                        if (loco != null)
                             if (instace.getServer().getScheduler().callSyncMethod(instace, new Callable<Boolean>()
                         {
                             @Override
                             public Boolean call() throws Exception
                             {
-                                return realTeleportt2(player, finalWorld, maxX, minX, maxZ, minZ, loco);
+                                return realTeleportt2(player, l0co);
                             }
                         }).get())
                                 return;
@@ -158,7 +184,7 @@ public class TeleportGoneWild {
         }.runTaskAsynchronously(instace);
     }
 
-    public Location chekar(Location loco)
+    public Location chekar(Location loco, Player player)
     {
         if (bonelessIceScream(loco))
             loco = netherLocation(loco);
@@ -221,10 +247,7 @@ public class TeleportGoneWild {
             catch (Throwable rock)
             {
                 if (isDebug)
-                {
-                    instace.getLogger().warning("You need to be using Paper in order to check for and avoid claimed regions.");
                     rock.printStackTrace();
-                }
             }
         }
 
@@ -273,7 +296,7 @@ public class TeleportGoneWild {
         }
         return null;
     }
-    public BukkitTask goWild(final Player p, final Location loc, final Long time, final int maxX, final int minX, final int maxZ, final int minZ)
+    public BukkitTask goWild(final Player p, final Location loc, final Long time)
     {
         return new BukkitRunnable() {
             @Override
@@ -296,7 +319,6 @@ public class TeleportGoneWild {
                 WildTP.debug("Added to cooldown " + p.getUniqueId());
                 PostWildTeleportEvent postWildTeleportEvent = new PostWildTeleportEvent(p);
                 Bukkit.getServer().getPluginManager().callEvent(postWildTeleportEvent);
-                new Cashier(getRandomeLocation(null, p, maxX, minX, maxZ, minZ));
             }
         }.runTaskLater(instace, time);
     }
