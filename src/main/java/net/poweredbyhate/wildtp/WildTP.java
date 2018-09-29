@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 /**
  * Created by John on 5/5/2016.
@@ -124,7 +125,7 @@ public class WildTP extends JavaPlugin {
         }
         catch (NoSuchMethodError updateUrSerburz)
         {
-            fc.addDefaults(fc);
+            fc.addDefaults(wildDefault);
             fc.options().copyDefaults(true);
         }
 
@@ -136,10 +137,14 @@ public class WildTP extends JavaPlugin {
             RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
             econ = rsp.getProvider();
         }
-        if (getServer().getPluginManager().getPlugin("GriefPrevention") != null) {
-            GriefPrevention antgreif = (GriefPrevention)getServer().getPluginManager().getPlugin("GriefPrevention");
-            dataaaastorege = antgreif.dataStore;
+        try
+        {
+            if (getServer().getPluginManager().getPlugin("GriefPrevention") != null) {
+                GriefPrevention antgreif = (GriefPrevention)getServer().getPluginManager().getPlugin("GriefPrevention");
+                dataaaastorege = antgreif.dataStore;
+            }
         }
+        catch (Throwable rock){}
     }
 
     public static void debug(Object o) {
@@ -152,9 +157,35 @@ public class WildTP extends JavaPlugin {
 
     public void wildMetrics() {
         try {
-            Metrics metrics = new Metrics(this);
+            Metricsa metrics = new Metricsa(this);
             metrics.start();
         } catch (IOException e) {
         }
+        try
+        {
+            Metrics metrics = new Metrics(this);
+            metrics.addCustomChart(new Metrics.SimplePie("bukkit_impl", new Callable<String>()
+            {
+                @Override
+                public String call() throws Exception
+                {
+                    return getServer().getVersion().split("-")[1];
+                }
+            }));
+            for (final String key : getConfig().getKeys(false))
+            {
+                if (getConfig().isConfigurationSection(key) || getConfig().isList(key) || getConfig().isSet(key))
+                    continue;
+                metrics.addCustomChart(new Metrics.SimplePie(key, new Callable<String>()
+                {
+                    @Override
+                    public String call() throws Exception
+                    {
+                        return getConfig().getString(key);
+                    }
+                }));
+            }
+        }
+        catch (Throwable rock){}
     }
 }
