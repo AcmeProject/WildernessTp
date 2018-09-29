@@ -9,6 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -133,10 +134,18 @@ public class WildTP extends JavaPlugin {
     }
 
     public void wildDependencies() {
-        if (getServer().getPluginManager().getPlugin("Vault") != null) {
-            RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-            econ = rsp.getProvider();
-        }
+        new BukkitRunnable()
+        {
+            @Override
+            public void run()
+            {
+                if (getServer().getPluginManager().getPlugin("Vault") != null) {
+                    RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+                    if (rsp != null)
+                        econ = rsp.getProvider();
+                }
+            }
+        }.runTask(instace);
         try
         {
             if (getServer().getPluginManager().getPlugin("GriefPrevention") != null) {
