@@ -112,7 +112,9 @@ public class WildTP extends JavaPlugin {
             if (useExperimentalChekar)
             {
                 instace.getLogger().warning("Claim checking is disabled since you are not using Paper.");
-                instace.getLogger().info("Upgrade to Paper at http://papermc.io");
+                instace.getLogger().warning("Upgrade your server to Paper at http://papermc.io");
+                instace.getLogger().info("Paper is compatible with craftbukkit/spigot plugins.");
+                instace.getLogger().info("(Paperclip.jar simply replaces your craftbukkit/spigot.jar, no need for buildtools.)");
             }
             useExperimentalChekar = false;
             notPaper = true;
