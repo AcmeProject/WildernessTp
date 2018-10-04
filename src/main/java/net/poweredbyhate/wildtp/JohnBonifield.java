@@ -12,6 +12,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Note;
 import org.bukkit.Particle;
 import org.bukkit.Server;
@@ -1768,6 +1769,30 @@ public class JohnBonifield implements Player
     public Entity releaseRightShoulderEntity()
     {
         return null;
+    }
+
+    @Override
+    public boolean discoverRecipe(NamespacedKey namespacedKey)
+    {
+        return false;
+    }
+
+    @Override
+    public int discoverRecipes(Collection<NamespacedKey> collection)
+    {
+        return 0;
+    }
+
+    @Override
+    public boolean undiscoverRecipe(NamespacedKey namespacedKey)
+    {
+        return false;
+    }
+
+    @Override
+    public int undiscoverRecipes(Collection<NamespacedKey> collection)
+    {
+        return 0;
     }
 
     /**
