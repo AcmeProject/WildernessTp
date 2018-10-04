@@ -21,7 +21,7 @@ public class GeeYouEye implements Listener {
 
     public void openMenu(Player p) {
         Inventory inv = Bukkit.createInventory(new IInventoryHolder(WildTP.instace), 9, ChatColor.AQUA + "Unnecessary Feature");
-        inv.setItem(4, createItem(Material.DOUBLE_PLANT, 1, 0, "&aWild Teleport", "Teleport to the wild!"));
+        inv.setItem(4, createItem(Material.SUNFLOWER, 1, 0, "&aWild Teleport", "Teleport to the wild!"));
         p.openInventory(inv);
     }
 
