@@ -181,19 +181,6 @@ public class WildTP extends JavaPlugin {
                     return getServer().getVersion().split("-")[1];
                 }
             }));
-            for (final String key : getConfig().getKeys(false))
-            {
-                if (getConfig().isConfigurationSection(key) || getConfig().isList(key) || getConfig().isSet(key))
-                    continue;
-                metrics.addCustomChart(new Metrics.SimplePie(key, new Callable<String>()
-                {
-                    @Override
-                    public String call() throws Exception
-                    {
-                        return getConfig().getString(key);
-                    }
-                }));
-            }
         }
         catch (Throwable rock){}
     }
