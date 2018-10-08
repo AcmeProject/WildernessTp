@@ -21,12 +21,12 @@ public class GeeYouEye implements Listener {
 
     public void openMenu(Player p) {
         Inventory inv = Bukkit.createInventory(new IInventoryHolder(WildTP.instace), 9, ChatColor.AQUA + "Unnecessary Feature");
-        inv.setItem(4, createItem(Material.SUNFLOWER, 1, 0, "&aWild Teleport", "Teleport to the wild!"));
+        inv.setItem(4, createItem(Material.SUNFLOWER, 1, "&aWild Teleport", "Teleport to the wild!"));
         p.openInventory(inv);
     }
 
-    public ItemStack createItem(Material material, int amount, int shrt, String displayname, String lore) {
-        ItemStack i = new ItemStack(material, amount, (short) shrt);
+    public ItemStack createItem(Material material, int amount, String displayname, String lore) {
+        ItemStack i = new ItemStack(material, amount);
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayname));
 

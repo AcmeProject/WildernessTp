@@ -105,19 +105,16 @@ public class WildTP extends JavaPlugin {
         //noCreditJustCash = getConfig().getBoolean("preloadChunks");
         try
         {
-            Chunk.getChunkKey(0,0);
+            Class.forName("com.destroystokyo.paper.PaperConfig");
         }
         catch (Throwable cue)
         {
-            if (useExperimentalChekar)
-            {
-                instace.getLogger().warning("Claim checking is disabled since you are not using Paper.");
-                instace.getLogger().warning("Upgrade your server to Paper at http://papermc.io");
-                instace.getLogger().info("Paper is compatible with craftbukkit/spigot plugins.");
-                instace.getLogger().info("(Paperclip.jar simply replaces your craftbukkit/spigot.jar, no need for buildtools.)");
-            }
-            useExperimentalChekar = false;
             notPaper = true;
+            getLogger().warning("Btw, dis plugin (and server) would be a bazillion times");
+            getLogger().warning("faster and wilder if u switch 2 Paper.");
+            getLogger().warning("Until then, we'll just go wild at ur serburs slower pace.");
+            getLogger().warning(" ");
+            getLogger().warning("Learn and get Paper at https://papermc.io");
         }
     }
 
@@ -135,7 +132,7 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("Cost", 0);
         wildDefault.put("Wait", 5);
         wildDefault.put("dropPlayerFromAbove", false);
-        wildDefault.put("Sound", "ENTITY_ENDERMEN_TELEPORT");
+        wildDefault.put("Sound", "ENTITY_ENDERMAN_TELEPORT");
         wildDefault.put("DoCommands", false);
         wildDefault.put("PostCommands", eh);
         wildDefault.put("BlockedBiomes", ehh);
@@ -158,6 +155,9 @@ public class WildTP extends JavaPlugin {
             fc.addDefaults(wildDefault);
             fc.options().copyDefaults(true);
         }
+
+        getConfig().options().header("Sounds for the latest version of Bukkit can be found here: \n" +
+                "https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html");
 
         saveConfig();
     }

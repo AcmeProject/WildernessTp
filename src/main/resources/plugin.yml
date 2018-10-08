@@ -3,6 +3,7 @@ version: '2.0'
 authors: [LaxWasHere,RoboMWM]
 main: net.poweredbyhate.wildtp.WildTP
 softdepend: [GriefPrevention,Vault]
+api-version: 1.13
 commands:
   wild:
     aliases: [wilderness,rtp]
