@@ -1854,7 +1854,7 @@ public class JohnBonifield implements Player
     @Override
     public Location getEyeLocation()
     {
-        return null;
+        return p.getEyeLocation();
     }
 
     @Override
