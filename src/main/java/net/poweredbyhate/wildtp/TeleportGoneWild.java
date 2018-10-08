@@ -234,20 +234,26 @@ public class TeleportGoneWild {
     }
 
     public boolean n0tAGreifClam(Location l0c0, Player player) {
-        if (instace.useExperimentalChekar && player != null)
+        if ((instace.useExperimentalChekar || instace.useOtherChekar) && player != null)
         {
             try
             {
                 BlurredBlockBreakEvent iHopePluginsDontFreakOutOverThis = new BlurredBlockBreakEvent(l0c0.getBlock(), new JohnBonifield(player));
+                CodeACertainBallWillStealEvent theQueueBall = new CodeACertainBallWillStealEvent(l0c0.clone().add(0,1,0), player);
                 player.setMetadata("nocheat.exempt", new FixedMetadataValue(instace, true));
-                instace.getServer().getPluginManager().callEvent(iHopePluginsDontFreakOutOverThis);
+                if (instace.useExperimentalChekar)
+                    instace.getServer().getPluginManager().callEvent(iHopePluginsDontFreakOutOverThis);
+                if (instace.useOtherChekar)
+                    instace.getServer().getPluginManager().callEvent(theQueueBall);
                 player.removeMetadata("nocheat.exempt", instace);
-                return !iHopePluginsDontFreakOutOverThis.isExposed();
+
+                return !iHopePluginsDontFreakOutOverThis.isExposed() && !theQueueBall.isExposed();
             }
             catch (Throwable rock)
             {
                 if (isDebug)
                     rock.printStackTrace();
+                player.removeMetadata("nocheat.exempt", instace);
             }
         }
 

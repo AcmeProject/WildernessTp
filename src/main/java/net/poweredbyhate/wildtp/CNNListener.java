@@ -24,4 +24,10 @@ public class CNNListener implements Listener
         event.setExposed(event.isCancelled());
         event.setCancelled(true);
     }
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
+    void blaseyFord(CodeACertainBallWillStealEvent event)
+    {
+        event.setExposed(event.isCancelled());
+        event.setCancelled(true);
+    }
 }
