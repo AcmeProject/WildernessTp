@@ -265,7 +265,7 @@ public class TeleportGoneWild {
                 blockType != Material.MAGMA_BLOCK &&
                 blockType != Material.CACTUS &&
                 blockType != Material.FIRE &&
-                (!checkAir || blockType != Material.AIR);
+                (!checkAir || (blockType != Material.AIR && blockType != Material.CAVE_AIR && blockType != Material.VOID_AIR));
     }
 
     private boolean bonelessIceScream(Location location)

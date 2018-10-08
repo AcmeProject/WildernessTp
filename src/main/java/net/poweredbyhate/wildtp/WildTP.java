@@ -49,7 +49,7 @@ public class WildTP extends JavaPlugin {
     public void onEnable() {
         try
         {
-            if (Integer.valueOf(Bukkit.getBukkitVersion().split("\\.")[1]) < 12)
+            if (Integer.valueOf(Bukkit.getBukkitVersion().split("\\.")[1]) <= 12)
             {
                 new BukkitRunnable()
                 {
@@ -57,7 +57,7 @@ public class WildTP extends JavaPlugin {
                     public void run()
                     {
                         getLogger().severe("This version of Wilderness-TP does not support your ancient server version.");
-                        getLogger().warning("Either update your server to 1.13, or use Wild 1.51");
+                        getLogger().warning("Either update your server to 1.13, or use Wild 1.52");
                         getLogger().warning("http://r.robomwm.com/oldwild");
                     }
                 }.runTaskTimer(instace, 1L, 6000L);
