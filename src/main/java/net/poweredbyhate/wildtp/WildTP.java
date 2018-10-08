@@ -110,11 +110,15 @@ public class WildTP extends JavaPlugin {
         catch (Throwable cue)
         {
             notPaper = true;
+            getLogger().info(" = = = = = = = = = = = = = = = = = = = =");
+            getLogger().info(" ");
             getLogger().warning("Btw, dis plugin (and server) would be a bazillion times");
             getLogger().warning("faster and wilder if u switch 2 Paper.");
             getLogger().warning("Until then, we'll just go wild at ur serburs slower pace.");
             getLogger().warning(" ");
-            getLogger().warning("Learn and get Paper at https://papermc.io");
+            getLogger().warning("Learn and get Paper (it's ez) at https://papermc.io");
+            getLogger().info(" ");
+            getLogger().info(" = = = = = = = = = = = = = = = = = = = =");
         }
     }
 
