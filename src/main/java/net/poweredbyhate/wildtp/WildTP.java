@@ -103,7 +103,7 @@ public class WildTP extends JavaPlugin {
         isDebug = getConfig().getBoolean("debug");
         newPlayersTeleported = getConfig().getBoolean("teleportNewPlayers");
         useExperimentalChekar = getConfig().getBoolean("useGlobalClaimCheck");
-        useOtherChekar = getConfig().getBoolean("useOtherGlobalClaimCheck");
+        useOtherChekar = getConfig().getBoolean("useAlternativeGlobalClaimCheck");
         //noCreditJustCash = getConfig().getBoolean("preloadChunks");
         try
         {
@@ -147,7 +147,7 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("randomWorlds", randomWorlds);
         wildDefault.put("teleportNewPlayers", false);
         wildDefault.put("useGlobalClaimCheck", dataaaastorege == null);
-        wildDefault.put("useOtherGlobalClaimCheck", false);
+        wildDefault.put("useAlternativeGlobalClaimCheck", false);
         //wildDefault.put("preloadChunks", true);
         try
         {
