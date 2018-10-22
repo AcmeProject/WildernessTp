@@ -7,11 +7,6 @@ Wait: 5
 DoCommands: false
 dropPlayerFromAbove: false
 debug: false
-Sound: 'ENTITY_ENDERMEN_TELEPORT'
-BlockedBiomes:
-  - 'DEEP_OCEAN'
-  - 'OCEAN'
-  - 'FROZEN_OCEAN'
 PostCommands:
   - 'title %PLAYER% times 20 100 20'
   - 'title %PLAYER% title ["",{"text":"Wilderness","color":"green","bold":false}]'

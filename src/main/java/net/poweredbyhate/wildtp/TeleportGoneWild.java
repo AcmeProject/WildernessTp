@@ -83,6 +83,7 @@ public class TeleportGoneWild {
             OuchieListener.plsSaveDisDood(p);
         }
         final Location loc = locNotFinal;
+        WildTP.debug("preping 2 port 2 " + loc);
         if (needWait && !bypass) {
             WildTP.debug("Player needs to wait more");
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', TooWildForEnums.WAIT_MSG.replace("{wait}",String.valueOf(instace.wamuppah))));
@@ -313,13 +314,13 @@ public class TeleportGoneWild {
                         return;
                     TooCool2Teleport.makeHot(p);
                 }
-                WildTP.debug("Teleporting " + p.getName());
+                WildTP.debug("Teleporting " + p.getName() + loc);
                 if (!p.teleport(loc))
                 {
                     WildTP.debug("teleport was canceled.");
                     return;
                 }
-                WildTP.debug(p.getName()+ " Teleported");
+                WildTP.debug(p.getName()+ " Teleported" + p.getLocation());
                 WildTP.debug(p.getName() + " Adding to cooldown");
                 WildTP.checKar.addKewlzDown(p.getUniqueId());
                 WildTP.debug("Added to cooldown " + p.getUniqueId());
