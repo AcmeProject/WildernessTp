@@ -96,6 +96,7 @@ public class TeleportGoneWild {
 
     public void getRandomeLocation(World world, Player player, int maxX, int minX, int maxZ, int minZ)
     {
+        final boolean pageRipper = world == null && instace.useRandomeWorldz;
         if (world == null)
         {
             if (instace.useRandomeWorldz)
@@ -145,10 +146,13 @@ public class TeleportGoneWild {
             {
                 while (retries-- >= 0)
                 {
-                    Location loco = new Location(finalWorld, r4nd0m(maxX, minX), 5, r4nd0m(maxZ, minZ));
+                    World rippedPage = finalWorld;
+                    if (pageRipper)
+                        rippedPage = getRandomeWorld(instace.randomeWorlds);
+                    Location loco = new Location(rippedPage, r4nd0m(maxX, minX), 5, r4nd0m(maxZ, minZ));
                     try
                     {
-                        finalWorld.getChunkAtAsync(loco, true).get();
+                        rippedPage.getChunkAtAsync(loco, true).get();
                         Location l0c0 = loco;
                         loco = instace.getServer().getScheduler().callSyncMethod(instace, new Callable<Location>()
                         {
