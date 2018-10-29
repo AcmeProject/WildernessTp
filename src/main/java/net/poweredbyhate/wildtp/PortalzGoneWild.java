@@ -1,13 +1,18 @@
 package net.poweredbyhate.wildtp;
 
+import com.sk89q.worldedit.Vector;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.bukkit.selections.Selection;
+import com.sk89q.worldedit.regions.Region;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -58,7 +63,12 @@ public class PortalzGoneWild implements Listener {
     public void createPortal(Player p, String name) {
         WildTP.debug("Got create portal");
         WorldEditPlugin we = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-        Selection sel = we.getSelection(p);
+        Region sel = null;
+        try
+        {
+            sel = we.getSession(p).getSelection(BukkitAdapter.adapt(p).getWorld());
+        }
+        catch (Throwable ball){}
         if (name == null) {
             p.sendMessage("Invalid Name");
             return;
@@ -67,7 +77,7 @@ public class PortalzGoneWild implements Listener {
             p.sendMessage("Invalid WorldEdit Selection");
             return;
         }
-        savePortal("Portals."+name,stringConvert(sel.getMaximumPoint())+"~"+stringConvert(sel.getMinimumPoint()), p);
+        savePortal("Portals."+name,stringConvert(p, sel.getMaximumPoint())+"~"+stringConvert(p, sel.getMinimumPoint()), p);
     }
 
     public void deletePortal(CommandSender p, String name)
@@ -159,7 +169,7 @@ public class PortalzGoneWild implements Listener {
         return new Location(Bukkit.getServer().getWorld(x[0]),Integer.parseInt(x[1]),Integer.parseInt(x[2]),Integer.parseInt(x[3]));
     }
 
-    public String stringConvert(Location loc) {
-        return (loc.getWorld().getName()+"."+loc.getBlockX()+"."+loc.getBlockY()+"."+loc.getBlockZ());
+    public String stringConvert(Entity e, Vector loc) {
+        return (e.getWorld().getName()+"."+loc.getBlockX()+"."+loc.getBlockY()+"."+loc.getBlockZ());
     }
 }
