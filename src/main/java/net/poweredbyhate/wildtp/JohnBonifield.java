@@ -2,12 +2,14 @@ package net.poweredbyhate.wildtp;
 
 import com.destroystokyo.paper.Title;
 import com.destroystokyo.paper.block.TargetBlockInfo;
+import com.destroystokyo.paper.entity.TargetEntityInfo;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Achievement;
 import org.bukkit.Chunk;
 import org.bukkit.Effect;
 import org.bukkit.EntityEffect;
+import org.bukkit.FluidCollisionMode;
 import org.bukkit.GameMode;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
@@ -57,6 +59,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nullable;
@@ -1092,6 +1096,12 @@ public class JohnBonifield implements Player
     }
 
     @Override
+    public int getClientViewDistance()
+    {
+        return 0;
+    }
+
+    @Override
     public String getLocale()
     {
         return null;
@@ -1239,6 +1249,12 @@ public class JohnBonifield implements Player
     public double getWidth()
     {
         return 0;
+    }
+
+    @Override
+    public BoundingBox getBoundingBox()
+    {
+        return null;
     }
 
     @Override
@@ -1890,8 +1906,46 @@ public class JohnBonifield implements Player
         return null;
     }
 
+    @Nullable
+    @Override
+    public Entity getTargetEntity(int i, boolean b)
+    {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public TargetEntityInfo getTargetEntityInfo(int i, boolean b)
+    {
+        return null;
+    }
+
     @Override
     public List<Block> getLastTwoTargetBlocks(Set<Material> set, int i)
+    {
+        return null;
+    }
+
+    @Override
+    public Block getTargetBlockExact(int i)
+    {
+        return null;
+    }
+
+    @Override
+    public Block getTargetBlockExact(int i, FluidCollisionMode fluidCollisionMode)
+    {
+        return null;
+    }
+
+    @Override
+    public RayTraceResult rayTraceBlocks(double v)
+    {
+        return null;
+    }
+
+    @Override
+    public RayTraceResult rayTraceBlocks(double v, FluidCollisionMode fluidCollisionMode)
     {
         return null;
     }
@@ -2031,7 +2085,7 @@ public class JohnBonifield implements Player
     @Override
     public EntityEquipment getEquipment()
     {
-        return null;
+        return p.getEquipment();
     }
 
     @Override

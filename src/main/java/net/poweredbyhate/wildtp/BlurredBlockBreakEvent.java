@@ -2,6 +2,7 @@ package net.poweredbyhate.wildtp;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.block.BlockBreakEvent;
 
 /**
@@ -11,7 +12,7 @@ import org.bukkit.event.block.BlockBreakEvent;
  *
  * @author RoboMWM
  */
-public class BlurredBlockBreakEvent extends BlockBreakEvent
+public class BlurredBlockBreakEvent extends BlockBreakEvent implements Cancellable
 {
     private boolean exposed = false;
     BlurredBlockBreakEvent(Block theBlock, Player player)

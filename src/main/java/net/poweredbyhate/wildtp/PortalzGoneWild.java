@@ -1,13 +1,7 @@
 package net.poweredbyhate.wildtp;
 
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.Selection;
-import com.sk89q.worldedit.regions.Region;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -62,22 +56,20 @@ public class PortalzGoneWild implements Listener {
 
     public void createPortal(Player p, String name) {
         WildTP.debug("Got create portal");
-        WorldEditPlugin we = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-        Region sel = null;
+        String save = null;
         try
         {
-            sel = we.getSession(p).getSelection(BukkitAdapter.adapt(p).getWorld());
+            save = new DumWorldEdit().createPortal(p, name);
         }
-        catch (Throwable ball){}
-        if (name == null) {
-            p.sendMessage("Invalid Name");
+        catch (Throwable ball)
+        {
+            p.sendMessage("WorldEdit not installed or incompatible version (WorldEdit dev likes to break things multiple times in version 7.0.0. Note that WorldEdit is only needed to create portals - portals can be used and deleted without WorldEdit.");
             return;
         }
-        if (sel == null) {
-            p.sendMessage("Invalid WorldEdit Selection");
+        if (save == null)
             return;
-        }
-        savePortal("Portals."+name,stringConvert(p, sel.getMaximumPoint())+"~"+stringConvert(p, sel.getMinimumPoint()), p);
+
+        savePortal("Portals."+name,save, p);
     }
 
     public void deletePortal(CommandSender p, String name)
@@ -167,9 +159,5 @@ public class PortalzGoneWild implements Listener {
     public Location locationConvert(String s) {
         String[] x = s.split("\\.");
         return new Location(Bukkit.getServer().getWorld(x[0]),Integer.parseInt(x[1]),Integer.parseInt(x[2]),Integer.parseInt(x[3]));
-    }
-
-    public String stringConvert(Entity e, Vector loc) {
-        return (e.getWorld().getName()+"."+loc.getBlockX()+"."+loc.getBlockY()+"."+loc.getBlockZ());
     }
 }

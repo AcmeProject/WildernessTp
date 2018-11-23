@@ -1,5 +1,5 @@
 name: Wild
-version: '2.3'
+version: '2.4'
 authors: [LaxWasHere,RoboMWM]
 main: net.poweredbyhate.wildtp.WildTP
 softdepend: [GriefPrevention,Vault]
@@ -9,3 +9,6 @@ commands:
     aliases: [wilderness,rtp]
   wildtp:
     aliases: [wtp]
+permissions:
+  wild.wildtp.sign:
+    default: true

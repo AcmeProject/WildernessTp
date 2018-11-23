@@ -16,7 +16,7 @@ public class SignClickListener implements Listener {
 
     @EventHandler
     public void onClick(PlayerInteractEvent ev) {
-        if (ev.getAction() == Action.RIGHT_CLICK_BLOCK && ev.getClickedBlock().getState() instanceof Sign) {
+        if (ev.getAction() == Action.RIGHT_CLICK_BLOCK && ev.getPlayer().hasPermission("wild.wildtp.sign") && ev.getClickedBlock().getState() instanceof Sign) {
             if (ChatColor.stripColor(((Sign) ev.getClickedBlock().getState()).getLine(1)).equalsIgnoreCase("[wild]")) {
                 if (Bukkit.getWorld(((Sign) ev.getClickedBlock().getState()).getLine(3)) != null) {
                     new TeleportGoneWild().WildTeleport(ev.getPlayer(), ((Sign) ev.getClickedBlock().getState()).getLine(3), ev.getPlayer().hasPermission("wild.wildtp.delay.bypass"));

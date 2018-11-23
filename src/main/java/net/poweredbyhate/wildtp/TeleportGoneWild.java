@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.WorldBorder;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -107,10 +108,11 @@ public class TeleportGoneWild {
                 return;
         }
         World finalWorld = world;
+        MinYMaX minmax = new MinYMaX(world);
         if (WildTP.notPaper)
         {
             for (int i = 0; i < Math.min(retries, 4); i++) {
-                Location loco = new Location(world, r4nd0m(maxX, minX), 5, r4nd0m(maxZ, minZ));
+                Location loco = new Location(world, r4nd0m(minmax.maxX, minmax.minX), 5, r4nd0m(minmax.maxY, minmax.minY));
                 if (bonelessIceScream(loco))
                     loco = netherLocation(loco);
                 if (loco == null)
@@ -149,7 +151,8 @@ public class TeleportGoneWild {
                     World rippedPage = finalWorld;
                     if (pageRipper)
                         rippedPage = getRandomeWorld(instace.randomeWorlds);
-                    Location loco = new Location(rippedPage, r4nd0m(maxX, minX), 5, r4nd0m(maxZ, minZ));
+                    MinYMaX minmax = new MinYMaX(rippedPage);
+                    Location loco = new Location(rippedPage, r4nd0m(minmax.maxX, minmax.minX), 5, r4nd0m(minmax.maxY, minmax.minY));
                     try
                     {
                         rippedPage.getChunkAtAsync(loco, true).get();
@@ -332,5 +335,39 @@ public class TeleportGoneWild {
                 Bukkit.getServer().getPluginManager().callEvent(postWildTeleportEvent);
             }
         }.runTaskLater(instace, time);
+    }
+}
+class MinYMaX
+{
+    int minX;
+    int maxX;
+    int minY;
+    int maxY;
+
+    MinYMaX(World w)
+    {
+        try
+        {
+            instace.getServer().getScheduler().callSyncMethod(instace, new Callable<Location>()
+            {
+                @Override
+                public Location call() throws Exception
+                {
+                    WorldBorder b = w.getWorldBorder();
+                    minX = Math.max(b.getCenter().getBlockX() - (int)b.getSize(), WildTP.minXY);
+                    maxX = Math.min(b.getCenter().getBlockX() + (int)b.getSize(), WildTP.maxXY);
+                    minY = Math.max(b.getCenter().getBlockZ() - (int)b.getSize(), WildTP.minXY);
+                    maxY = Math.min(b.getCenter().getBlockZ() + (int)b.getSize(), WildTP.maxXY);
+                    return null;
+                }
+            }).get();
+        }
+        catch (InterruptedException | ExecutionException e)
+        {
+            minX = WildTP.minXY;
+            minY = WildTP.minXY;
+            maxX = WildTP.maxXY;
+            maxY = WildTP.maxXY;
+        }
     }
 }
