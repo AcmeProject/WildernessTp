@@ -10,6 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -25,6 +26,7 @@ public class PortalzGoneWild implements Listener {
 
     public HashMap<String,String[]> ports = new HashMap<>();
     public HashSet<Player> recentTPs = new HashSet<>();
+    public HashMap<Player, PortalMaker> makers = new HashMap<>();
     File portalFile;
     FileConfiguration portalConf;
 
@@ -54,22 +56,27 @@ public class PortalzGoneWild implements Listener {
         }
     }
 
+    @EventHandler
+    public void onClick(PlayerInteractEvent event)
+    {
+        if (!makers.containsKey(event.getPlayer()))
+            return;
+        if (event.getClickedBlock() == null)
+            return;
+        Player p = event.getPlayer();
+        if (!makers.get(event.getPlayer()).setCorner(event.getClickedBlock().getLocation()))
+        {
+            event.getPlayer().sendMessage("Now click other corner.");
+            return;
+        }
+        PortalMaker m = makers.remove(event.getPlayer());
+        savePortal("Portals."+m.name,stringConvert(p, m.two)+"~"+stringConvert(p, m.one), event.getPlayer());
+    }
+
     public void createPortal(Player p, String name) {
         WildTP.debug("Got create portal");
-        String save = null;
-        try
-        {
-            save = new DumWorldEdit().createPortal(p, name);
-        }
-        catch (Throwable ball)
-        {
-            p.sendMessage("WorldEdit not installed or incompatible version (WorldEdit dev likes to break things multiple times in version 7.0.0. Note that WorldEdit is only needed to create portals - portals can be used and deleted without WorldEdit.");
-            return;
-        }
-        if (save == null)
-            return;
-
-        savePortal("Portals."+name,save, p);
+        makers.put(p, new PortalMaker(name));
+        p.sendMessage("Click two corners to create your portal.");
     }
 
     public void deletePortal(CommandSender p, String name)
@@ -159,5 +166,44 @@ public class PortalzGoneWild implements Listener {
     public Location locationConvert(String s) {
         String[] x = s.split("\\.");
         return new Location(Bukkit.getServer().getWorld(x[0]),Integer.parseInt(x[1]),Integer.parseInt(x[2]),Integer.parseInt(x[3]));
+    }
+
+    public String stringConvert(Entity e, Location loc) {
+        return (e.getWorld().getName()+"."+loc.getBlockX()+"."+loc.getBlockY()+"."+loc.getBlockZ());
+    }
+}
+
+class PortalMaker
+{
+    String name;
+    Location one;
+    Location two;
+
+    PortalMaker(String name)
+    {
+        this.name = name;
+    }
+
+    public boolean setCorner(Location l)
+    {
+        if (this.one == null)
+        {
+            one = l;
+            return false;
+        }
+        two = l;
+        minymysteri();
+        return true;
+    }
+    public void minymysteri()
+    {
+        Location l = one.clone();
+        Location ll = two.clone();
+        one.setX(Math.min(l.getX(), ll.getX()));
+        one.setY(Math.min(l.getY(), ll.getY()));
+        one.setZ(Math.min(l.getZ(), ll.getZ()));
+        two.setX(Math.max(l.getX(), ll.getX()));
+        two.setY(Math.max(l.getY(), ll.getY()));
+        two.setZ(Math.max(l.getZ(), ll.getZ()));
     }
 }

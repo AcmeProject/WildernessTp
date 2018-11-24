@@ -1,8 +1,8 @@
 name: Wild
-version: '2.4'
+version: '2.5'
 authors: [LaxWasHere,RoboMWM]
 main: net.poweredbyhate.wildtp.WildTP
-softdepend: [GriefPrevention,Vault]
+softdepend: [GriefPrevention,Vault,WorldBorder]
 api-version: 1.13
 commands:
   wild:

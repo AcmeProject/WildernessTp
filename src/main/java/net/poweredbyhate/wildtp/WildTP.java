@@ -44,6 +44,7 @@ public class WildTP extends JavaPlugin {
     public static boolean useOtherChekar;
     public static boolean noCreditJustCash;
     public static DataStore dataaaastorege;
+    public static boolean wb;
     public static boolean notPaper;
     public static Location cash;
 
@@ -190,6 +191,7 @@ public class WildTP extends JavaPlugin {
             }
         }
         catch (Throwable rock){}
+        wb = getServer().getPluginManager().isPluginEnabled("WorldBorder");
     }
 
     public static void debug(Object o) {

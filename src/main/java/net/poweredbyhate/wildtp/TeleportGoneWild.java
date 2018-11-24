@@ -1,5 +1,7 @@
 package net.poweredbyhate.wildtp;
 
+import com.wimbli.WorldBorder.BorderData;
+import com.wimbli.WorldBorder.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -337,6 +339,7 @@ public class TeleportGoneWild {
         }.runTaskLater(instace, time);
     }
 }
+
 class MinYMaX
 {
     int minX;
@@ -348,19 +351,18 @@ class MinYMaX
     {
         try
         {
-            instace.getServer().getScheduler().callSyncMethod(instace, new Callable<Location>()
-            {
-                @Override
-                public Location call() throws Exception
+            if (Bukkit.isPrimaryThread())
+                findWall(w);
+            else
+                instace.getServer().getScheduler().callSyncMethod(instace, new Callable<Location>()
                 {
-                    WorldBorder b = w.getWorldBorder();
-                    minX = Math.max(b.getCenter().getBlockX() - (int)b.getSize(), WildTP.minXY);
-                    maxX = Math.min(b.getCenter().getBlockX() + (int)b.getSize(), WildTP.maxXY);
-                    minY = Math.max(b.getCenter().getBlockZ() - (int)b.getSize(), WildTP.minXY);
-                    maxY = Math.min(b.getCenter().getBlockZ() + (int)b.getSize(), WildTP.maxXY);
-                    return null;
-                }
-            }).get();
+                    @Override
+                    public Location call() throws Exception
+                    {
+                        findWall(w);
+                        return null;
+                    }
+                }).get();
         }
         catch (InterruptedException | ExecutionException e)
         {
@@ -369,5 +371,34 @@ class MinYMaX
             maxX = WildTP.maxXY;
             maxY = WildTP.maxXY;
         }
+    }
+
+    private void findWall(World w)
+    {
+        if (WildTP.wb)
+        {
+            BorderData border = Config.Border(w.getName());
+            if (border != null)
+            {
+                int x = border.getRadiusX();
+                int y = border.getRadiusZ();
+                if (border.getShape())
+                {
+                    x = (int)(Math.sqrt(2) * x) / 2;
+                    y = (int)(Math.sqrt(2) * y) / 2;
+                }
+                minX = Math.max((int)border.getX() - x, WildTP.minXY);
+                maxX = Math.min((int)border.getX() + x, WildTP.maxXY);
+                minY = Math.max((int)border.getZ() - y, WildTP.minXY);
+                maxY = Math.min((int)border.getZ() + y, WildTP.maxXY);
+                return;
+            }
+        }
+
+        WorldBorder b = w.getWorldBorder();
+        minX = Math.max(b.getCenter().getBlockX() - (int)b.getSize(), WildTP.minXY);
+        maxX = Math.min(b.getCenter().getBlockX() + (int)b.getSize(), WildTP.maxXY);
+        minY = Math.max(b.getCenter().getBlockZ() - (int)b.getSize(), WildTP.minXY);
+        maxY = Math.min(b.getCenter().getBlockZ() + (int)b.getSize(), WildTP.maxXY);
     }
 }
