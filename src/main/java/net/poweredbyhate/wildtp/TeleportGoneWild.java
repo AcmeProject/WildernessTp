@@ -342,10 +342,10 @@ public class TeleportGoneWild {
 
 class MinYMaX
 {
-    int minX;
-    int maxX;
-    int minY;
-    int maxY;
+    int minX = WildTP.minXY;
+    int maxX = WildTP.maxXY;
+    int minY = WildTP.minXY;
+    int maxY = WildTP.maxXY;
 
     MinYMaX(World w)
     {
@@ -364,13 +364,7 @@ class MinYMaX
                     }
                 }).get();
         }
-        catch (InterruptedException | ExecutionException e)
-        {
-            minX = WildTP.minXY;
-            minY = WildTP.minXY;
-            maxX = WildTP.maxXY;
-            maxY = WildTP.maxXY;
-        }
+        catch (InterruptedException | ExecutionException ignored) {}
     }
 
     private void findWall(World w)
@@ -396,6 +390,8 @@ class MinYMaX
         }
 
         WorldBorder b = w.getWorldBorder();
+        if (b == null)
+            return;
         minX = Math.max(b.getCenter().getBlockX() - (int)b.getSize(), WildTP.minXY);
         maxX = Math.min(b.getCenter().getBlockX() + (int)b.getSize(), WildTP.maxXY);
         minY = Math.max(b.getCenter().getBlockZ() - (int)b.getSize(), WildTP.minXY);
