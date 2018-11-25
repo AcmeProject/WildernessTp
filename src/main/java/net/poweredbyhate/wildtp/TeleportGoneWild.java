@@ -257,7 +257,7 @@ public class TeleportGoneWild {
                     instace.getServer().getPluginManager().callEvent(theQueueBall);
                 player.removeMetadata("nocheat.exempt", instace);
 
-                return !iHopePluginsDontFreakOutOverThis.isExposed() && !theQueueBall.isExposed();
+                return !(instace.useExperimentalChekar && iHopePluginsDontFreakOutOverThis.isExposed()) && !(instace.useOtherChekar && theQueueBall.isExposed());
             }
             catch (Throwable rock)
             {

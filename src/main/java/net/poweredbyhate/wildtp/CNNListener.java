@@ -18,13 +18,13 @@ import java.util.Map;
  */
 public class CNNListener implements Listener
 {
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH)
     void russia(BlurredBlockBreakEvent event)
     {
         event.setExposed(event.isCancelled());
         event.setCancelled(true);
     }
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH)
     void blaseyFord(CodeACertainBallWillStealEvent event)
     {
         event.setExposed(event.isCancelled());
