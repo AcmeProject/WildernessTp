@@ -376,7 +376,7 @@ class MinYMaX
             {
                 int x = border.getRadiusX();
                 int y = border.getRadiusZ();
-                if (border.getShape())
+                if ((border.getShape() == null && Config.ShapeRound()) || (border.getShape() != null && border.getShape()))
                 {
                     x = (int)(Math.sqrt(2) * x) / 2;
                     y = (int)(Math.sqrt(2) * y) / 2;
