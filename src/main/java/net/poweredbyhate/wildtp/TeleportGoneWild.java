@@ -24,6 +24,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static net.poweredbyhate.wildtp.WildTP.dataaaastorege;
 import static net.poweredbyhate.wildtp.WildTP.instace;
 import static net.poweredbyhate.wildtp.WildTP.isDebug;
+import static net.poweredbyhate.wildtp.WildTP.nonoBlocks;
 
 public class TeleportGoneWild {
 
@@ -277,10 +278,7 @@ public class TeleportGoneWild {
 
     public boolean n0tAB4dB10ck(Location l0c0, boolean checkAir) {
         Material blockType = l0c0.getBlock().getType();
-        return blockType != Material.LAVA &&
-                blockType != Material.MAGMA_BLOCK &&
-                blockType != Material.CACTUS &&
-                blockType != Material.FIRE &&
+        return !nonoBlocks.contains(blockType.name()) &&
                 (!checkAir || (blockType != Material.AIR && blockType != Material.CAVE_AIR && blockType != Material.VOID_AIR));
     }
 

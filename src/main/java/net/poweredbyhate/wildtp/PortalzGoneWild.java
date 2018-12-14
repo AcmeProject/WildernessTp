@@ -51,7 +51,7 @@ public class PortalzGoneWild implements Listener {
                         recentTPs.remove(p);
                     }
                 }.runTaskLater(WildTP.instace, 60L);
-                new TeleportGoneWild().WildTeleport(p, true);
+                new TeleportGoneWild().WildTeleport(p, s,true);
             }
         }
     }

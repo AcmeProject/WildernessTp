@@ -13,7 +13,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -47,6 +50,7 @@ public class WildTP extends JavaPlugin {
     public static boolean wb;
     public static boolean notPaper;
     public static Location cash;
+    public static HashSet<String> nonoBlocks;
 
     public void onEnable() {
         try
@@ -105,6 +109,7 @@ public class WildTP extends JavaPlugin {
         newPlayersTeleported = getConfig().getBoolean("teleportNewPlayers");
         useExperimentalChekar = getConfig().getBoolean("useGlobalClaimCheck");
         useOtherChekar = getConfig().getBoolean("useAlternativeGlobalClaimCheck");
+        nonoBlocks = new HashSet<>(getConfig().getStringList("BlockedBlocks"));
         //noCreditJustCash = getConfig().getBoolean("preloadChunks");
         try
         {
@@ -115,9 +120,9 @@ public class WildTP extends JavaPlugin {
             notPaper = true;
             getLogger().info(" = = = = = = = = = = = = = = = = = = = =");
             getLogger().info(" ");
-            getLogger().warning("Btw, dis plugin (and server) would be a bazillion times");
+            getLogger().warning("Btw, dis wild plugin (and server) would be a bazillion times");
             getLogger().warning("faster and wilder if u switch 2 Paper.");
-            getLogger().warning("Until then, we'll just go wild at ur serburs slower pace.");
+            getLogger().warning("Until then, we'll just go wild at ur serburs slower/laggier pace.");
             getLogger().warning(" ");
             getLogger().warning("Learn and get Paper (it's ez) at https://papermc.io");
             getLogger().info(" ");
@@ -132,6 +137,7 @@ public class WildTP extends JavaPlugin {
         randomWorlds.put("world_nether", 42);
         String[] eh = {"title %PLAYER% times 20 100 20","title %PLAYER% title [\"\",{\"text\":\"Wilderness\",\"color\":\"green\",\"bold\":false}]","title %PLAYER% subtitle [\"\",{\"text\":\"Its too dangerous to go alone.\",\"color\":\"yellow\"}]"};
         String[] ehh = {"DEEP_OCEAN", "OCEAN","FROZEN_OCEAN","DEEP_COLD_OCEAN","DEEP_FROZEN_OCEAN","DEEP_LUKEWARM_OCEAN", "DEEP_WARM_OCEAN","COLD_OCEAN","FROZEN_OCEAN","WARM_OCEAN","LUKEWARM_OCEAN","RIVER"};
+        String[] ehhh = {"LAVA", "MAGMA_BLOCK", "CACTUS", "FIRE"};
         wildDefault.put("MaxXY", 5000);
         wildDefault.put("MinXY", -5000);
         wildDefault.put("Retries", 5);
@@ -143,6 +149,7 @@ public class WildTP extends JavaPlugin {
         wildDefault.put("DoCommands", false);
         wildDefault.put("PostCommands", eh);
         wildDefault.put("BlockedBiomes", ehh);
+        wildDefault.put("BlockedBlocks", ehhh);
         wildDefault.put("useRandomWorlds", false);
         wildDefault.put("debug", false);
         wildDefault.put("randomWorlds", randomWorlds);

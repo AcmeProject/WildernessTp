@@ -101,7 +101,7 @@ public class ChecKar {
             }
             return res;
         }
-        Long count = (long) Math.ceil(seconds / 86400); //Because 5 day teleport delay is needed. Jesus
+        Long count = (long) Math.ceil(seconds / 86400); //Because 5 day teleport delay is needed.
         String res;
         if (count > 1) {
             res = count + " days";
