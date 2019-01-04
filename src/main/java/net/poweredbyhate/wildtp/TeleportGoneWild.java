@@ -226,7 +226,7 @@ public class TeleportGoneWild {
         Material blockType = l0c0.getBlock().getType();
         return blockType != Material.LAVA &&
                 blockType != Material.STATIONARY_LAVA &&
-                (outdatedServer || blockType != Material.MAGMA) &&
+                !blockType.name().contains("MAGMA") &&
                 blockType != Material.CACTUS &&
                 blockType != Material.FIRE &&
                 (!checkAir || blockType != Material.AIR);
