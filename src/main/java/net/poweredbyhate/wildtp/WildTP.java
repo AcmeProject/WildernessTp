@@ -42,7 +42,6 @@ public class WildTP extends JavaPlugin {
     public static boolean useExperimentalChekar;
     public static boolean noCreditJustCash;
     public static DataStore dataaaastorege;
-    public static boolean outdatedServer = false;
     public static Location cash;
 
     public void onEnable() {
@@ -63,12 +62,6 @@ public class WildTP extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new NoobieListener(), this);
         if (wamuppah > 0)
             Bukkit.getPluginManager().registerEvents(new TooCool2Teleport(), this);
-        try
-        {
-            if (Integer.valueOf(Bukkit.getBukkitVersion().split("\\.")[1]) < 12)
-                outdatedServer = true;
-        }
-        catch (Throwable ball){}
     }
 
     public void getWild() {
