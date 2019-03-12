@@ -82,7 +82,7 @@ public class TeleportGoneWild {
 
         if (instace.dr0p1n && !bonelessIceScream(locNotFinal)) {
             WildTP.debug("Drop in feature enabled: Setting y=256");
-            locNotFinal.setY(256);
+            locNotFinal.setY(400);
             locNotFinal.setPitch(64);
             OuchieListener.plsSaveDisDood(p);
         }
