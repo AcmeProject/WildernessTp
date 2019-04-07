@@ -82,7 +82,7 @@ public class TeleportGoneWild {
 
         if (instace.dr0p1n && !bonelessIceScream(locNotFinal)) {
             WildTP.debug("Drop in feature enabled: Setting y=256");
-            locNotFinal.setY(400);
+            locNotFinal.setY(300);
             locNotFinal.setPitch(64);
             OuchieListener.plsSaveDisDood(p);
         }
@@ -383,6 +383,7 @@ class MinYMaX
                 maxX = Math.min((int)border.getX() + x, WildTP.maxXY);
                 minY = Math.max((int)border.getZ() - y, WildTP.minXY);
                 maxY = Math.min((int)border.getZ() + y, WildTP.maxXY);
+                WildTP.debug("Bord" + minX + ";" + maxX + ":" + minY + ";" + maxY);
                 return;
             }
         }
@@ -394,5 +395,6 @@ class MinYMaX
         maxX = Math.min(b.getCenter().getBlockX() + (int)b.getSize(), WildTP.maxXY);
         minY = Math.max(b.getCenter().getBlockZ() - (int)b.getSize(), WildTP.minXY);
         maxY = Math.min(b.getCenter().getBlockZ() + (int)b.getSize(), WildTP.maxXY);
+        WildTP.debug("Bord" + minX + ";" + maxX + ":" + minY + ";" + maxY);
     }
 }
