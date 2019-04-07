@@ -55,16 +55,23 @@ public class AdminsGoneWild implements CommandExecutor {
                     return true;
                 }
                 if (args.length > 1)
+                {
                     tpWild.getPortalz().createPortal((Player) sender, args[1]);
+                    return true;
+                }
             }
             if (args[0].equalsIgnoreCase("delete") && sender.hasPermission("wild.wildtp.create.portal"))
             {
                 if (args.length > 1)
+                {
                     tpWild.getPortalz().deletePortal(sender, args[1]);
+                    return true;
+                }
             }
             if (args[0].equalsIgnoreCase("list") && sender.hasPermission("wild.wildtp.create.portal"))
             {
                 tpWild.getPortalz().listPortals(sender);
+                return true;
             }
         }
         return false;

@@ -81,15 +81,20 @@ public class PortalzGoneWild implements Listener {
 
     public void deletePortal(CommandSender p, String name)
     {
+        WildTP.debug("Got delete portal " + name);
+        portalFile = new File(WildTP.instace.getDataFolder(), "Portals.yml");
+        portalConf = new YamlConfiguration();
         try {
             portalConf.load(portalFile);
-            portalConf.getConfigurationSection("Portals").set(name, null);
+            portalConf.set(name, null);
             portalConf.save(portalFile);
         } catch (InvalidConfigurationException | IOException e) {
             e.printStackTrace();
             p.sendMessage("Error occurred, check console logs");
             return;
         }
+        p.sendMessage("Portal " + name + " deleted!");
+        loadConfig();
     }
 
     public void listPortals(CommandSender p)
