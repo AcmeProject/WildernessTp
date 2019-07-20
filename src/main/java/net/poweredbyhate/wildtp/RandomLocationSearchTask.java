@@ -52,7 +52,7 @@ public class RandomLocationSearchTask implements Callable<Location> {
                 return null;
         }
         World finalWorld = world;
-        MinYMaX2 minmax = new MinYMaX2(world);
+        MinYMaX minmax = new MinYMaX(world);
         if (WildTP.notPaper) {
             for (int i = 0; i < Math.min(retries, 4); i++) {
                 Location loco = new Location(world, r4nd0m(minmax.maxX, minmax.minX), 5, r4nd0m(minmax.maxY, minmax.minY));
@@ -90,7 +90,7 @@ public class RandomLocationSearchTask implements Callable<Location> {
             World rippedPage = finalWorld;
             if (pageRipper)
                 rippedPage = getRandomeWorld(instace.randomeWorlds);
-            minmax = new MinYMaX2(rippedPage);
+            minmax = new MinYMaX(rippedPage);
             Location loco = new Location(rippedPage, r4nd0m(minmax.maxX, minmax.minX), 5, r4nd0m(minmax.maxY, minmax.minY));
             try {
                 rippedPage.getChunkAtAsync(loco, true).get();
@@ -223,13 +223,13 @@ public class RandomLocationSearchTask implements Callable<Location> {
     }
 }
 
-class MinYMaX2 {
+class MinYMaX {
     int minX = WildTP.minXY;
     int maxX = WildTP.maxXY;
     int minY = WildTP.minXY;
     int maxY = WildTP.maxXY;
 
-    MinYMaX2(World w) {
+    MinYMaX(World w) {
         findWall(w);
     }
 
