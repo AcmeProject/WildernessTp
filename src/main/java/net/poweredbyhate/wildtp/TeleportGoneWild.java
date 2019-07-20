@@ -1,38 +1,25 @@
 package net.poweredbyhate.wildtp;
 
-import com.wimbli.WorldBorder.BorderData;
-import com.wimbli.WorldBorder.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.WorldBorder;
-import org.bukkit.block.BlockFace;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import static net.poweredbyhate.wildtp.WildTP.dataaaastorege;
 import static net.poweredbyhate.wildtp.WildTP.instace;
-import static net.poweredbyhate.wildtp.WildTP.isDebug;
-import static net.poweredbyhate.wildtp.WildTP.nonoBlocks;
 
 public class TeleportGoneWild {
 
     boolean needWait = instace.wamuppah > 0;
-    int retries = instace.retries;
     boolean bypass;
 
     public void WildTeleport(final Player p, final String world, final boolean bypass) {
@@ -134,93 +121,6 @@ public class TeleportGoneWild {
         });
     }
 
-    public Location chekar(Location loco, Player player)
-    {
-        if (bonelessIceScream(loco))
-            loco = netherLocation(loco);
-        if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString())) {
-            if (!bonelessIceScream(loco))
-                loco.setY(loco.getWorld().getHighestBlockYAt(loco) - 1);
-            loco.setX(loco.getX() + 0.5D);
-            loco.setZ(loco.getZ() + 0.5D);
-
-            if (n0tAB4dB10ck(loco, true))
-            {
-                if (!n0tAGreifClam(loco, player))
-                    return null;
-                loco.setY(loco.getY() + 1);
-                if (n0tAB4dB10ck(loco, false))
-                {
-                    loco.setY(loco.getY() + 2.5);
-                    return loco;
-                }
-            }
-        }
-        return null;
-    }
-
-    public World getRandomeWorld(ConfigurationSection imDaMap) {
-        Map<Integer, World> hesDaMap = new LinkedHashMap<>();
-        Integer totalChance = 0;
-        for (String worldString : imDaMap.getKeys(false)) {
-            World world = Bukkit.getWorld(worldString);
-            if (world == null) {
-                instace.getLogger().warning("World \"" + worldString + "\" does not exist. We recommend removing the world from randomWorlds in config.yml");
-                continue;
-            }
-            totalChance = totalChance + (Integer)imDaMap.get(worldString);
-            hesDaMap.put(totalChance, world);
-        }
-        int daChosenOne = r4nd0m(totalChance, 0);
-        for (Integer blah : hesDaMap.keySet()) {
-            if (blah >= daChosenOne)
-                return hesDaMap.get(blah);
-        }
-        return null;
-    }
-
-    public static int r4nd0m(int max, int min) {
-        return ThreadLocalRandom.current().nextInt(min, max + 1);
-    }
-
-    public boolean n0tAGreifClam(Location l0c0, Player player) {
-        if ((instace.useExperimentalChekar || instace.useOtherChekar) && player != null)
-        {
-            try
-            {
-                BlurredBlockBreakEvent iHopePluginsDontFreakOutOverThis = new BlurredBlockBreakEvent(l0c0.getBlock(), new JohnBonifield(player));
-                CodeACertainBallWillStealEvent theQueueBall = new CodeACertainBallWillStealEvent(l0c0.clone().add(0,1,0), player);
-                player.setMetadata("nocheat.exempt", new FixedMetadataValue(instace, true));
-                if (instace.useExperimentalChekar)
-                    instace.getServer().getPluginManager().callEvent(iHopePluginsDontFreakOutOverThis);
-                if (instace.useOtherChekar)
-                    instace.getServer().getPluginManager().callEvent(theQueueBall);
-                player.removeMetadata("nocheat.exempt", instace);
-
-                return !(instace.useExperimentalChekar && iHopePluginsDontFreakOutOverThis.isExposed()) && !(instace.useOtherChekar && theQueueBall.isExposed());
-            }
-            catch (Throwable rock)
-            {
-                if (isDebug)
-                    rock.printStackTrace();
-                player.removeMetadata("nocheat.exempt", instace);
-            }
-        }
-
-        if (dataaaastorege != null)
-        {
-            return instace.dataaaastorege.getClaimAt(l0c0, true, null) == null;
-        }
-
-        return true;
-    }
-
-    public boolean n0tAB4dB10ck(Location l0c0, boolean checkAir) {
-        Material blockType = l0c0.getBlock().getType();
-        return !nonoBlocks.contains(blockType.name()) &&
-                (!checkAir || (blockType != Material.AIR && blockType != Material.CAVE_AIR && blockType != Material.VOID_AIR));
-    }
-
     private boolean bonelessIceScream(Location location)
     {
         if (location.getWorld().getEnvironment() != World.Environment.NETHER)
@@ -230,25 +130,6 @@ public class TeleportGoneWild {
         return location.getBlock().getType() == Material.BEDROCK;
     }
 
-    Location netherLocation(Location l0c0) {
-        l0c0.setY(1);
-        while (l0c0.getY() < 125)
-        {
-            //Is current block an air block?
-            if (l0c0.getBlock().getType() != Material.AIR) {
-                l0c0 = l0c0.getBlock().getRelative(BlockFace.UP).getLocation();
-                continue;
-            }
-            //Is block above also an air block?
-            if (l0c0.getBlock().getRelative(BlockFace.UP).getType() != Material.AIR) {
-                l0c0 = l0c0.getBlock().getRelative(BlockFace.UP).getLocation();
-                continue;
-            }
-            l0c0 = l0c0.getBlock().getRelative(BlockFace.DOWN).getLocation();
-            return l0c0.getBlock().getRelative(BlockFace.DOWN).getLocation();
-        }
-        return null;
-    }
     public BukkitTask goWild(final Player p, final Location loc, final Long time)
     {
         return new BukkitRunnable() {
