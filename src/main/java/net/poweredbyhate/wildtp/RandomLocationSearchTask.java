@@ -27,23 +27,15 @@ import static net.poweredbyhate.wildtp.WildTP.nonoBlocks;
 public class RandomLocationSearchTask implements Callable<Location> {
     private World world;
     private final Player player;
-    private final int maxX;
-    private final int minX;
-    private final int maxZ;
-    private final int minZ;
     private int retries = instace.retries;
 
-    private RandomLocationSearchTask(World world, Player player, int maxX, int minX, int maxZ, int minZ) {
+    private RandomLocationSearchTask(World world, Player player) {
         this.world = world;
         this.player = player;
-        this.maxX = maxX;
-        this.minX = minX;
-        this.maxZ = maxZ;
-        this.minZ = minZ;
     }
 
-    public static FutureTask<Location> search(World world, Player player, int maxX, int minX, int maxZ, int minZ) {
-        FutureTask<Location> futureTask = new FutureTask<>(new RandomLocationSearchTask(world, player, maxX, minX, maxZ, minZ));
+    public static FutureTask<Location> search(World world, Player player) {
+        FutureTask<Location> futureTask = new FutureTask<>(new RandomLocationSearchTask(world, player));
         instace.getServer().getScheduler().runTaskAsynchronously(instace, futureTask);
         return futureTask;
     }

@@ -104,7 +104,7 @@ public class TeleportGoneWild {
     public void getRandomeLocation(World world, Player player, int maxX, int minX, int maxZ, int minZ)
     {
         // Start searching random task
-        FutureTask<Location> futureTask = RandomLocationSearchTask.search(world, player, maxX, minX, maxZ, minZ);
+        FutureTask<Location> futureTask = RandomLocationSearchTask.search(world, player);
 
         instace.getServer().getScheduler().runTaskAsynchronously(instace, new Runnable() {
             @Override
