@@ -19,7 +19,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static net.poweredbyhate.wildtp.WildTP.dataaaastorege;
 import static net.poweredbyhate.wildtp.WildTP.instace;
@@ -100,99 +103,35 @@ public class TeleportGoneWild {
 
     public void getRandomeLocation(World world, Player player, int maxX, int minX, int maxZ, int minZ)
     {
-        final boolean pageRipper = world == null && instace.useRandomeWorldz;
-        if (world == null)
-        {
-            if (instace.useRandomeWorldz)
-                world = getRandomeWorld(instace.randomeWorlds);
-            else if (player != null)
-                world = player.getWorld();
-            else
-                return;
-        }
-        World finalWorld = world;
-        MinYMaX minmax = new MinYMaX(world);
-        if (WildTP.notPaper)
-        {
-            for (int i = 0; i < Math.min(retries, 4); i++) {
-                Location loco = new Location(world, r4nd0m(minmax.maxX, minmax.minX), 5, r4nd0m(minmax.maxY, minmax.minY));
-                if (bonelessIceScream(loco))
-                    loco = netherLocation(loco);
-                if (loco == null)
-                    continue;
-                if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString())) {
-                    if (!bonelessIceScream(loco))
-                        loco.setY(world.getHighestBlockYAt(loco) - 1);
-                    loco.setX(loco.getX() + 0.5D);
-                    loco.setZ(loco.getZ() + 0.5D);
+        // Start searching random task
+        FutureTask<Location> futureTask = RandomLocationSearchTask.search(world, player, maxX, minX, maxZ, minZ);
 
-                    if (n0tAB4dB10ck(loco, true))
-                    {
-                        if (!n0tAGreifClam(loco, player))
-                            continue;
-                        loco.setY(loco.getY() + 1);
-                        if (n0tAB4dB10ck(loco, false))
-                        {
-                            loco.setY(loco.getY() + 2.5);
-                            realTeleportt2(player, loco);
-                            return;
-                        }
-                    }
-                }
-            }
-            player.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_LOCATION));
-            WildTP.debug("No suitable locations found");
-            return;
-        }
-        new BukkitRunnable()
-        {
+        instace.getServer().getScheduler().runTaskAsynchronously(instace, new Runnable() {
             @Override
-            public void run()
-            {
-                while (retries-- >= 0)
-                {
-                    World rippedPage = finalWorld;
-                    if (pageRipper)
-                        rippedPage = getRandomeWorld(instace.randomeWorlds);
-                    MinYMaX minmax = new MinYMaX(rippedPage);
-                    Location loco = new Location(rippedPage, r4nd0m(minmax.maxX, minmax.minX), 5, r4nd0m(minmax.maxY, minmax.minY));
-                    try
-                    {
-                        rippedPage.getChunkAtAsync(loco, true).get();
-                        Location l0c0 = loco;
-                        loco = instace.getServer().getScheduler().callSyncMethod(instace, new Callable<Location>()
-                        {
-                            @Override
-                            public Location call() throws Exception
-                            {
-                                return chekar(l0c0, player);
-                            }
-                        }).get();
-                        Location l0co = loco;
-                        if (loco != null)
-                            if (instace.getServer().getScheduler().callSyncMethod(instace, new Callable<Boolean>()
-                        {
-                            @Override
-                            public Boolean call() throws Exception
-                            {
-                                return realTeleportt2(player, l0co);
-                            }
-                        }).get())
-                                return;
-
+            public void run() {
+                try {
+                    // Wait and get the random location
+                    Location loco = futureTask.get(5, TimeUnit.SECONDS);
+                    if (loco == null) {
+                        player.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_LOCATION));
+                        WildTP.debug("No suitable locations found");
+                        return;
                     }
-                    catch (InterruptedException | ExecutionException e)
-                    {
-                        if (isDebug)
-                            e.printStackTrace();
-                        continue;
+                    // Teleport player in main thread
+                    if (instace.getServer().getScheduler().callSyncMethod(instace, new Callable<Boolean>() {
+                        @Override
+                        public Boolean call() throws Exception {
+                            return realTeleportt2(player, loco);
+                        }
+                    }).get()) {
+                        return;
                     }
-
+                } catch (InterruptedException | ExecutionException | TimeoutException ignored) {
                 }
                 player.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_LOCATION));
-                WildTP.debug("No suitable locations found");
+                WildTP.debug("Random location searching timeout");
             }
-        }.runTaskAsynchronously(instace);
+        });
     }
 
     public Location chekar(Location loco, Player player)
