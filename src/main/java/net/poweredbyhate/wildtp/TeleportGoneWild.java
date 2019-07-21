@@ -98,7 +98,7 @@ public class TeleportGoneWild {
             public void run() {
                 try {
                     // Wait and get the random location
-                    Location loco = futureTask.get(5, TimeUnit.SECONDS);
+                    Location loco = futureTask.get();
                     if (loco == null) {
                         player.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_LOCATION));
                         WildTP.debug("No suitable locations found");
@@ -113,7 +113,7 @@ public class TeleportGoneWild {
                     }).get()) {
                         return;
                     }
-                } catch (InterruptedException | ExecutionException | TimeoutException ignored) {
+                } catch (InterruptedException | ExecutionException ignored) {
                 }
                 player.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_LOCATION));
                 WildTP.debug("Random location searching timeout");
