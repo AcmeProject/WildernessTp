@@ -39,6 +39,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Villager;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
@@ -835,6 +836,16 @@ public class JohnBonifield implements Player
     }
 
     @Override
+    public long getLastLogin() {
+        return 0;
+    }
+
+    @Override
+    public long getLastSeen() {
+        return 0;
+    }
+
+    @Override
     public void setBedSpawnLocation(Location location)
     {
 
@@ -844,6 +855,21 @@ public class JohnBonifield implements Player
     public void setBedSpawnLocation(Location location, boolean b)
     {
 
+    }
+
+    @Override
+    public boolean sleep(Location location, boolean b) {
+        return false;
+    }
+
+    @Override
+    public void wakeup(boolean b) {
+
+    }
+
+    @Override
+    public Location getBedLocation() {
+        return null;
     }
 
     @Override
@@ -1216,6 +1242,11 @@ public class JohnBonifield implements Player
     }
 
     @Override
+    public CreatureSpawnEvent.SpawnReason getEntitySpawnReason() {
+        return null;
+    }
+
+    @Override
     public Location getLocation()
     {
         return p.getLocation();
@@ -1267,6 +1298,11 @@ public class JohnBonifield implements Player
     public World getWorld()
     {
         return p.getWorld();
+    }
+
+    @Override
+    public void setRotation(float v, float v1) {
+
     }
 
     @Override
