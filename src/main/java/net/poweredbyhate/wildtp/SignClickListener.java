@@ -27,7 +27,7 @@ public class SignClickListener implements Listener {
 
         Player bob = ev.getPlayer();
         if (!bob.hasPermission("wild.wildtp.sign")) return;
-        
+
         BlockState bs = ev.getClickedBlock().getState();
 
         if (bs instanceof Sign && kim.isThisRealLife(((Sign) bs).getLines(), bs.getWorld().getName())) {

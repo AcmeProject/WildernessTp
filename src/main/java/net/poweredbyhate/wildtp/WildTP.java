@@ -2,6 +2,7 @@ package net.poweredbyhate.wildtp;
 
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -221,7 +222,10 @@ public class WildTP extends JavaPlugin {
     boolean isThisRealLife(String[] teeth, String kid) {
         String thug = seekAsylum(teeth, false);
         if (thug == null) thug = kid;
-        for (int i = 0; i < 3; i++) if (!teeth[i].equals(bluredLines[i].replace("%COST%", moneyOrNuttin(thug)))) return false;
+        String jb007 = moneyOrNuttin(thug);
+        for (int i = 0; i < 3; i++)
+            if (!ChatColor.stripColor(teeth[i]).equals(ChatColor.stripColor(bluredLines[i].replace("%COST%", jb007))))
+                return false;
         return true;
     }
 
