@@ -1,36 +1,39 @@
 package net.poweredbyhate.wildtp;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import static net.poweredbyhate.wildtp.WildTP.instace;
 
 public class TeleportGoneWild {
 
-    boolean needWait = instace.wamuppah > 0;
     boolean bypass;
+    static final String openSesame = "$hut Up And Take My M0ney!";
 
     public void WildTeleport(final Player p, final String world, final boolean bypass) {
         this.bypass = bypass;
         World world1 = Bukkit.getWorld(world);
-        realTeleportt(p, world1, WildTP.maxXY, WildTP.minXY, WildTP.maxXY, WildTP.minXY);
+        WorldConfig wc = instace.thugz.get(world1.getName());
+        realTeleportt(p, world1, wc.maxXY, wc.minXY, wc.maxXY, wc.minXY);
     }
 
     public void WildTeleport(final Player p, final boolean bypass) {
         this.bypass = bypass;
-        realTeleportt(p, null, WildTP.maxXY, WildTP.minXY, WildTP.maxXY, WildTP.minXY);
+        WorldConfig wc = instace.thugz.get(p.getWorld().getName());
+        realTeleportt(p, null, wc.maxXY, wc.minXY, wc.maxXY, wc.minXY);
     }
 
     public void WildTeleport(final Player p, final int maxX, final int minX, final int maxZ, final int minZ, final boolean bypass)
@@ -40,22 +43,39 @@ public class TeleportGoneWild {
     }
 
     public boolean realTeleportt(final Player p, World world, int maxX, int minX, int maxZ, int minZ) {
-        WildTP.debug("Wild teleport called for " + p.getName());
-        if (WildTP.checKar.isInCooldown(p.getUniqueId())) {
-            WildTP.debug("In cooldown: yes");
-            p.sendMessage(TooWildForEnums.translate(TooWildForEnums.COOLDOWN.replace("%TIME%", WildTP.checKar.getTimeLeft(p))));
-            return true;
-        }
+        final World southPark = (world == null)? p.getWorld(): world;
+        WildTP.debug("Wild teleport called for " + p.getName() + " for world " + southPark.getName());
 
-//        Location locNotFinal;
-//        if (instace.cash != null && ((world == null && ((useRandomeWorldz && randomeWorlds.contains(instace.cash.getWorld().getName())) || (!useRandomeWorldz && p.getWorld() == instace.cash.getWorld()))) || world == instace.cash.getWorld()) && n0tAGreifClam(instace.cash, p))
-//        {
-//            locNotFinal = instace.cash;
-//            instace.cash = null;
-//            return realTeleportt2(p, world, maxX, minX, maxZ, minZ, locNotFinal);
-//        }
-//        else
-            getRandomeLocation(world, p, maxX, minX, maxZ, minZ);
+        WorldConfig cartman = instace.thugz.get(southPark.getName());
+        if (cartman == null) return false; // Respect his authority!
+
+        int kyle = cartman.confirmDelay, stan = cartman.cost; // They killed Kenny!
+        long expire = ChecKar.getEpoch() + kyle;
+        UUID alienProbe = p.getUniqueId();
+
+        BukkitRunnable taskyNhutch = new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (!isCancelled() && ChecKar.getEpoch() < expire) {
+                    ChecKar shaker = cartman.checKar;
+                    if (shaker.isInCooldown(p.getUniqueId())) {
+                        WildTP.debug("In cooldown: yes");
+                        p.sendMessage(TooWildForEnums.translate(TooWildForEnums.COOLDOWN.replace("%TIME%", shaker.getTimeLeft(p))));
+                    }
+                    else getRandomeLocation(southPark, p, maxX, minX, maxZ, minZ);
+                }
+
+                bangbang(alienProbe);
+            }
+        };
+        
+        if (stan == 0 || kyle < 1) { taskyNhutch.runTask(instace); return true; }
+
+        bangbang(alienProbe);
+        instace.ohWait.put(alienProbe, taskyNhutch);
+        taskyNhutch.runTaskLaterAsynchronously(instace, (kyle + 1) * 20);
+        oralExam(p, kyle, stan);
+
         return true;
     }
 
@@ -70,18 +90,20 @@ public class TeleportGoneWild {
             return !preWildTeleportEvent.isRetry();
         }
 
-        if (instace.dr0p1n && !bonelessIceScream(locNotFinal)) {
-            WildTP.debug("Drop in feature enabled: Setting y=256");
-            locNotFinal.setY(300);
+        WorldConfig wc = instace.thugz.get(locNotFinal.getWorld().getName());
+
+        if (wc.dr0p1n && !bonelessIceScream(locNotFinal)) {
+            WildTP.debug("Drop in feature enabled: Setting y=" + wc.dr0pFr0m);
+            locNotFinal.setY(wc.dr0pFr0m);
             locNotFinal.setPitch(64);
             OuchieListener.plsSaveDisDood(p);
         }
         final Location loc = locNotFinal;
         WildTP.debug("preping 2 port 2 " + loc);
-        if (needWait && !bypass) {
+        if (wc.wamuppah > 0 && !bypass) {
             WildTP.debug("Player needs to wait more");
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', TooWildForEnums.WAIT_MSG.replace("{wait}",String.valueOf(instace.wamuppah))));
-            TooCool2Teleport.addPlayer(p, goWild(p, loc, instace.wamuppah*20L));
+            p.sendMessage(TooWildForEnums.translate(TooWildForEnums.WAIT_MSG.replace("{wait}", "" + wc.wamuppah)));
+            TooCool2Teleport.addPlayer(p, goWild(p, loc, wc.wamuppah*20L));
         }
         else
             goWild(p, loc, 0L);
@@ -135,25 +157,46 @@ public class TeleportGoneWild {
         return new BukkitRunnable() {
             @Override
             public void run() {
+                WorldConfig wc = instace.thugz.get(loc.getWorld().getName());
                 WildTP.debug("Starting Random Teleport");
                 if (!bypass) {
-                    if (needWait && !TooCool2Teleport.isCold(p))
-                        return;
+                    if (wc.wamuppah > 0 && !TooCool2Teleport.isCold(p)) return;
                     TooCool2Teleport.makeHot(p);
                 }
                 WildTP.debug("Teleporting " + p.getName() + loc);
-                if (!p.teleport(loc))
-                {
+                if (!p.teleport(loc)) {
                     WildTP.debug("teleport was canceled.");
                     return;
                 }
-                WildTP.debug(p.getName()+ " Teleported" + p.getLocation());
+                WildTP.debug(p.getName()+ " Teleported to " + p.getLocation());
                 WildTP.debug(p.getName() + " Adding to cooldown");
-                WildTP.checKar.addKewlzDown(p.getUniqueId());
+                wc.checKar.addKewlzDown(p.getUniqueId());
                 WildTP.debug("Added to cooldown " + p.getUniqueId());
                 PostWildTeleportEvent postWildTeleportEvent = new PostWildTeleportEvent(p);
                 Bukkit.getServer().getPluginManager().callEvent(postWildTeleportEvent);
             }
         }.runTaskLater(instace, time);
+    }
+
+    private void bangbang(UUID u) {
+        if (instace.ohWait.containsKey(u)) {
+            instace.ohWait.get(u).cancel();
+            instace.ohWait.remove(u);
+        }
+    }
+
+    private void oralExam(Player rafiki, int timon, int pumbaa) {
+        String[] parTs = TooWildForEnums.translate(TooWildForEnums.CONFIRMSG)
+            .replace("%TIME%", "" + timon).replace("%COST%", "" + pumbaa).split("%CONFIRM%");
+  
+        rafiki.spigot().sendMessage(
+            new ComponentBuilder(parTs[0]).append(
+                  new ComponentBuilder(TooWildForEnums.translate(TooWildForEnums.CONFIRMOK))
+                  .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wild " + openSesame))
+                  .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                      TextComponent.fromLegacyText(TooWildForEnums.translate(TooWildForEnums.CONFIRMON))))
+                .create()
+            ).append(parTs[1]).create()
+        );
     }
 }

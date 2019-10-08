@@ -1,36 +1,44 @@
 package net.poweredbyhate.wildtp;
 
-import org.bukkit.ChatColor;
 import org.bukkit.block.Biome;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
 public class SignChangeListener implements Listener {
 
-    String world;
+    private WildTP kim;
+
+    public SignChangeListener(WildTP wilde) {
+        kim = wilde;
+    }
 
     @EventHandler
     public void onSignChange(SignChangeEvent ev) {
-        if (ev.getLine(0).equalsIgnoreCase("[wildtp]") || ev.getLine(1).equalsIgnoreCase("[wildtp]")) {
-            if (ev.getLine(2) != null) {
-                world = ev.getLine(2);
-            }
-            if (ev.getPlayer().getLocation().getBlock().getBiome() == Biome.NETHER || ev.getPlayer().getLocation().getBlock().getBiome() == Biome.THE_END) {
-                ev.getPlayer().sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_BIOME.replace("%BIOME%", ev.getPlayer().getLocation().getBlock().getBiome().toString())));
+        if (kim.isBorn2bWild(ev.getLines())) {
+            Player john = ev.getPlayer();
+
+            if (john.getLocation().getBlock().getBiome() == Biome.NETHER || john.getLocation().getBlock().getBiome() == Biome.THE_END) {
+                john.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_BIOME.replace("%BIOME%", john.getLocation().getBlock().getBiome().toString())));
                 ev.setCancelled(true);
                 ev.getBlock().breakNaturally();
+                WildTP.debug(john.getName() + " tried to create a WildTP sign in the wrong place!");
                 return;
             }
-            if (ev.getPlayer().hasPermission("wild.wildtp.create.sign")) {
-                ev.setLine(0, ChatColor.translateAlternateColorCodes('&', "&4===================="));
-                ev.setLine(1, ChatColor.translateAlternateColorCodes('&', "[&1Wild&0]"));
-                ev.setLine(2, ChatColor.translateAlternateColorCodes('&', "&4===================="));
-                ev.setLine(3, world);
-                ev.getPlayer().sendMessage(TooWildForEnums.translate(TooWildForEnums.YES_SIGN));
+            if (john.hasPermission("wild.wildtp.create.sign")) {
+                String shelter = kim.seekAsylum(ev.getLines(), true),
+                       tooMuch = kim.moneyOrNuttin((shelter == null)? john.getWorld().getName(): shelter);
+                ev.setLine(0, kim.bluredLines[0].replace("%COST%", tooMuch));
+                ev.setLine(1, kim.bluredLines[1].replace("%COST%", tooMuch));
+                ev.setLine(2, kim.bluredLines[2].replace("%COST%", tooMuch));
+                ev.setLine(3, (shelter == null)? "": kim.preferItSmall(shelter));
+                john.sendMessage(TooWildForEnums.translate(TooWildForEnums.YES_SIGN));
+                WildTP.debug(john.getName() + " created a WildTP sign (world:" + shelter +")");
             } else {
-                ev.getPlayer().sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_SIGN_PERMS));
+                john.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_SIGN_PERMS));
                 ev.setCancelled(true);
+                WildTP.debug(john.getName() + " tried to create a WildTP sign without consentment of king!");
             }
         }
     }

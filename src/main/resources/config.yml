@@ -1,13 +1,151 @@
-MaxXY: 5000
-MinXY: -5000
-Retries: 4
-Cooldown: 30
-Cost: 0
-Wait: 5
-DoCommands: false
-dropPlayerFromAbove: false
+# Wilderness-Tp configuration file
+# .
+# You can retrieve all those parameters with explanation on the online default config:
+# https://github.com/AcmeProject/WildernessTp/blob/master/src/main/resources/config.yml
+# .
+# Detailled & up2date plugin permissions list can be read here:
+# https://github.com/AcmeProject/WildernessTp/blob/master/src/main/resources/plugin.yml
+# .
+# bonus memo:
+# - Sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html 
+# - Biomes: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/Biome.html
+# - Blocks: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+# .
+# If you want to spam your console, use "debug: true"
 debug: false
-PostCommands:
+
+# If false, cooldowns are per world not global
+shareCoolDown: true # /!\ If true, overriden values of "Cooldown" will be ignored
+
+# Sound played when your player gone wild /!\ Invalid values will disable it
+Sound: ENTITY_ENDERMAN_TELEPORT
+
+BlockedBiomes: # Use « [] » if you don't want to restrict
+  - COLD_OCEAN
+  - DEEP_COLD_OCEAN
+  - DEEP_FROZEN_OCEAN
+  - DEEP_LUKEWARM_OCEAN
+  - DEEP_OCEAN
+  - DEEP_WARM_OCEAN
+  - FROZEN_OCEAN
+  - FROZEN_OCEAN
+  - LUKEWARM_OCEAN
+  - OCEAN
+  - RIVER
+  - WARM_OCEAN
+
+BlockedBlocks: # Use « [] » if you don't want to restrict
+  - CACTUS
+  - FIRE
+  - LAVA
+  - MAGMA_BLOCK
+
+# Bounds of the wildness (named XY and not XZ... Another proof! #CatEarthSociety)
+MinXY: -5000
+MaxXY: 5000
+
+Wait: 5      # (seconds) Time the player have to wait between he type the command and tp be sent in wild
+Retries: 5   # Max attempt the plugin will try to find a safe place to tp the player
+Cooldown: 60 # (seconds) Time to wait before player can re-do again
+
+Cost: 0 # Money cost of a RTP (requires Vault)
+paidTPconfirmation: 30 # If the RTP has a cost, a confirmation will be asked to the player...
+# This is (in second) the time this pending RTP stay valid. (set to 0 if you don't want confirmations) 
+
+teleportNewPlayers: false  # Choose "true" if you are not proud of your spawn
+dropPlayerFromAbove: false # Choose "true" if you vocal on discord and want hear them scream
+dropPlayerFromHeight: 255  # Height from where the player is dropped (if dropPlayerFromAbove is true)
+# /!\ Using too high values can cause issues in some cases... Test before letting your players use them.
+# For example, using 300 with datapack "EndAboveOverworld" load the end, then reload overworld...
+# (This stops the sound prematurely, perturb the player + load / unload chunks for nothing)
+
+DoCommands: false # « Do it! » (Shia Labeouf)
+PostCommands: # Ignored if DoCommands is false
   - 'title %PLAYER% times 20 100 20'
   - 'title %PLAYER% title ["",{"text":"Wilderness","color":"green","bold":false}]'
   - 'title %PLAYER% subtitle ["",{"text":"Its too dangerous to go alone.","color":"yellow"}]'
+# Note: %PLAYER% will be replaced by... the player name! (if you had it, you won 1 point)
+# You can also use %X% and %Z% as X and Z coords of new location of the player.
+# Example:
+# - 'title %PLAYER% subtitle ["",{"text":"Coords %X% / %Z% are so wild!","color":"yellow"}]'
+
+useRandomWorlds: false
+randomWorlds: # Ignored if useRandomWorlds is false
+  world: 1337
+  world_nether: 42 # Don't ask... (or wait a few millions years)
+
+useGlobalClaimCheck: true # (if GriefPrevention plugin is found, default value will be false)
+useAlternativeGlobalClaimCheck: false
+
+signTexts:
+  # This is what player have to type on line1 to create a WildTP sign
+  createWith: "[wildtp]" # (case insensitive: means you can write with caps or not)
+  # (optionaly, the player can write the exact name of a world on line 2)
+
+  # This is how WildTP signs will appear
+  # /!\ If you change this, previously created signs will no more work until you recreate them!
+  #     (same if you use %COST% in texts and change the amount)
+  line1: "&4===================="
+  line2: "[&1Wild&0]"
+  line3: "&4===================="
+  # (line4 is reserved to display the (optional) world name)
+  # You can use %COST% as a placeholder for the amount of money the server will rob to the player
+
+  costFree: "&b&lFREE"    # How to display cost when it's free
+  costMoney: "&4%COST% $" # How to display cost when it takes money
+
+  # Example:
+  # line1: "&8== %COST% &8=="    # will give « &8== &b&lFREE &8== » OR « &8== &4100 $ &8== »
+  # line2: "[&1Wild&0]"
+  # line3: "&8(right click)"
+
+# As world names will appear on your WildTP signs, and signs cannot have long lines,
+# if a name is too long, it will creates issues (not recognized by the plugin...)
+# so you should create short aliases for your worlds (which could also be more understandable by you players)
+worldsAliaz: {}
+# /!\ This parameter is automatically filled (if empty) by your existing worlds when the plugin starts.
+# so, you will see something like that:
+#
+# worldsAliaz:
+#   world: world
+#   world_nether: world_nether
+#   world_the_end: world_the_end
+#
+# Now, if you want to customize how worlds name will appear on WildTP signs, do this:
+# (this example, you can put whatever names you want...)
+#
+# worldsAliaz:
+#   world: ElMondo
+#   world_nether: Hell
+#   world_the_end: End
+
+# You can override almost all parameters per world in this section.
+# This is pretty simple: You just have to add a section with the name of the world (not the alias, its real name),
+# and put in it the parameter you want to override. All omitted ones will use default config.
+overrides: {} # <=== « {} » means there is no overrides at all
+
+# Examples:
+#
+# overrides:
+#   an_example:
+#     BlockedBiomes:
+#       - JUNGLE
+#       - MOUNTAINS
+#     BlockedBlocks:
+#       - STONE
+#       - GRASS
+#     MinXY: -1000
+#     MaxXY: 1000
+#     Wait: 0
+#     Retries: 1
+#     Cooldown: 0
+#     Cost: 99999
+#     paidTPconfirmation: 120
+#     DoCommands: false
+#     PostCommands: []
+#     dropPlayerFromAbove: true
+#     dropPlayerFromHeight: 128
+#
+#   another_working_example:
+#     MinXY: -50000
+#     MaxXY: 50000t

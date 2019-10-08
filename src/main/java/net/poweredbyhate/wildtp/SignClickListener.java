@@ -1,8 +1,9 @@
 package net.poweredbyhate.wildtp;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -14,29 +15,48 @@ import org.bukkit.event.player.PlayerInteractEvent;
  */
 public class SignClickListener implements Listener {
 
+    private WildTP kim;
+
+    public SignClickListener(WildTP wilde) {
+        kim = wilde;
+    }
+
     @EventHandler
     public void onClick(PlayerInteractEvent ev) {
-        if (ev.getAction() == Action.RIGHT_CLICK_BLOCK && ev.getPlayer().hasPermission("wild.wildtp.sign") && ev.getClickedBlock().getState() instanceof Sign) {
-            if (ChatColor.stripColor(((Sign) ev.getClickedBlock().getState()).getLine(1)).equalsIgnoreCase("[wild]")) {
-                if (Bukkit.getWorld(((Sign) ev.getClickedBlock().getState()).getLine(3)) != null) {
-                    new TeleportGoneWild().WildTeleport(ev.getPlayer(), ((Sign) ev.getClickedBlock().getState()).getLine(3), ev.getPlayer().hasPermission("wild.wildtp.delay.bypass"));
-                }
-                else
-                    new TeleportGoneWild().WildTeleport(ev.getPlayer(), ev.getPlayer().hasPermission("wild.wildtp.delay.bypass"));
-            }
+        if (ev.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
+        Player bob = ev.getPlayer();
+        if (!bob.hasPermission("wild.wildtp.sign")) return;
+        
+        BlockState bs = ev.getClickedBlock().getState();
+
+        if (bs instanceof Sign && kim.isThisRealLife(((Sign) bs).getLines(), bs.getWorld().getName())) {
+            String asylum = kim.seekAsylum(((Sign) bs).getLines(), false);
+            WildTP.debug(bob.getName() + " used a WildTP sign (world:" + asylum +")");
+
+            if (asylum == null)
+                new TeleportGoneWild().WildTeleport(ev.getPlayer(), bob.hasPermission("wild.wildtp.delay.bypass"));
+            else
+                new TeleportGoneWild().WildTeleport(ev.getPlayer(), asylum, bob.hasPermission("wild.wildtp.delay.bypass"));
         }
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent ev) {
-        if (ev.getBlock().getState() instanceof Sign) {
-            if(ChatColor.stripColor(((Sign) ev.getBlock().getState()).getLine(1)).equalsIgnoreCase("[wild]")) {
-                if (ev.getPlayer().hasPermission("wild.wildtp.break.sign")) {
-                    ev.getPlayer().sendMessage(TooWildForEnums.translate(TooWildForEnums.BREAK_SIGN));
-                } else {
-                    ev.setCancelled(true);
-                    ev.getPlayer().sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_BREAK));
-                }
+        Block dwayneJohnson = ev.getBlock();
+
+        if (dwayneJohnson.getState() instanceof Sign
+            && kim.isThisRealLife(((Sign) ev.getBlock().getState()).getLines(), dwayneJohnson.getWorld().getName())
+        ) {
+            Player jack = ev.getPlayer();
+
+            if (jack.hasPermission("wild.wildtp.break.sign")) {
+                jack.sendMessage(TooWildForEnums.translate(TooWildForEnums.BREAK_SIGN));
+                WildTP.debug(jack.getName() + " broke a WildTP sign");
+            } else {
+                ev.setCancelled(true);
+                jack.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_BREAK));
+                WildTP.debug(jack.getName() + " tried to break a WildTP sign without Cartman permission!");
             }
         }
     }

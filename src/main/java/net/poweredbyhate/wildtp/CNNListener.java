@@ -3,10 +3,6 @@ package net.poweredbyhate.wildtp;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created on 7/9/2017.
