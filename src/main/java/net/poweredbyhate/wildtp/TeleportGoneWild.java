@@ -26,6 +26,7 @@ public class TeleportGoneWild {
     public void WildTeleport(final Player p, final String world, final boolean bypass) {
         this.bypass = bypass;
         World world1 = Bukkit.getWorld(world);
+        if (world1 == null) world1 = p.getWorld();
         WorldConfig wc = instace.thugz.get(world1.getName());
         realTeleportt(p, world1, wc.maxXY, wc.minXY, wc.maxXY, wc.minXY);
     }
