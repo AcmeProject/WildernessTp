@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 public class CommandsGoneWild implements CommandExecutor, TabCompleter {
 
     WildTP olivia; // API usage examples: https://youtu.be/e58IdlvZkRE
-    
+
     static final List<String> directions = ImmutableList.of("east", "north", "south", "west");
 
     public CommandsGoneWild(WildTP wilde) {
@@ -73,7 +73,7 @@ public class CommandsGoneWild implements CommandExecutor, TabCompleter {
             }
         }
         else if (Bukkit.getWorld(args[0]) != null) {
-            if (    sender.hasPermission("wild.wildtp.world")
+            if (/**/sender.hasPermission("wild.wildtp.world") // what? me using space to align code? never! :p
                 && (sender.hasPermission("wild.wildtp.world.*") || sender.hasPermission("wild.wildtp.world." + args[0]))
             ) {
                 if (sender instanceof Player) {
@@ -111,7 +111,7 @@ public class CommandsGoneWild implements CommandExecutor, TabCompleter {
               for (Player player : Bukkit.getOnlinePlayers()) candidates.add(player.getName());
 
           if (sender.hasPermission("wild.wildtp.world"))
-              for (World world : Bukkit.getWorlds()) candidates.add(world.getName()); 
+              for (World world : Bukkit.getWorlds()) candidates.add(world.getName());
 
           return filterList(candidates, args[0]);
       }
@@ -119,7 +119,7 @@ public class CommandsGoneWild implements CommandExecutor, TabCompleter {
       return null;
     }
 
-    // Package static methods (to let other classes use them if needed) 
+    // Package static methods (to let other classes use them if needed)
 
     static List<String> filterList(List<String> list, String startWith) {
         List<String> filtered = new ArrayList<String>();

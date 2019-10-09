@@ -29,7 +29,7 @@ public class WildTP extends JavaPlugin {
     public static WildTP instace;
     public static TooWildForEnums enums = new TooWildForEnums();
     public static PortalzGoneWild portalz = new PortalzGoneWild();
-    
+
     public static Economy econ;
     public static ConfigurationSection randomeWorlds;
     public static boolean useRandomeWorldz;
@@ -50,7 +50,7 @@ public class WildTP extends JavaPlugin {
         if (Integer.valueOf(Bukkit.getBukkitVersion().split("\\.")[1]) <= 12) {
             getLogger().severe("This version of Wilderness-TP does not support your ancient server version.");
             getLogger().warning("Either update your server to 1.13, or use Wild 1.52");
-            getLogger().warning("https://robomwm.com"); // URL changed because the old one no more works
+            getLogger().warning("http://r.robomwm.com/oldwild");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -89,7 +89,7 @@ public class WildTP extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new NoobieListener(), this);
         if (wamuppahTooCool) Bukkit.getPluginManager().registerEvents(new TooCool2Teleport(), this);
     }
-    
+
     @Override
     public void onDisable() {
         super.onDisable();
