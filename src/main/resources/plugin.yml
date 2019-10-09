@@ -1,5 +1,5 @@
 name: Wild
-version: 2.11
+version: "2.11"
 
 authors: [LaxWasHere,RoboMWM]
 website: https://www.spigotmc.org/resources/wilderness-tp.22853/
@@ -25,7 +25,9 @@ commands:
     aliases: [wtp]
     usage: |
       /wildtp - Show command syntax
-      /wildtp [create/delete/list] - Manage portals
+      /wildtp list - List existing portals
+      /wildtp create [name] - Create a portal
+      /wildtp delete [name] - Delete the given portal
       /wildtp reload - Reload the plugin configuration
       /wildtp gui - Open the plugin user interface
 
@@ -78,7 +80,7 @@ permissions:
     description: Allows to use /wild [world]
     default: op
 
-  wild.wildtp.world.*: # (require wild.wildtp.world) 
+  wild.wildtp.world.*: # (require wild.wildtp.world)
     description: Allows to use /wild [world] in all worlds
     default: true
 
