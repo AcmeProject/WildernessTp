@@ -28,7 +28,7 @@ public class GeeYouEye implements Listener {
     public ItemStack createItem(Material material, int amount, String displayname, String lore) {
         ItemStack i = new ItemStack(material, amount);
         ItemMeta im = i.getItemMeta();
-        im.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayname));
+        im.setDisplayName(TooWildForEnums.translate(displayname));
 
         ArrayList<String> loreList = new ArrayList<String>();
         String[] lores = lore.split("/");

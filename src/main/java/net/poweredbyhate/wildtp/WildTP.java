@@ -2,22 +2,19 @@ package net.poweredbyhate.wildtp;
 
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.HashMap;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 
 /**
@@ -25,21 +22,15 @@ import java.util.concurrent.Callable;
  */
 public class WildTP extends JavaPlugin {
 
+    private boolean wamuppahTooCool = false;
+
     static boolean isDebug;
 
     public static WildTP instace;
     public static TooWildForEnums enums = new TooWildForEnums();
     public static PortalzGoneWild portalz = new PortalzGoneWild();
-    public static ChecKar checKar = new ChecKar();
-    public static int maxXY = 5000;
-    public static int minXY = -5000;
-    public static int retries = 10;
-    public static int coolDownTeim = 30;
-    public static int wamuppah = 1;
-    public static int cost = 0;
-    public static boolean doCommandz;
+
     public static Economy econ;
-    public static boolean dr0p1n;
     public static ConfigurationSection randomeWorlds;
     public static boolean useRandomeWorldz;
     public static boolean newPlayersTeleported;
@@ -50,73 +41,24 @@ public class WildTP extends JavaPlugin {
     public static boolean wb;
     public static boolean notPaper;
     public static Location cash;
-    public static HashSet<String> nonoBlocks;
+    String[] bluredLines;
+    HashMap<String, String> aliaz;
+    HashMap<String, WorldConfig> thugz;
+    HashMap<UUID, BukkitRunnable> ohWait;
 
     public void onEnable() {
-        try
-        {
-            if (Integer.valueOf(Bukkit.getBukkitVersion().split("\\.")[1]) <= 12)
-            {
-                new BukkitRunnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        getLogger().severe("This version of Wilderness-TP does not support your ancient server version.");
-                        getLogger().warning("Either update your server to 1.13, or use Wild 1.52");
-                        getLogger().warning("http://r.robomwm.com/oldwild");
-                    }
-                }.runTaskTimer(instace, 1L, 6000L);
-                return;
-            }
+        if (Integer.valueOf(Bukkit.getBukkitVersion().split("\\.")[1]) <= 12) {
+            getLogger().severe("This version of Wilderness-TP does not support your ancient server version.");
+            getLogger().warning("Either update your server to 1.13, or use Wild 1.52");
+            getLogger().warning("http://r.robomwm.com/oldwild");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
         }
-        catch (Throwable ball){}
-        saveDefaultConfig();
-        instace = this;
-        getWild();
-        wildMetrics();
-        getCommand("wild").setExecutor(new CommandsGoneWild(this));
-        getCommand("wildtp").setExecutor(new AdminsGoneWild(this));
-        Bukkit.getPluginManager().registerEvents(new SignChangeListener(), this);
-        Bukkit.getPluginManager().registerEvents(new SignClickListener(), this);
-        Bukkit.getPluginManager().registerEvents(new GeeYouEye(), this);
-        Bukkit.getPluginManager().registerEvents(new PostTeleportEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new PreTeleportEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new OuchieListener(), this);
-        Bukkit.getPluginManager().registerEvents(portalz, this);
-        Bukkit.getPluginManager().registerEvents(new CNNListener(), this);
-        Bukkit.getPluginManager().registerEvents(new NoobieListener(), this);
-        if (wamuppah > 0)
-            Bukkit.getPluginManager().registerEvents(new TooCool2Teleport(), this);
-    }
 
-    public void getWild() {
-        wildDependencies();
-        wildConfig(getConfig());
-        new TooWildForEnums().loadConfig();
-        portalz.loadConfig();
-        coolDownTeim = getConfig().getInt("Cooldown");
-        maxXY = getConfig().getInt("MaxXY");
-        minXY = getConfig().getInt("MinXY");
-        retries = getConfig().getInt("Retries");
-        doCommandz = getConfig().getBoolean("DoCommands");
-        cost = getConfig().getInt("Cost");
-        wamuppah = getConfig().getInt("Wait");
-        dr0p1n = getConfig().getBoolean("dropPlayerFromAbove");
-        useRandomeWorldz = getConfig().getBoolean("useRandomWorlds");
-        randomeWorlds = getConfig().getConfigurationSection("randomWorlds");
-        isDebug = getConfig().getBoolean("debug");
-        newPlayersTeleported = getConfig().getBoolean("teleportNewPlayers");
-        useExperimentalChekar = getConfig().getBoolean("useGlobalClaimCheck");
-        useOtherChekar = getConfig().getBoolean("useAlternativeGlobalClaimCheck");
-        nonoBlocks = new HashSet<>(getConfig().getStringList("BlockedBlocks"));
-        //noCreditJustCash = getConfig().getBoolean("preloadChunks");
-        try
-        {
-            Class.forName("com.destroystokyo.paper.PaperConfig");
-        }
-        catch (Throwable cue)
-        {
+        instace = this;
+        ohWait  = new HashMap<UUID, BukkitRunnable>();
+
+        try { Class.forName("com.destroystokyo.paper.PaperConfig"); } catch (Throwable cue) {
             notPaper = true;
             getLogger().info(" = = = = = = = = = = = = = = = = = = = =");
             getLogger().info(" ");
@@ -128,53 +70,79 @@ public class WildTP extends JavaPlugin {
             getLogger().info(" ");
             getLogger().info(" = = = = = = = = = = = = = = = = = = = =");
         }
+
+        wildDependencies();
+        reloadConfig();
+        wildMetrics();
+
+        getCommand("wild").setExecutor(new CommandsGoneWild(this));
+        getCommand("wildtp").setExecutor(new AdminsGoneWild(this));
+
+        Bukkit.getPluginManager().registerEvents(new SignChangeListener(instace), this);
+        Bukkit.getPluginManager().registerEvents(new SignClickListener(instace), this);
+        Bukkit.getPluginManager().registerEvents(new GeeYouEye(), this);
+        Bukkit.getPluginManager().registerEvents(new PostTeleportEvent(this), this);
+        Bukkit.getPluginManager().registerEvents(new PreTeleportEvent(this), this);
+        Bukkit.getPluginManager().registerEvents(new OuchieListener(), this);
+        Bukkit.getPluginManager().registerEvents(portalz, this);
+        Bukkit.getPluginManager().registerEvents(new CNNListener(), this);
+        Bukkit.getPluginManager().registerEvents(new NoobieListener(), this);
+        if (wamuppahTooCool) Bukkit.getPluginManager().registerEvents(new TooCool2Teleport(), this);
     }
 
-    public void wildConfig(FileConfiguration fc) {
-        Map<String, Object> wildDefault = new LinkedHashMap<>();
-        Map<String, Integer> randomWorlds = new LinkedHashMap<>();
-        randomWorlds.put("world", 1337);
-        randomWorlds.put("world_nether", 42);
-        String[] eh = {"title %PLAYER% times 20 100 20","title %PLAYER% title [\"\",{\"text\":\"Wilderness\",\"color\":\"green\",\"bold\":false}]","title %PLAYER% subtitle [\"\",{\"text\":\"Its too dangerous to go alone.\",\"color\":\"yellow\"}]"};
-        String[] ehh = {"DEEP_OCEAN", "OCEAN","FROZEN_OCEAN","DEEP_COLD_OCEAN","DEEP_FROZEN_OCEAN","DEEP_LUKEWARM_OCEAN", "DEEP_WARM_OCEAN","COLD_OCEAN","FROZEN_OCEAN","WARM_OCEAN","LUKEWARM_OCEAN","RIVER"};
-        String[] ehhh = {"LAVA", "MAGMA_BLOCK", "CACTUS", "FIRE"};
-        wildDefault.put("MaxXY", 5000);
-        wildDefault.put("MinXY", -5000);
-        wildDefault.put("Retries", 5);
-        wildDefault.put("Cooldown", 30);
-        wildDefault.put("Cost", 0);
-        wildDefault.put("Wait", 5);
-        wildDefault.put("dropPlayerFromAbove", false);
-        wildDefault.put("Sound", "ENTITY_ENDERMAN_TELEPORT");
-        wildDefault.put("DoCommands", false);
-        wildDefault.put("PostCommands", eh);
-        wildDefault.put("BlockedBiomes", ehh);
-        wildDefault.put("BlockedBlocks", ehhh);
-        wildDefault.put("useRandomWorlds", false);
-        wildDefault.put("debug", false);
-        wildDefault.put("randomWorlds", randomWorlds);
-        wildDefault.put("teleportNewPlayers", false);
-        wildDefault.put("useGlobalClaimCheck", dataaaastorege == null);
-        wildDefault.put("useAlternativeGlobalClaimCheck", false);
-        //wildDefault.put("preloadChunks", true);
-        try
-        {
-            for (Map.Entry<String, Object> s : wildDefault.entrySet()) {
-                if (!fc.contains(s.getKey(),false)) {
-                    getConfig().set(s.getKey(), s.getValue());
-                }
-            }
-        }
-        catch (NoSuchMethodError updateUrSerburz)
-        {
-            fc.addDefaults(wildDefault);
-            fc.options().copyDefaults(true);
-        }
+    @Override
+    public void onDisable() {
+        super.onDisable();
+        Bukkit.getScheduler().cancelTasks(this);
+    }
 
-        getConfig().options().header("Sounds for the latest version of Bukkit can be found here: \n" +
-                "https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html");
-
+    @Override
+    public void reloadConfig() {
+        super.reloadConfig();
+        new TooWildForEnums().loadConfig();
+        // Copy the default config file from jar/resources/config.yml to plugins/wild/config.yml if not exists
+        saveDefaultConfig();
+        // Read the config (existing config or new one)
+        FileConfiguration config = getConfig();
+        // Merge default values
+        config.addDefault("useGlobalClaimCheck", dataaaastorege == null);
+        config.options().copyDefaults(true);
+        // Do things with worlds
+        aliaz = new HashMap<String,String>();
+        thugz = new HashMap<String,WorldConfig>();
+        ChecKar sharedOrNot = config.getBoolean("shareCoolDown")? new ChecKar(config.getInt("Cooldown")): null;
+        wamuppahTooCool = (config.getInt("Wait") > 0);
+        for (World world : Bukkit.getWorlds()) {
+          String name = world.getName(), alias = config.getString("worldsAliaz." + name, name);
+          config.set("worldsAliaz." + name, alias);
+          WorldConfig wc = new WorldConfig(name, config, sharedOrNot);
+          wamuppahTooCool |= (wc.wamuppah > 0);
+          aliaz.put(name, alias);
+          thugz.put(name, wc);
+        }
+        // Re-save (so omitted and new parameters are added in the file)
         saveConfig();
+        // Take off your clothes
+        getWild(config);
+    }
+
+    public void getWild(FileConfiguration config) {
+        portalz.loadConfig();
+        useRandomeWorldz = config.getBoolean("useRandomWorlds");
+        randomeWorlds = config.getConfigurationSection("randomWorlds");
+        isDebug = config.getBoolean("debug");
+        newPlayersTeleported = config.getBoolean("teleportNewPlayers");
+        useExperimentalChekar = config.getBoolean("useGlobalClaimCheck");
+        useOtherChekar = config.getBoolean("useAlternativeGlobalClaimCheck");
+        bluredLines = new String[] {
+            TooWildForEnums.translate(config.getString("signTexts.line1")),
+            TooWildForEnums.translate(config.getString("signTexts.line2")),
+            TooWildForEnums.translate(config.getString("signTexts.line3")),
+            config.getString("signTexts.createWith"),
+            TooWildForEnums.translate(config.getString("signTexts.costFree")),
+            TooWildForEnums.translate(config.getString("signTexts.costMoney"))
+        };
+        //noCreditJustCash = config.getBoolean("preloadChunks");
     }
 
     public void wildDependencies() {
@@ -192,6 +160,7 @@ public class WildTP extends JavaPlugin {
         }.runTask(instace);
         try
         {
+            dataaaastorege = null;
             if (getServer().getPluginManager().getPlugin("GriefPrevention") != null) {
                 GriefPrevention antgreif = (GriefPrevention)getServer().getPluginManager().getPlugin("GriefPrevention");
                 dataaaastorege = antgreif.dataStore;
@@ -206,7 +175,7 @@ public class WildTP extends JavaPlugin {
     }
 
     public PortalzGoneWild getPortalz() {
-        return portalz;
+        return portalz; // The cake is a lie!
     }
 
     public void wildMetrics() {
@@ -241,5 +210,40 @@ public class WildTP extends JavaPlugin {
             }
         }
         catch (Throwable rock){}
+    }
+
+    // @see SignClickListener & SignChangeListener
+
+    boolean isBorn2bWild(String[] bluredLines) {
+        for (String l : bluredLines) if (l.equalsIgnoreCase(bluredLines[3])) return true;
+        return false;
+    }
+
+    boolean isThisRealLife(String[] teeth, String kid) {
+        String thug = seekAsylum(teeth, false);
+        if (thug == null) thug = kid;
+        String jb007 = moneyOrNuttin(thug);
+        for (int i = 0; i < 3; i++)
+            if (!ChatColor.stripColor(teeth[i]).equals(ChatColor.stripColor(bluredLines[i].replace("%COST%", jb007))))
+                return false;
+        return true;
+    }
+
+    String moneyOrNuttin(String direStr8) {
+      int moneypenny = thugz.get(direStr8).cost;
+      return (moneypenny == 0)? bluredLines[4]: bluredLines[5].replace("%COST%", "" + moneypenny);
+    }
+
+    String preferItSmall(String littleBig) {
+      String skibidi = aliaz.get(littleBig);
+      return (skibidi == null)? littleBig: skibidi;
+    }
+
+    String seekAsylum(String[] bluredLines, boolean baby) {
+        if (bluredLines.length != 4) return null;
+        int l = baby? 1: 3;
+        if (Bukkit.getWorld(bluredLines[l]) != null) return bluredLines[l];
+        for (String w : aliaz.keySet()) if (aliaz.get(w).equals(bluredLines[l])) return w;
+        return null;
     }
 }

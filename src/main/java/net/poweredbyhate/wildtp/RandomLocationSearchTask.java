@@ -11,7 +11,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
-
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -22,12 +22,10 @@ import java.util.concurrent.ThreadLocalRandom;
 import static net.poweredbyhate.wildtp.WildTP.dataaaastorege;
 import static net.poweredbyhate.wildtp.WildTP.instace;
 import static net.poweredbyhate.wildtp.WildTP.isDebug;
-import static net.poweredbyhate.wildtp.WildTP.nonoBlocks;
 
 public class RandomLocationSearchTask implements Callable<Location> {
     private World world;
     private final Player player;
-    private int retries = instace.retries;
 
     private RandomLocationSearchTask(World world, Player player) {
         this.world = world;
@@ -42,7 +40,7 @@ public class RandomLocationSearchTask implements Callable<Location> {
 
     @Override
     public Location call() throws Exception {
-        final boolean pageRipper = world == null && instace.useRandomeWorldz;
+        final boolean pageRipper = (world == null && instace.useRandomeWorldz);
         if (world == null) {
             if (instace.useRandomeWorldz)
                 world = getRandomeWorld(instace.randomeWorlds);
@@ -51,8 +49,12 @@ public class RandomLocationSearchTask implements Callable<Location> {
             else
                 return null;
         }
+
         World finalWorld = world;
-        MinYMaX minmax = new MinYMaX(world);
+        WorldConfig wc = instace.thugz.get(finalWorld.getName());
+        MinYMaX minmax = new MinYMaX(world, wc);
+        int retries = wc.retries;
+
         if (WildTP.notPaper) {
             for (int i = 0; i < Math.min(retries, 4); i++) {
                 Location loco = new Location(world, r4nd0m(minmax.maxX, minmax.minX), 5, r4nd0m(minmax.maxY, minmax.minY));
@@ -67,7 +69,7 @@ public class RandomLocationSearchTask implements Callable<Location> {
                         return finalLoco.getBlock().getBiome().toString();
                     }
                 }).get();
-                if (!instace.getConfig().getStringList("BlockedBiomes").contains(locoBlockBiomeString)) {
+                if (!wc.bioman.contains(locoBlockBiomeString)) {
                     if (!bonelessIceScream(loco))
                         loco.setY(world.getHighestBlockYAt(loco) - 1);
                     loco.setX(loco.getX() + 0.5D);
@@ -88,9 +90,9 @@ public class RandomLocationSearchTask implements Callable<Location> {
 
         while (retries-- >= 0) {
             World rippedPage = finalWorld;
-            if (pageRipper)
-                rippedPage = getRandomeWorld(instace.randomeWorlds);
-            minmax = new MinYMaX(rippedPage);
+            if (pageRipper) rippedPage = getRandomeWorld(instace.randomeWorlds);
+            WorldConfig dirty = instace.thugz.get(rippedPage.getName());
+            minmax = new MinYMaX(rippedPage, dirty);
             Location loco = new Location(rippedPage, r4nd0m(minmax.maxX, minmax.minX), 5, r4nd0m(minmax.maxY, minmax.minY));
             try {
                 rippedPage.getChunkAtAsync(loco, true).get();
@@ -98,7 +100,7 @@ public class RandomLocationSearchTask implements Callable<Location> {
                 loco = instace.getServer().getScheduler().callSyncMethod(instace, new Callable<Location>() {
                     @Override
                     public Location call() throws Exception {
-                        return chekar(l0c0, player);
+                        return chekar(l0c0, player, dirty.bioman);
                     }
                 }).get();
                 Location l0co = loco;
@@ -116,10 +118,9 @@ public class RandomLocationSearchTask implements Callable<Location> {
         return null;
     }
 
-    public Location chekar(Location loco, Player player) {
-        if (bonelessIceScream(loco))
-            loco = netherLocation(loco);
-        if (!instace.getConfig().getStringList("BlockedBiomes").contains(loco.getBlock().getBiome().toString())) {
+    public Location chekar(Location loco, Player player, HashSet<String> ultraman) {
+        if (bonelessIceScream(loco)) loco = netherLocation(loco);
+        if (!ultraman.contains(loco.getBlock().getBiome().toString())) {
             if (!bonelessIceScream(loco))
                 loco.setY(loco.getWorld().getHighestBlockYAt(loco) - 1);
             loco.setX(loco.getX() + 0.5D);
@@ -191,7 +192,7 @@ public class RandomLocationSearchTask implements Callable<Location> {
 
     public boolean n0tAB4dB10ck(Location l0c0, boolean checkAir) {
         Material blockType = l0c0.getBlock().getType();
-        return !nonoBlocks.contains(blockType.name()) &&
+        return !instace.thugz.get(l0c0.getWorld().getName()).nonoBlocks.contains(blockType.name()) &&
                 (!checkAir || (blockType != Material.AIR && blockType != Material.CAVE_AIR && blockType != Material.VOID_AIR));
     }
 
@@ -224,12 +225,12 @@ public class RandomLocationSearchTask implements Callable<Location> {
 }
 
 class MinYMaX {
-    int minX = WildTP.minXY;
-    int maxX = WildTP.maxXY;
-    int minY = WildTP.minXY;
-    int maxY = WildTP.maxXY;
+    int minX, maxX, minY, maxY, minXY, maxXY;
 
-    MinYMaX(World w) {
+    MinYMaX(World w, WorldConfig wc) {
+        minX = minY = minXY = wc.minXY;
+        maxX = maxY = maxXY = wc.maxXY;
+      
         findWall(w);
     }
 
@@ -243,22 +244,22 @@ class MinYMaX {
                     x = (int) (Math.sqrt(2) * x) / 2;
                     y = (int) (Math.sqrt(2) * y) / 2;
                 }
-                minX = Math.max((int) border.getX() - x, WildTP.minXY);
-                maxX = Math.min((int) border.getX() + x, WildTP.maxXY);
-                minY = Math.max((int) border.getZ() - y, WildTP.minXY);
-                maxY = Math.min((int) border.getZ() + y, WildTP.maxXY);
+                minX = Math.max((int) border.getX() - x, minXY);
+                maxX = Math.min((int) border.getX() + x, maxXY);
+                minY = Math.max((int) border.getZ() - y, minXY);
+                maxY = Math.min((int) border.getZ() + y, maxXY);
                 WildTP.debug("Bord" + minX + ";" + maxX + ":" + minY + ";" + maxY);
                 return;
             }
         }
 
         WorldBorder b = w.getWorldBorder();
-        if (b == null)
-            return;
-        minX = Math.max(b.getCenter().getBlockX() - (int) b.getSize(), WildTP.minXY);
-        maxX = Math.min(b.getCenter().getBlockX() + (int) b.getSize(), WildTP.maxXY);
-        minY = Math.max(b.getCenter().getBlockZ() - (int) b.getSize(), WildTP.minXY);
-        maxY = Math.min(b.getCenter().getBlockZ() + (int) b.getSize(), WildTP.maxXY);
+        if (b == null) return;
+
+        minX = Math.max(b.getCenter().getBlockX() - (int) b.getSize(), minXY);
+        maxX = Math.min(b.getCenter().getBlockX() + (int) b.getSize(), maxXY);
+        minY = Math.max(b.getCenter().getBlockZ() - (int) b.getSize(), minXY);
+        maxY = Math.min(b.getCenter().getBlockZ() + (int) b.getSize(), maxXY);
         WildTP.debug("Bord" + minX + ";" + maxX + ":" + minY + ";" + maxY);
     }
 }

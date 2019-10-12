@@ -1,14 +1,108 @@
 name: Wild
-version: '2.10'
+version: "2.11"
+
 authors: [LaxWasHere,RoboMWM]
+website: https://www.spigotmc.org/resources/wilderness-tp.22853/
+dev-url: https://github.com/AcmeProject/WildernessTp
+contributors: [arboriginal,jyhsu2000] # via Github pull requests
+
 main: net.poweredbyhate.wildtp.WildTP
-softdepend: [GriefPrevention,Vault,WorldBorder]
 api-version: 1.13
+softdepend: [GriefPrevention,Vault,WorldBorder]
+
 commands:
   wild:
+    description: Teleport the player randomly
     aliases: [wilderness,rtp]
+    usage: |
+      /wild - Teleport randomly in the current world
+      /wild [player] - Teleport randomly the given player
+      /wild [north/south/east/west] - Teleport randomly in the given direction
+      /wild [world] - Teleport randomly in the given world
+
   wildtp:
+    description: Admin tasks like reload, manage portals, ...
     aliases: [wtp]
+    usage: |
+      /wildtp - Show command syntax
+      /wildtp list - List existing portals
+      /wildtp create [name] - Create a portal
+      /wildtp delete [name] - Delete the given portal
+      /wildtp reload - Reload the plugin configuration
+      /wildtp gui - Open the plugin user interface
+
 permissions:
+  wild.wildtp:
+    description: Allows to use /wild (without arguments)
+    default: op
+
+  wild.wildtp.break.sign:
+    description: Allows the player to break WildTp signs
+    default: op
+
+  wild.wildtp.cooldown.bypass:
+    description: Allows to bypass the cooldown
+    default: op
+
+  wild.wildtp.create.portal:
+    description: Allows to use /wildtp [create/delete/list]
+    default: op
+
+  wild.wildtp.create.sign:
+    description: Gives the player ability to create WildTp signs
+    default: op
+
+  wild.wildtp.delay.bypass:
+    description: Allows to bypass the delay
+    default: op
+
+  wild.wildtp.direction:
+    description: Allows to use /wild [north/south/east/west]
+    default: op
+
+  wild.wildtp.others:
+    description: Allows to use /wild [player]
+    default: op
+
+  wild.wildtp.reload:
+    description: Allows to use /wildtp reload
+    default: op
+
+  wild.wildtp.set:
+    description: Allows to use /wildtp gui
+    default: op
+
   wild.wildtp.sign:
+    description: Allows the player to use WildTp signs
     default: true
+
+  wild.wildtp.world:
+    description: Allows to use /wild [world]
+    default: op
+
+  wild.wildtp.world.*: # (require wild.wildtp.world)
+    description: Allows to use /wild [world] in all worlds
+    default: true
+
+  wild.wildtp.world.*.free:
+    description: Allows to teleport without having to pay whatever the world
+    default: false
+
+#######################
+# Dynamic permissions #
+#######################
+#
+# wild.wildtp.world.<worldname>: # (require wild.wildtp.world, implicit with wild.wildtp.world.*)
+#   description: Allows to use /wild [world] in <worldname> world
+#   default: false
+#
+# wild.wildtp.world.<worldname>.free:
+#   description: Allows to teleport without having to pay in <worldname>
+#   default: false
+#
+# Example:
+# * wild.wildtp.world.world_nether:  Allows player to use /wild world_nether
+# * wild.wildtp.world.world_the_end: Allows player to use /wild world_the_end
+#
+# /!\ If you want to use those permissions, you have to negate the permission wild.wildtp.world.*
+# With GroupManager, this is done with « -wild.wildtp.world.* », read the doc of your permission plugin!

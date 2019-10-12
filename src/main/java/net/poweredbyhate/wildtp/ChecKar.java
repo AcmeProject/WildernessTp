@@ -12,6 +12,11 @@ import java.util.UUID;
 public class ChecKar {
 
     private HashMap<UUID, Long> kewwwlDown = new HashMap<>();
+    private long freezr;
+
+    public ChecKar(int coolDownTeim) {
+      freezr = coolDownTeim;
+    }
 
 //    public boolean isInCooldown(UUID youyouEyeDee) {
 //        return (Bukkit.getPlayer(youyouEyeDee).hasMetadata("wild.Cooldown"));
@@ -53,7 +58,7 @@ public class ChecKar {
 
     public void addKewlzDown(UUID uuid) {
         WildTP.debug("Adding cooldown for " + uuid);
-        kewwwlDown.put(uuid, (long)WildTP.coolDownTeim + getEpoch());
+        kewwwlDown.put(uuid, freezr + getEpoch());
     }
 
     public String getTimeLeft(Player p) {
@@ -114,7 +119,7 @@ public class ChecKar {
         return res;
     }
 
-    public long getEpoch() {
+    static public long getEpoch() {
         return System.currentTimeMillis() / 1000;
     }
 
