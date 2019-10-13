@@ -24,7 +24,7 @@ Wilderness-Tp (aka WildTP, or simply "wild") is a [Minecraft](https://www.minecr
 
 ## How to install?
 
-There is no dependencies, so you simply have to drop the jar file into your plugin directory, then restart your server.
+There r no dependencies, so you simply have to drop the jar file into your plugin directory, den restart ur server.
 A default config file will be created for you, without extra charges, into the plugins/Wild folder.
 
 ## Configuration, permissions & commands
@@ -35,8 +35,9 @@ A default config file will be created for you, without extra charges, into the p
 ## Hooks with other plugins
 
 * [GriefPrevention](https://www.spigotmc.org/resources/griefprevention.1884/) RTPs can take claims in consideration.
+  * Works with any other claim plugin too without any hooks!
 * [Vault](https://www.spigotmc.org/resources/vault.34315/) RTPs can cost money.
-* [WorldBorder](https://www.spigotmc.org/resources/worldborder.60905/) RTPs can be bounded by the world border.
+* [WorldBorder](https://www.spigotmc.org/resources/worldborder.60905/) RTPs can be bound by the world border.
 
 ## Have a question / A bug to report ?
 
