@@ -10,12 +10,53 @@
 # - Sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html 
 # - Biomes: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/Biome.html
 # - Blocks: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+# - Bar colors: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarColor.html
+# - Bar styles: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarStyle.html
+# - Gamemodes: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/GameMode.html
+# - Effects: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html
+# .
+# IF YOUR ARE USING SPIGOT AND NOT PAPER:
+# 1. Why???
+# 2. You really should consider using Paper (https://papermc.io)
+# 3. There is a chance players die after a RTP when chunks not load enough fast...
+#    So, use paper or preload chunks + use dropPlayerFromAbove:true + prey
+# And paper or spigot, this is highly recommended to pre-load your chunks
+# as Minecraft became heavy. If you don't, your player could suffer from lags
+# using this plugin or not when new chunks are loaded (ask to all not noob server admins)
+# (tested a lot on paper without preloaded gives me no problems, only sometimes with spigot)
 # .
 # If you want to spam your console, use "debug: true"
 debug: false
 
+# GUI is an attempt to do something, but it actually does nothing usesul:
+# It opens a single item inventory, on which you can click to RTP.
+# But why typing a command to show it, then click to proceed,
+# instead of typing a command and proceed directly? ;)
+#
+# use false will disable command « /wildtp gui » and will not load gui listener on startup.
+enableGUI: true
+# this won't have big impact on performances, but if you are not using this "feature",
+# it's a good idea to disable, because its listener is triggered each time you click in
+# an inventory. It checks first if this inventory is its one, and stop quickly
+# so not a big deal to let it enabled. But as MC becomes heavier and heavier,
+# saving resources even if small can be essential for servers which hardly keep their TPS.
+
+# If true, a bossbar will be displayed to the player while waiting for the RTP proceed
+enableBar: true
+barColor:
+  searching: YELLOW
+  waiting: GREEN
+barStyle:
+  searching: SEGMENTED_6
+  waiting: SOLID
+
 # If false, cooldowns are per world not global
 shareCoolDown: true # /!\ If true, overriden values of "Cooldown" will be ignored
+
+# If true, if you request a RTP, you cannot move until its done
+freezeWhileRTP: false
+# If true, if you request a RTP and move, this will cancel it
+moveCancelRTP: true
 
 # Sound played when your player gone wild /!\ Invalid values will disable it
 Sound: ENTITY_ENDERMAN_TELEPORT
@@ -40,12 +81,69 @@ BlockedBlocks: # Use « [] » if you don't want to restrict
   - LAVA
   - MAGMA_BLOCK
 
+Portals:
+  # Gamemode NOT listed here will ignore portals
+  Gamemodes: # (must be useful to disable CREATIVE if you build your spawn for example)
+    - ADVENTURE
+    - SURVIVAL
+  # If true, a player enterring a portal is frozen until it's done
+  freezeWhileRTP: false
+  # If true, if you enter a portal and move, this will cancel the RTP
+  moveCancelRTP: true
+  # Max size in each axis (in block, 0 will disable the limitation)
+  xMax: 10
+  yMax: 10
+  zMax: 10
+  # /!\ This doesn't affect previously created portals.
+
+Bypass: # /!\ Those settings FORCE bypass, whatever the player has permission or not!
+  # Force permission « wild.wildtp.cooldown.bypass »
+  cooldown:
+    COMMAND: false # When the player tp via command
+    GUI: false     # When using the GUI
+    OTHERGUY: true # When another player teleport you (typically staff)
+    PORTAL: false  # When passing a wild portal
+    SIGN: false    # When interacting with a wild sign
+  # Force permission « wild.wildtp.world.*.free »
+  cost:
+    COMMAND: false
+    GUI: false
+    OTHERGUY: true
+    PORTAL: false
+    SIGN: false
+  # Force permission « wild.wildtp.delay.bypass »
+  delay:
+    COMMAND: false
+    GUI: false
+    OTHERGUY: true
+    PORTAL: true
+    SIGN: false
+
+# Format is <PotionEffectType> or <PotionEffectType>:<multiplier> (integer)
+# /!\ Invalid multiplier will fallback to 0
+Effects:
+  COMMAND:
+    - BLINDNESS
+    - CONFUSION:99
+    - SLOW_DIGGING:3
+  GUI: [] # <== This represent an empty list (no effects)
+  JOIN: # Require « teleportNewPlayers: true »
+    - BLINDNESS
+    - CONFUSION
+  OTHERGUY: []
+  PORTAL:
+    - BLINDNESS
+    - CONFUSION
+    - INVISIBILITY
+    - SLOW:2
+  SIGN: []
+
 # Bounds of the wildness (named XY and not XZ... Another proof! #CatEarthSociety)
 MinXY: -5000
 MaxXY: 5000
 
 Wait: 5      # (seconds) Time the player have to wait between he type the command and tp be sent in wild
-Retries: 5   # Max attempt the plugin will try to find a safe place to tp the player
+Retries: 6   # Max attempt the plugin will try to find a safe place to tp the player
 Cooldown: 60 # (seconds) Time to wait before player can re-do again
 
 Cost: 0 # Money cost of a RTP (requires Vault)
@@ -72,15 +170,15 @@ PostCommands: # Ignored if DoCommands is false
 useRandomWorlds: false
 randomWorlds: # Ignored if useRandomWorlds is false
   world: 1337
-  world_nether: 42 # Don't ask... (or wait a few millions years)
+  world_nether: 42 # Don't ask... (or wait a few millions years) 
 
 useGlobalClaimCheck: true # (if GriefPrevention plugin is found, default value will be false)
 useAlternativeGlobalClaimCheck: false
 
 signTexts:
-  # This is what player have to type on line1 to create a WildTP sign
+  # This is what player have to type on a sign (first or second line) to create a WildTP sign
   createWith: "[wildtp]" # (case insensitive: means you can write with caps or not)
-  # (optionaly, the player can write the exact name of a world on line 2)
+  # (optionaly, the player can write the EXACT name or alias of a world ON LINE 2)
 
   # This is how WildTP signs will appear
   # /!\ If you change this, previously created signs will no more work until you recreate them!
@@ -126,7 +224,7 @@ overrides: {} # <=== « {} » means there is no overrides at all
 
 # Examples:
 #
-# overrides:
+# overrides: # (with all parameters you can override)
 #   an_example:
 #     BlockedBiomes:
 #       - JUNGLE
@@ -134,6 +232,8 @@ overrides: {} # <=== « {} » means there is no overrides at all
 #     BlockedBlocks:
 #       - STONE
 #       - GRASS
+#     freezeWhileRTP: true
+#     moveCancelRTP: false
 #     MinXY: -1000
 #     MaxXY: 1000
 #     Wait: 0
@@ -145,7 +245,41 @@ overrides: {} # <=== « {} » means there is no overrides at all
 #     PostCommands: []
 #     dropPlayerFromAbove: true
 #     dropPlayerFromHeight: 128
+#     Bypass:
+#       cooldown:
+#         PORTAL: true
+#       cost:
+#         PORTAL: true
+#       delay:
+#         PORTAL: true
+#     enableBar: true
+#     barColor: 
+#       searching: PINK
+#       waiting: PURPLE
+#     barStyle:
+#       searching: SEGMENTED_20
+#       waiting: SEGMENTED_12
+#     Portals:
+#       Gamemodes:
+#         - ADVENTURE
+#         - CREATIVE
+#         - SPECTATOR
+#         - SURVIVALL
+#       freezeWhileRTP: true
+#       moveCancelRTP: false
+#       xMax: 2
+#       yMax: 3
+#       zMax: 2
+#     Effects:
+#       COMMAND:
+#         - BLINDNESS
+#       GUI: []
+#       JOIN: []
+#       OTHERGUY: []
+#       PORTAL:
+#         - CONFUSION
+#       SIGN: []
 #
-#   another_working_example:
+#   another_working_example: # (to show you don't have to add all parameters)
 #     MinXY: -50000
 #     MaxXY: 50000t

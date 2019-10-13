@@ -5,43 +5,34 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import net.poweredbyhate.wildtp.TeleportGoneWild.Trigger;
 
 /**
  * Created by John on 5/10/2016.
  */
 public class PreWildTeleportEvent extends Event implements Cancellable {
+    private boolean cancelled = false;
 
-    public static final HandlerList panHandlers = new HandlerList();
-    private boolean cancelled;
-    private Player wildLing;
-    private Location locoLocation;
-    private boolean retry;
+    private static final HandlerList panHandlers = new HandlerList();
 
-    public PreWildTeleportEvent(Player p, Location location, boolean retry) {
-        this.wildLing = p;
-        this.locoLocation = location;
-        this.cancelled = false;
-        this.retry = retry;
-    }
+    Location    locoLocation;
+    Player      wildLing;
+    Trigger     brush;
+    WorldConfig wc;
 
-    public PreWildTeleportEvent(Player p, Location location) {
-        this(p, location, false);
-    }
-
-    public Player getWildLing() {
-        return this.wildLing;
-    }
-
-    public Location getLocoLocation() {
-        return this.locoLocation;
-    }
-
-    public static HandlerList getHandlerList() {
-        return panHandlers;
+    public PreWildTeleportEvent(Player p, Location location, WorldConfig c, Trigger t) {
+        wildLing     = p;
+        locoLocation = location;
+        brush        = t;
+        wc           = c;
     }
 
     @Override
     public HandlerList getHandlers() {
+        return panHandlers;
+    }
+
+    public static HandlerList getHandlerList() {
         return panHandlers;
     }
 
@@ -53,13 +44,5 @@ public class PreWildTeleportEvent extends Event implements Cancellable {
     @Override
     public void setCancelled(boolean b) {
         this.cancelled = b;
-    }
-
-    public void setRetry(boolean b) {
-        this.retry = b;
-    }
-
-    public boolean isRetry() {
-        return retry;
     }
 }

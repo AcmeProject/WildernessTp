@@ -1,49 +1,30 @@
 package net.poweredbyhate.wildtp;
 
-import org.bukkit.Location;
+import static net.poweredbyhate.wildtp.WildTP.instace;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import static net.poweredbyhate.wildtp.WildTP.instace;
+import net.poweredbyhate.wildtp.TeleportGoneWild.Trigger;
 
 /**
  * Created on 7/9/2017.
  *
  * @author RoboMWM
  */
-public class NoobieListener implements Listener
-{
+public class NoobieListener implements Listener {
     @EventHandler
-    void onNewbJoin(final PlayerJoinEvent event)
-    {
-        if (event.getPlayer().hasPlayedBefore())
-            return;
-        if (WildTP.newPlayersTeleported)
-        {
-            new BukkitRunnable()
-            {
-                @Override
-                public void run()
-                {
-                    new TeleportGoneWild().WildTeleport(event.getPlayer(), true);
-                }
-            }.runTaskLater(instace, 1L);
-        }
-    }
+    private void onNewbJoin(final PlayerJoinEvent event) {
+        final Player p = event.getPlayer();
+        RandomLocationSearchTask.jk(p);
+        if (p.hasPlayedBefore()) return;
 
-    //@EventHandler(ignoreCancelled = true)
-    void atm(ChunkUnloadEvent event)
-    {
-        if (instace.cash == null)
-            return;
-        Location location = event.getChunk().getBlock(7, 64, 7).getLocation();
-        int distance = instace.getServer().getViewDistance() * 17;
-        if ((Math.abs(instace.cash.getBlockX() - location.getBlockX()) <= (distance + 8)) && (Math.abs(instace.cash.getBlockZ() - location.getBlockZ()) <= (distance + 8))) //ergh
-        {
-            event.setCancelled(true);
-        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                new TeleportGoneWild(Trigger.JOIN, p).WildTeleport();
+            }
+        }.runTaskLater(instace, 1L);
     }
 }

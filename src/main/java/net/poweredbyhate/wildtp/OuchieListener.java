@@ -1,47 +1,45 @@
 package net.poweredbyhate.wildtp;
 
+import java.util.HashMap;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.scheduler.BukkitScheduler;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by RoboMWM on 5/15/2016.
  */
 public class OuchieListener implements Listener {
-    private static Map<Player, Integer> dr0pp3dPuhlayars = new HashMap<>();
-    static BukkitScheduler scheduler = Bukkit.getScheduler();
+    private static HashMap<UUID, Integer> dr0pp3dPuhlayars = new HashMap<UUID, Integer>();
+
     @EventHandler(ignoreCancelled = true)
-    void onPlayerTryingToBreakLegs(EntityDamageEvent ouch) {
-        if (!(ouch.getEntity() instanceof Player))
-            return;
+    private void onPlayerTryingToBreakLegs(EntityDamageEvent ouch) {
+        if (!(ouch.getEntity() instanceof Player) || ouch.getCause() != EntityDamageEvent.DamageCause.FALL) return;
 
-        if (ouch.getCause() != EntityDamageEvent.DamageCause.FALL)
-            return;
+        UUID id = ouch.getEntity().getUniqueId();
 
-        Player player = (Player)ouch.getEntity();
-
-        if (dr0pp3dPuhlayars.containsKey(player)) {
-            scheduler.cancelTask(dr0pp3dPuhlayars.remove(player));
+        if (dr0pp3dPuhlayars.containsKey(id)) {
+            Bukkit.getScheduler().cancelTask(dr0pp3dPuhlayars.remove(id));
             ouch.setCancelled(true);
         }
-
     }
 
-    public static void plsSaveDisDood(final Player player) {
-        if (dr0pp3dPuhlayars.containsKey(player))
-            scheduler.cancelTask(dr0pp3dPuhlayars.remove(player));
-        Integer bleh = scheduler.scheduleSyncDelayedTask(WildTP.instace, new Runnable() {
+    static void plsSaveDisDood(final Player player) {
+        UUID id = player.getUniqueId();
+        
+        TooCool2Teleport.microwave(player);
+        
+        dr0pp3dPuhlayars.put(id, Bukkit.getScheduler().scheduleSyncDelayedTask(WildTP.instace, new Runnable() {
             @Override
             public void run() {
-                dr0pp3dPuhlayars.remove(player);
+                dr0pp3dPuhlayars.remove(id);
             }
-        }, 400L);
-        dr0pp3dPuhlayars.put(player, bleh);
+        }, 400L));
+    }
+
+    static void doodWhrsMyCar(UUID sweet) {
+        if (dr0pp3dPuhlayars.containsKey(sweet)) Bukkit.getScheduler().cancelTask(dr0pp3dPuhlayars.remove(sweet));
     }
 }

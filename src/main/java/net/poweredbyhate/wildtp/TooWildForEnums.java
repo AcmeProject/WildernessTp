@@ -1,114 +1,191 @@
 package net.poweredbyhate.wildtp;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
 
-/**
- * Lol, Gotcha qball! Stop stealin our code!
- * 
- * <arboriginal - 2019-10-8> I've removed gS() because only used here,
- * and it reloaded langFile into langConf each time it was called...
- * As it was called several times in setString(), just after
- * loadConfig() did this loading, this had no sense.
- * To be sure setStrings() will not be used without having loaded first,
- * I've changed its visibility to private.
- */
-public class TooWildForEnums {
-
+class TooWildForEnums {
     private FileConfiguration langConf;
 
-    public static String NO_PERMS;
-    public static String NO_SIGN_PERMS;
-    public static String NO_BREAK;
-    public static String NO_LOCATION;
-    public static String NO_BIOME;
-    public static String NO_MONEY;
-    public static String YES_SIGN;
-    public static String BREAK_SIGN;
-    public static String COOLDOWN;
-    public static String RELOADED;
-    public static String WAIT_MSG;
-    public static String DIDNT_WAIT;
-    public static String NO_WE;
-    public static String CONFIRMSG, CONFIRMOK, CONFIRMON, CONFIRMKO;
+    // @formatter:off
+    static String
+        ATTEMPT,
+        BREAK_SIGN,
+        CARD_EAST,
+        CARD_NORTH,
+        CARD_SOUTH,
+        CARD_WEST,
+        CONFIRMKO,
+        CONFIRMOK,
+        CONFIRMON,
+        CONFIRMSG,
+        COOLDOWN,
+        DIDNT_WAIT,
+        FALLNOCMD,
+        GENERROR,
+        NO_BIOME,
+        NO_BREAK,
+        NO_LOCATION,
+        NO_MONEY,
+        NO_PERMS,
+        NO_SIGN_PERMS,
+        PORTAL404,
+        PORTALADD,
+        PORTALBEGIN,
+        PORTALBIG,
+        PORTALCANCEL,
+        PORTALCONTAIN,
+        PORTALDEL,
+        PORTALEXIST,
+        PORTALGOHAN,
+        PORTALHERE,
+        PORTALHOVER,
+        PORTALSTOP,
+        PROCEED,
+        RELOADED,
+        TIME_D,
+        TIME_Ds,
+        TIME_H,
+        TIME_Hs,
+        TIME_M,
+        TIME_Ms,
+        TIME_S,
+        TIME_SOON,
+        TIME_Ss,
+        WAIT_MSG,
+        YES_SIGN;
+    // @formatter:on
 
-    public void loadConfig() {
+    void loadConfig() {
         File langFile = new File(WildTP.instace.getDataFolder(), "Messages.yml");
         langConf = new YamlConfiguration();
+
         try {
             if (langFile.exists()) langFile.createNewFile();
+
             langConf.load(langFile);
             papersPlease();
-            dV().forEach((k, v) -> { if (!langConf.contains(k)) langConf.set(k, v); });
+
+            dV().forEach((k, v) -> {
+                if (!langConf.contains(k)) langConf.set(k, v);
+            });
+
             langConf.save(langFile);
-        } catch (IOException | InvalidConfigurationException e) {
+        }
+        catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
+
         setStrings();
     }
 
-    public static String translate(String s) {
+    static String translate(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
     private HashMap<String, String> dV() {
         HashMap<String, String> dv = new HashMap<String, String>();
-        dv.put("NO_PERMS",      "&4You do not have permission!");
-        dv.put("NO_SIGN_PERMS", "&4You do not have permission to make a wild sign");
+        // @formatter:off
+        dv.put("ATTEMPT",       "&6Search a safe location... &7(%ATTEMPT%/%MAX%)");
+        dv.put("BREAK_SIGN",    "&aYou have broken a WildTP sign");
+        dv.put("COOLDOWN",      "&4You must wait %TIME% until you can use the command/sign again");
+        dv.put("DIDNT_WAIT",    "&cYou need to hold still while you wait!");
+        dv.put("FALLNOCMD",     "&cYou can't use this command while falling!");
+        dv.put("GENERROR",      "&c&lError occurred, check console logs");
+        dv.put("NO_BIOME",      "&4You may not put signs in %BIOME%");
         dv.put("NO_BREAK",      "&4Hey! You can not break WildTp sign!");
         dv.put("NO_LOCATION",   "&4No suitable locations found.");
-        dv.put("NO_BIOME",      "&4You may not put signs in %BIOME%");
-        dv.put("YES_SIGN",      "&aSuccessfully made a new WildTP sign");
-        dv.put("BREAK_SIGN",    "&aYou have broken a WildTP sign");
-        dv.put("COOLDOWN",      "&4You must wait %TIME% seconds until you can use the command/sign again");
+        dv.put("NO_MONEY",      "&cYou are too poor to deserve a teleport at this time.");
+        dv.put("NO_PERMS",      "&4You do not have permission!");
+        dv.put("NO_SIGN_PERMS", "&4You do not have permission to make a wild sign");
+        dv.put("PORTAL404",     "&cThis portal doesn't exists...");
+        dv.put("PORTALADD",     "&aPortal &l%NAME% &acreated!");
+        dv.put("PORTALBEGIN",   "&bClick two corners to create your portal.");
+        dv.put("PORTALBIG",     "&cPortal too big! max: x={%xMax%}, x={%yMax%}, x={%zMax%}");
+        dv.put("PORTALCANCEL",  "&7(click the same block twice to cancel)");
+        dv.put("PORTALCONTAIN", "&cThis portal cannot contains another one! Cancelled.");
+        dv.put("PORTALDEL",     "&aPortal &l%NAME% &adeleted!");
+        dv.put("PORTALEXIST",   "&cThis portal name is already in use!");
+        dv.put("PORTALGOHAN",   "&bNow click other corner.");
+        dv.put("PORTALHERE",    "&cTry again: This block is part of another portal!");
+        dv.put("PORTALHOVER",   "&bClick to teleport to it.");
+        dv.put("PORTALSTOP",    "&6Portal creation cancelled.");
+        dv.put("PROCEED",       "&aProcessing...");
         dv.put("RELOADED",      "&aPlugin config has successfuly been reloaded.");
         dv.put("WAIT_MSG",      "&6Teleporting in {wait} seconds");
-        dv.put("DIDNT_WAIT",    "&cYou need to hold still while you wait!");
-        dv.put("NO_WE",         "&cWorldEdit must be installed for this command.");
-        dv.put("NO_MONEY",      "&cYou are too poor to deserve a teleport at this time.");
+        dv.put("YES_SIGN",      "&aSuccessfully made a new WildTP sign");
+        // are your sure? really sure?
+        dv.put("CONFIRMKO",     "&cNo pending confirmation...");
+        dv.put("CONFIRMOK",     "&a&l[ CONFIRM ]");
+        dv.put("CONFIRMON",     "&bClick to confirm!");
         dv.put("CONFIRMSG",
             "&6---------------------------------------"
         + "\n&6This teleportation cost %COST% $."
         + "\n         %CONFIRM%"
         + "\n&7(You have %TIME% seconds to confirm.)"
         + "\n&6---------------------------------------");
-        dv.put("CONFIRMOK", "&a&l[ CONFIRM ]");
-        dv.put("CONFIRMON", "&bClick to confirm!");
-        dv.put("CONFIRMKO", "&cNo pending confirmation...");
+        // Time runs... follow the white rabbit!
+        dv.put("TIME.DAY.PLURAL",      "days");
+        dv.put("TIME.DAY.SINGULAR",    "day");
+        dv.put("TIME.HOUR.PLURAL",     "hours");
+        dv.put("TIME.HOUR.SINGULAR",   "hour");
+        dv.put("TIME.MINUTE.PLURAL",   "minutes");
+        dv.put("TIME.MINUTE.SINGULAR", "minute");
+        dv.put("TIME.SECOND.PLURAL",   "seconds");
+        dv.put("TIME.SECOND.SINGULAR", "second");
+        dv.put("TIME.SOON",            "moments");
+        // Yep... follow him, he's got pills.
+        dv.put("DIRECTION.EAST",  "East");
+        dv.put("DIRECTION.NORTH", "North");
+        dv.put("DIRECTION.SOUTH", "South");
+        dv.put("DIRECTION.WEST",  "West");
+        // @formatter:on
         return dv;
     }
 
-    private void setStrings() { // @see note above the class
-        NO_PERMS      = langConf.getString("NO_PERMS");
-        NO_SIGN_PERMS = langConf.getString("NO_SIGN_PERMS");
-        NO_BREAK      = langConf.getString("NO_BREAK");
-        NO_LOCATION   = langConf.getString("NO_LOCATION");
-        NO_BIOME      = langConf.getString("NO_BIOME");
-        YES_SIGN      = langConf.getString("YES_SIGN");
-        BREAK_SIGN    = langConf.getString("BREAK_SIGN");
-        COOLDOWN      = langConf.getString("COOLDOWN");
-        RELOADED      = langConf.getString("RELOADED");
-        WAIT_MSG      = langConf.getString("WAIT_MSG");
-        DIDNT_WAIT    = langConf.getString("DIDNT_WAIT");
-        NO_WE         = langConf.getString("NO_WE");
-        NO_MONEY      = langConf.getString("NO_MONEY");
-        CONFIRMSG     = langConf.getString("CONFIRMSG");
-        CONFIRMOK     = langConf.getString("CONFIRMOK");
-        CONFIRMON     = langConf.getString("CONFIRMON");
-        CONFIRMKO     = langConf.getString("CONFIRMKO");
+    private void setStrings() {
+        TooWildForEnums me = this;
+
+        dV().keySet().forEach(k -> {
+            String f;
+
+            if (k.startsWith("DIRECTION.")) f = k.replace("DIRECTION.", "CARD_");
+            else if (k.startsWith("TIME.")) {
+                String[] p = k.split("\\.");
+                f = "TIME_" + (p.length == 2 ? p[1] : p[1].substring(0, 1) + (p[2].equals("PLURAL") ? "s" : ""));
+            }
+            else f = k;
+
+            try {
+                me.getClass().getDeclaredField(f).set(me, translate(langConf.getString(k)));
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void papersPlease() {
-      if (!langConf.contains("CONFIRMSG")) return;
-      if (langConf.getString("CONFIRMSG").split("%CONFIRM%").length != 2) {
-          langConf.set("CONFIRMSG", dV().get("CONFIRMSG"));
-          Bukkit.getLogger().warning("Messages.yml: invalid CONFIRMSG... Reset to default!");
-      } // @see TeleportGoneWild.oralExam() => Could cause issues.
+        if (langConf.contains("CONFIRMSG") && langConf.getString("CONFIRMSG").split("%CONFIRM%").length != 2) {
+            langConf.set("CONFIRMSG", dV().get("CONFIRMSG"));
+            Bukkit.getLogger().warning("Messages.yml: invalid CONFIRMSG... Reset to default!");
+        } // @see TeleportGoneWild.oralExam() => Could cause issues.
+
+        if (langConf.contains("DIRECTION"))
+            for (String c : langConf.getKeys(false)) {
+                if (!langConf.contains("DIRECTION." + c)) continue;
+
+                String o = langConf.getString("DIRECTION." + c), v = o.replaceAll("\\s", "");
+
+                if (!o.equals(v)) {
+                    langConf.set("DIRECTION." + c, v);
+                    Bukkit.getLogger().warning("Messages.yml: DIRECTION." + c + " contains blanks... removed!");
+                }
+            } // Used in command, so cannot contains blank characters.
     }
 }
