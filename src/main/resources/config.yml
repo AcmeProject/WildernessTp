@@ -52,6 +52,8 @@ barStyle:
 
 # If false, cooldowns are per world not global
 shareCoolDown: true # /!\ If true, overriden values of "Cooldown" will be ignored
+# If true, extinguish adjacent blocks in nether after a WildTP
+callFiremenInNether: true # (Ignored if not in nether)
 
 # If true, if you request a RTP, you cannot move until its done
 freezeWhileRTP: false
@@ -141,6 +143,8 @@ Effects:
 # Bounds of the wildness (named XY and not XZ... Another proof! #CatEarthSociety)
 MinXY: -5000
 MaxXY: 5000
+# If true, border is recalculated each RTP, each tries (so you should let it false if not required)
+movingBorder: false
 
 Wait: 5      # (seconds) Time the player have to wait between he type the command and tp be sent in wild
 Retries: 6   # Max attempt the plugin will try to find a safe place to tp the player
@@ -236,6 +240,7 @@ overrides: {} # <=== « {} » means there is no overrides at all
 #     moveCancelRTP: false
 #     MinXY: -1000
 #     MaxXY: 1000
+#     movingBorder: true
 #     Wait: 0
 #     Retries: 1
 #     Cooldown: 0
@@ -243,6 +248,7 @@ overrides: {} # <=== « {} » means there is no overrides at all
 #     paidTPconfirmation: 120
 #     DoCommands: false
 #     PostCommands: []
+#     callFiremenInNether: false
 #     dropPlayerFromAbove: true
 #     dropPlayerFromHeight: 128
 #     Bypass:

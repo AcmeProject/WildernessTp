@@ -20,6 +20,8 @@ import net.poweredbyhate.wildtp.TeleportGoneWild.Trigger;
  * Created by arboriginal on 7/10/2019.
  */
 class WorldConfig {
+    private int minXY, maxXY;
+
     boolean bar_enabled, doCommandz, dr0p1n, freeze, freezePortal, moveCancel, moveCancelPortal,
             bypass_cooldown_cmd,
             bypass_cooldown_gui,
@@ -35,7 +37,7 @@ class WorldConfig {
             bypass_delay_gui,
             bypass_delay_guy,
             bypass_delay_sg1,
-            bypass_delay_pan;
+            bypass_delay_pan, harlemShake, whoYaGonaCall; // THOSE BASTARDS!
 
     int coolDownTeim, cost, dr0pFr0m, retries, confirmDelay, maxX, maxZ, minX, minZ, wamuppah,
             portal_max_x, portal_max_y, portal_max_z;
@@ -79,6 +81,7 @@ class WorldConfig {
         dr0pFr0m            = i("dropPlayerFromHeight",     s, c);
         freeze              = b("freezeWhileRTP",           s, c);
         freezePortal        = b("Portals.freezeWhileRTP",   s, c);
+        harlemShake         = b("movingBorder",             s, c);
         moveCancel          = b("moveCancelRTP",            s, c);
         moveCancelPortal    = b("Portals.moveCancelRTP",    s, c);
         nonoBlocks          = h("BlockedBlocks",            s, c);
@@ -88,11 +91,40 @@ class WorldConfig {
         portal_max_z        = i("Portals.zMax",             s, c);
         retries             = i("Retries",                  s, c);
         wamuppah            = i("Wait",                     s, c);
+        whoYaGonaCall       = b("callFiremenInNether",      s, c);
         // @formatter:on
         checKar = (shared == null) ? new ChecKar(coolDownTeim) : shared;
         effects = hurryPeter(s, c, wamuppah);
         if (bar_enabled) paulDance(s, c);
-        weNeedToBuildaWallTrumpSaidItAndObviouslyEverybodyLikeHim(i("MinXY", s, c), i("MaxXY", s, c));
+        // Pa pa l'americano, Whisky soda e rockenroll!
+        maxXY = i("MaxXY", s, c);
+        minXY = i("MinXY", s, c);
+        weNeedToBuildaWallTrumpSaidItAndObviouslyEverybodyLikeHim();
+    }
+
+    void weNeedToBuildaWallTrumpSaidItAndObviouslyEverybodyLikeHim() {
+        if (WildTP.wb) {
+            BorderData b = Config.Border(world.getName());
+            // We don't need no education...
+            if (b != null) {
+                Boolean s = b.getShape();
+                int     x = b.getRadiusX(), z = b.getRadiusZ();
+                // (guitar riff)
+                if ((s == null && Config.ShapeRound()) || (s != null && s)) {
+                    x = (int) (Math.sqrt(2) * x) / 2;
+                    z = (int) (Math.sqrt(2) * z) / 2;
+                }
+                // We don't need no thought control...
+                sendBrick(minXY, maxXY, (int) b.getX() - x, (int) b.getX() + x, (int) b.getZ() - z, (int) b.getZ() + z);
+                return;
+            }
+        }
+        // Hey! Teachers! Leave those kids alone!
+        WorldBorder b = world.getWorldBorder();
+        if (b == null) return;
+        int r = (int) b.getSize(), x = b.getCenter().getBlockX(), z = b.getCenter().getBlockZ();
+        // All in all you're just another brick in the wall
+        sendBrick(minXY, maxXY, x - r, x + r, z - r, z + r);
     }
 
     private boolean b(String k, ConfigurationSection v, ConfigurationSection d) {
@@ -146,31 +178,6 @@ class WorldConfig {
             Bukkit.getLogger().warning("Your bossbar settings are wrong... bar disabled. RTFM!");
             bar_enabled = false;
         }
-    }
-
-    private void weNeedToBuildaWallTrumpSaidItAndObviouslyEverybodyLikeHim(int xy, int XY) {
-        if (WildTP.wb) {
-            BorderData b = Config.Border(world.getName());
-            // We don't need no education...
-            if (b != null) {
-                Boolean s = b.getShape();
-                int     x = b.getRadiusX(), z = b.getRadiusZ();
-                // (guitar riff)
-                if ((s == null && Config.ShapeRound()) || (s != null && s)) {
-                    x = (int) (Math.sqrt(2) * x) / 2;
-                    z = (int) (Math.sqrt(2) * z) / 2;
-                }
-                // We don't need no thought control...
-                sendBrick(xy, XY, (int) b.getX() - x, (int) b.getX() + x, (int) b.getZ() - z, (int) b.getZ() + z);
-                return;
-            }
-        }
-        // Hey! Teachers! Leave those kids alone!
-        WorldBorder b = world.getWorldBorder();
-        if (b == null) return;
-        int r = (int) b.getSize(), x = b.getCenter().getBlockX(), z = b.getCenter().getBlockZ();
-        // All in all you're just another brick in the wall
-        sendBrick(xy, XY, x - r, x + r, z - r, z + r);
     }
 
     private void sendBrick(int minXY, int maxXY, int x, int X, int z, int Z) {

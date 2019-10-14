@@ -30,10 +30,7 @@ class RandomLocationSearchTask implements Callable<Location> {
     }
 
     FutureTask<Location> search(Direction disway) {
-        maxX = wc.maxX;
-        maxZ = wc.maxZ;
-        minX = wc.minX;
-        minZ = wc.minZ;
+        iknowamethodnamewhichenervespeopleiknowamethodnamewhichenervespeopleiknowamethodnamewhichenervespeople();
 
         if (disway != null) {
             Location l = player.getLocation();
@@ -66,8 +63,10 @@ class RandomLocationSearchTask implements Callable<Location> {
         // There is no tries... DO or DON'T
         while (retries-- >= 0) {
             if (!TooCool2Teleport.isCold(player)) throw new Exception("event was cancelled!");
-            
+
             TeleportGoneWild.focus(player, wc, retries);
+            // Con los terroristas...
+            if (wc.harlemShake) rickRoll();
             // Come on baby, do the Loco-motion
             final Location loco, l0c0 = new Location(wc.world, r4nd0m(maxX, minX), 10, r4nd0m(maxZ, minZ));
 
@@ -93,11 +92,11 @@ class RandomLocationSearchTask implements Callable<Location> {
         if (bonelessIceScream(loco)) loco = netherLocation(loco, 110);
         else loco.setY(loco.getWorld().getHighestBlockYAt(loco) - 1);
         // @formatter:off
-        return (!wc.nonoBlocks.contains(loco.getBlock().getType().name())
+        return (loco != null && !wc.nonoBlocks.contains(loco.getBlock().getType().name())
                 && n0tAGreifClam(loco)) ? loco.add(0, 1, 0): null; // @formatter:on
     }
 
-    static Location netherLocation(Location l0c0, int max) { // @formatter:off
+    private Location netherLocation(Location l0c0, int max) { // @formatter:off
         Block b = l0c0.getBlock(); for (int d = 0; d < max;) if (
             b.getRelative(BlockFace.UP, d++).getType() == Material.AIR
         &&  b.getRelative(BlockFace.UP, d++).getType() == Material.AIR
@@ -131,6 +130,18 @@ class RandomLocationSearchTask implements Callable<Location> {
         }
 
         return (dataaaastorege == null) || (dataaaastorege.getClaimAt(l0c0, true, null) == null);
+    }
+
+    private void rickRoll() {
+        wc.weNeedToBuildaWallTrumpSaidItAndObviouslyEverybodyLikeHim();
+        iknowamethodnamewhichenervespeopleiknowamethodnamewhichenervespeopleiknowamethodnamewhichenervespeople();
+    }
+
+    private void iknowamethodnamewhichenervespeopleiknowamethodnamewhichenervespeopleiknowamethodnamewhichenervespeople() {
+        maxX = wc.maxX;
+        maxZ = wc.maxZ;
+        minX = wc.minX;
+        minZ = wc.minZ;
     }
 
     static void jk(Player p) {

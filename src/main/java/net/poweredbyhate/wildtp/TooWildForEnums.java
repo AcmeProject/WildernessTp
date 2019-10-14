@@ -34,6 +34,7 @@ class TooWildForEnums {
         NO_MONEY,
         NO_PERMS,
         NO_SIGN_PERMS,
+        PENDING_RTP,
         PORTAL404,
         PORTALADD,
         PORTALBEGIN,
@@ -103,6 +104,7 @@ class TooWildForEnums {
         dv.put("NO_MONEY",      "&cYou are too poor to deserve a teleport at this time.");
         dv.put("NO_PERMS",      "&4You do not have permission!");
         dv.put("NO_SIGN_PERMS", "&4You do not have permission to make a wild sign");
+        dv.put("PENDING_RTP",   "&cA WildTP request is already pending...");
         dv.put("PORTAL404",     "&cThis portal doesn't exists...");
         dv.put("PORTALADD",     "&aPortal &l%NAME% &acreated!");
         dv.put("PORTALBEGIN",   "&bClick two corners to create your portal.");

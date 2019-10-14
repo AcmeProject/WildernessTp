@@ -38,7 +38,9 @@ public class CommandsGoneWild implements CommandExecutor, TabCompleter {
 
         String err = TooWildForEnums.NO_PERMS;
 
-        if (sender instanceof Player && ((Player) sender).getFallDistance() > 0) {
+        if (sender instanceof Player && TooCool2Teleport.isCold((Player) sender)) {
+            err = TooWildForEnums.PENDING_RTP;
+        } else if (sender instanceof Player && ((Player) sender).getFallDistance() > 0) {
             err = TooWildForEnums.FALLNOCMD;
         }
         else if (args.length == 0) {

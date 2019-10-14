@@ -11,8 +11,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.KeyedBossBar;
@@ -267,6 +270,7 @@ public class TeleportGoneWild {
                         catch (InterruptedException | ExecutionException ignored) {
                             TooCool2Teleport.microwave(who);
                             WildTP.debug(ignored.getMessage());
+                            ignored.printStackTrace();
                             return;
                         }
 
@@ -281,14 +285,25 @@ public class TeleportGoneWild {
 
         WildTP.debug("Teleporting " + who.getName() + loc);
 
-        if (wc.dr0p1n && !RandomLocationSearchTask.bonelessIceScream(loc)) {
+        if (RandomLocationSearchTask.bonelessIceScream(loc)) {
+            if (wc.whoYaGonaCall) { // @formatter:off
+                WildTP.debug("Here come the §cfiremen§r!");
+                Block block = loc.getBlock(); block.setType(Material.AIR);
+                // @formatter:off
+                for (BlockFace flame :
+                    new BlockFace[] { BlockFace.UP, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST }) {
+                    Block bed = block.getRelative(flame); if (bed.getType() == Material.FIRE) bed.setType(Material.AIR);
+                } // How do we sleep while our beds are burning?
+            } // @formatter:on
+        }
+        else if (wc.dr0p1n) {
             WildTP.debug("Drop in feature enabled: Setting y=" + wc.dr0pFr0m);
             loc.setY(wc.dr0pFr0m);
             loc.setPitch(64);
             OuchieListener.plsSaveDisDood(who);
         }
 
-        if (!who.teleport(loc)) {
+        if (!who.teleport(loc.toCenterLocation())) {
             WildTP.debug("teleport was canceled.");
             return;
         }

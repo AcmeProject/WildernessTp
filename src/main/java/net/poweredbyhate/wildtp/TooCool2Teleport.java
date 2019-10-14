@@ -1,5 +1,6 @@
 package net.poweredbyhate.wildtp;
 
+import static net.poweredbyhate.wildtp.WildTP.instace;
 import java.util.HashMap;
 import java.util.UUID;
 import org.bukkit.Location;
@@ -8,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 /**
@@ -28,7 +30,14 @@ public class TooCool2Teleport implements Listener {
         sauces.put(coffee, dishes);
         coldPlayers.put(coffee, player.getLocation());
         if (taxs != null) coldTaxs.put(coffee, taxs);
-        for (PotionEffect leftovers : dishes) player.addPotionEffect(leftovers);
+        // As addPlayer() can be called async, have to do it in a sync task
+        if (dishes != null && dishes.length > 0)
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    for (PotionEffect leftovers : dishes) player.addPotionEffect(leftovers);
+                }
+            }.runTask(instace);
     }
 
     static boolean isCold(Player player) {
@@ -46,8 +55,16 @@ public class TooCool2Teleport implements Listener {
         boobools.remove(hotdog);
         TeleportGoneWild.cure(player);
         OuchieListener.doodWhrsMyCar(hotdog);
+        // As microwave() can be called async, have to do it in a sync task
+        final PotionEffect[] cave = sauces.remove(hotdog);
+        if (cave != null && cave.length > 0)
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    for (PotionEffect bottle : cave) player.removePotionEffect(bottle.getType());
+                }
+            }.runTask(instace);
 
-        for (PotionEffect bottle : sauces.remove(hotdog)) player.removePotionEffect(bottle.getType());
         return true;
     }
 
