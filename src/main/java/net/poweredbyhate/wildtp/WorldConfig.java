@@ -39,7 +39,7 @@ class WorldConfig {
             bypass_delay_sg1,
             bypass_delay_pan, harlemShake, whoYaGonaCall; // THOSE BASTARDS!
 
-    int coolDownTeim, cost, dr0pFr0m, retries, confirmDelay, maxX, maxZ, minX, minZ, wamuppah,
+    int coolDownTeim, cost, dr0pFr0m, fusRoDah, retries, confirmDelay, maxX, maxZ, minX, minZ, wamuppah,
             portal_max_x, portal_max_y, portal_max_z;
 
     BarColor        bar_color_searching, bar_color_waiting;
@@ -81,6 +81,7 @@ class WorldConfig {
         dr0pFr0m            = i("dropPlayerFromHeight",     s, c);
         freeze              = b("freezeWhileRTP",           s, c);
         freezePortal        = b("Portals.freezeWhileRTP",   s, c);
+        fusRoDah            = i("Portals.push",             s, c);
         harlemShake         = b("movingBorder",             s, c);
         moveCancel          = b("moveCancelRTP",            s, c);
         moveCancelPortal    = b("Portals.moveCancelRTP",    s, c);

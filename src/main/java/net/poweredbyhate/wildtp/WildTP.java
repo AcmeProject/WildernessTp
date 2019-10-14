@@ -23,7 +23,7 @@ public class WildTP extends JavaPlugin {
     private boolean wamuppahTooCool = false;
     // @formatter:off
     static boolean
-        enableUselessGUI, isDebug, newPlayersTeleported, noCreditJustCash, notPaper,
+        ab, enableUselessGUI, isDebug, newPlayersTeleported, noCreditJustCash, notPaper,
         useExperimentalChekar, useOtherChekar, useRandomeWorldz, wb;
     // @formatter:on
     static ConfigurationSection   randomeWorlds;
@@ -122,6 +122,7 @@ public class WildTP extends JavaPlugin {
     }
 
     public void getWild(FileConfiguration config) {
+        ab                    = config.getBoolean("colldownMsgUseActionBar");
         isDebug               = config.getBoolean("debug");
         newPlayersTeleported  = config.getBoolean("teleportNewPlayers");
         randomeWorlds         = config.getConfigurationSection("randomWorlds");

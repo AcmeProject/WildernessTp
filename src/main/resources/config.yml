@@ -27,6 +27,9 @@
 # .
 # If you want to spam your console, use "debug: true"
 debug: false
+# If true, cooldown messages will use actionbar instead of chat
+# (this is useful not to spam it when players tries to reach a portal)
+colldownMsgUseActionBar: true
 
 # GUI is an attempt to do something, but it actually does nothing usesul:
 # It opens a single item inventory, on which you can click to RTP.
@@ -93,10 +96,13 @@ Portals:
   # If true, if you enter a portal and move, this will cancel the RTP
   moveCancelRTP: true
   # Max size in each axis (in block, 0 will disable the limitation)
+  # /!\ This doesn't affect previously created portals.
   xMax: 10
   yMax: 10
   zMax: 10
-  # /!\ This doesn't affect previously created portals.
+  # When a player try to reach a portal when being in cooldown, this push him back
+  push: 1 # Force of the push (integer), put 0 or less to disable
+  # /!\ Big values can be fun but will hurt & irritate your players... I mean litteraly! 
 
 Bypass: # /!\ Those settings FORCE bypass, whatever the player has permission or not!
   # Force permission « wild.wildtp.cooldown.bypass »
@@ -276,6 +282,7 @@ overrides: {} # <=== « {} » means there is no overrides at all
 #       xMax: 2
 #       yMax: 3
 #       zMax: 2
+#       push: 0
 #     Effects:
 #       COMMAND:
 #         - BLINDNESS

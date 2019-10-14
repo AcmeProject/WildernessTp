@@ -102,7 +102,7 @@ public class TeleportGoneWild {
 
         int attempt = virus.retries - retry;
 
-        bossbar.setProgress((float) attempt / virus.retries);
+        bossbar.setProgress(Math.min((float) attempt / virus.retries, 1));
         bossbar.setTitle(TooWildForEnums.ATTEMPT
                 .replace("%ATTEMPT%", "" + attempt).replace("%MAX%", "" + virus.retries));
     }
@@ -169,9 +169,10 @@ public class TeleportGoneWild {
                     ChecKar shaker = wc.checKar;
                     // Almost impossible... she's too hot
                     if (shaker.isInCooldown(ginaWilde, wc, how)) {
-                        WildTP.debug("In cooldown: yes");
-                        who.sendMessage(TooWildForEnums.COOLDOWN.replace("%TIME%", shaker.getTimeLeft(who)));
-                    }
+                        WildTP.debug("In cooldown: yes"); // @formatter:off
+                        String m = TooWildForEnums.COOLDOWN.replace("%TIME%", shaker.getTimeLeft(who));
+                        if (WildTP.ab) who.sendActionBar(m); else who.sendMessage(m);
+                    } // @formatter:on
                     else getRandomeLocation();
                 }
                 // ding dong dong you touch my tralala

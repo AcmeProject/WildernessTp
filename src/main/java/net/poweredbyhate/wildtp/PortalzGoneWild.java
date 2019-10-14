@@ -163,11 +163,22 @@ class PortalzGoneWild implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
     private void onMove(PlayerMoveEvent ev) {
         if (!hasMoved(ev.getFrom(), ev.getTo())) return;
-        // @formatter:off
+
         Player p = ev.getPlayer();
-        if (TooCool2Teleport.isCold(p) || !isInsideBermudaTriangle(p.getLocation())
-          || !will.thugz.get(p.getWorld().getName()).portal_gms.contains(p.getGameMode().toString())) return;
-        // @formatter:on    Carter: He's traversing the portal!
+        if (TooCool2Teleport.isCold(p) || !isInsideBermudaTriangle(p.getLocation())) return;
+
+        WorldConfig wc = will.thugz.get(p.getWorld().getName());
+        if (!wc.portal_gms.contains(p.getGameMode().toString())) return;
+
+        if (wc.fusRoDah > 0 && wc.checKar.isInCooldown(p.getUniqueId(), wc, Trigger.PORTAL)) {
+            p.setVelocity(p.getLocation().getDirection().normalize().multiply(-wc.fusRoDah));
+            // @formatter:off
+            String m = TooWildForEnums.COOLDOWN.replace("%TIME%", wc.checKar.getTimeLeft(p));
+            if (WildTP.ab) p.sendActionBar(m); else p.sendMessage(m);
+            // @formatter:on
+            return;
+        }
+        // Carter: He's traversing the portal!
         WildTP.debug("Player: " + p.getDisplayName() + " entered a portal");
         // Teal'c: OK, I take my laser broom for later!
         flaggleRock(p.getUniqueId(), 60);
