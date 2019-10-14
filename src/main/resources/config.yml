@@ -101,7 +101,7 @@ Portals:
   yMax: 10
   zMax: 10
   # When a player try to reach a portal when being in cooldown, this push him back
-  push: 1 # Force of the push (integer), put 0 or less to disable
+  push: 1.0 # Force of the push (float), put 0 or less to disable
   # /!\ Big values can be fun but will hurt & irritate your players... I mean litteraly! 
 
 Bypass: # /!\ Those settings FORCE bypass, whatever the player has permission or not!

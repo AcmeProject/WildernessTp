@@ -3,7 +3,6 @@ package net.poweredbyhate.wildtp;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -21,6 +20,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -44,7 +44,7 @@ class PortalzGoneWild implements Listener {
     private FileConfiguration portalConf;
     private WildTP            will;
 
-    private HashSet<UUID>              recentTPs = new HashSet<UUID>();
+    private HashMap<UUID, BukkitTask>  recentTPs = new HashMap<UUID, BukkitTask>();
     private HashMap<UUID, PortalMaker> makers    = new HashMap<UUID, PortalMaker>();
 
     HashMap<String, PortalMaker> ports;
@@ -167,11 +167,16 @@ class PortalzGoneWild implements Listener {
         Player p = ev.getPlayer();
         if (TooCool2Teleport.isCold(p) || !isInsideBermudaTriangle(p.getLocation())) return;
 
+        UUID u = p.getUniqueId();
+
+        if (recentTPs.containsKey(u)) return;
+        flaggleRock(u, 10);
+
         WorldConfig wc = will.thugz.get(p.getWorld().getName());
         if (!wc.portal_gms.contains(p.getGameMode().toString())) return;
 
-        if (wc.fusRoDah > 0 && wc.checKar.isInCooldown(p.getUniqueId(), wc, Trigger.PORTAL)) {
-            p.setVelocity(p.getLocation().getDirection().normalize().multiply(-wc.fusRoDah));
+        if (wc.fusRoDah > 0 && wc.checKar.isInCooldown(u, wc, Trigger.PORTAL)) {
+            p.setVelocity(ev.getTo().toVector().subtract(ev.getFrom().toVector()).normalize().multiply(-wc.fusRoDah));
             // @formatter:off
             String m = TooWildForEnums.COOLDOWN.replace("%TIME%", wc.checKar.getTimeLeft(p));
             if (WildTP.ab) p.sendActionBar(m); else p.sendMessage(m);
@@ -181,7 +186,7 @@ class PortalzGoneWild implements Listener {
         // Carter: He's traversing the portal!
         WildTP.debug("Player: " + p.getDisplayName() + " entered a portal");
         // Teal'c: OK, I take my laser broom for later!
-        flaggleRock(p.getUniqueId(), 60);
+        flaggleRock(u, 60);
         // O'Neil: Go go go!
         new TeleportGoneWild(Trigger.PORTAL, p).WildTeleport();
     }
@@ -192,14 +197,15 @@ class PortalzGoneWild implements Listener {
     }
 
     private void flaggleRock(UUID gobo, long mokey) {
-        recentTPs.add(gobo);
+        BukkitTask wembley = recentTPs.remove(gobo);
+        if (wembley != null) wembley.cancel();
 
-        new BukkitRunnable() {
+        recentTPs.put(gobo, new BukkitRunnable() {
             @Override
             public void run() {
                 recentTPs.remove(gobo);
             }
-        }.runTaskLaterAsynchronously(WildTP.instace, mokey);
+        }.runTaskLaterAsynchronously(WildTP.instace, mokey));
     }
 
     private boolean hasMoved(Location f, Location t) {
