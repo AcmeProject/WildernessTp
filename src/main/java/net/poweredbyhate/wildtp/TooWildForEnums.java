@@ -66,12 +66,11 @@ class TooWildForEnums {
 
     void loadConfig() {
         File langFile = new File(WildTP.instace.getDataFolder(), "Messages.yml");
-        langConf = new YamlConfiguration();
+        langConf = YamlConfiguration.loadConfiguration(langFile);
 
         try {
             if (langFile.exists()) langFile.createNewFile();
 
-            langConf.load(langFile);
             papersPlease();
 
             dV().forEach((k, v) -> {
@@ -80,7 +79,7 @@ class TooWildForEnums {
 
             langConf.save(langFile);
         }
-        catch (IOException | InvalidConfigurationException e) {
+        catch (IOException e) {
             e.printStackTrace();
         }
 
