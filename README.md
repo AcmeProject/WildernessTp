@@ -35,7 +35,7 @@ A default config file will be created for you, without extra charges, into the p
 ## Hooks with other plugins
 
 * [GriefPrevention](https://www.spigotmc.org/resources/griefprevention.1884/) RTPs can take claims in consideration.
-* Works with any other claim plugin too without any hooks!
+  * Works with any other claim plugin too without any hooks!
 * [Vault](https://www.spigotmc.org/resources/vault.34315/) RTPs can cost money.
 * [WorldBorder](https://www.spigotmc.org/resources/worldborder.60905/) RTPs can be bound by the world border.
 
