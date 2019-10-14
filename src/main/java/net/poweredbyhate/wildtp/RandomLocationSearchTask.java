@@ -1,265 +1,152 @@
 package net.poweredbyhate.wildtp;
 
-import com.wimbli.WorldBorder.BorderData;
-import com.wimbli.WorldBorder.Config;
+import static net.poweredbyhate.wildtp.WildTP.dataaaastorege;
+import static net.poweredbyhate.wildtp.WildTP.instace;
+import static net.poweredbyhate.wildtp.WildTP.isDebug;
+import static net.poweredbyhate.wildtp.WildTP.useExperimentalChekar;
+import static net.poweredbyhate.wildtp.WildTP.useOtherChekar;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.WorldBorder;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.ThreadLocalRandom;
+import net.poweredbyhate.wildtp.TeleportGoneWild.Direction;
 
-import static net.poweredbyhate.wildtp.WildTP.dataaaastorege;
-import static net.poweredbyhate.wildtp.WildTP.instace;
-import static net.poweredbyhate.wildtp.WildTP.isDebug;
+class RandomLocationSearchTask implements Callable<Location> {
+    private int maxX, maxZ, minX, minZ;
 
-public class RandomLocationSearchTask implements Callable<Location> {
-    private World world;
-    private final Player player;
+    private Player      player;
+    private WorldConfig wc;
 
-    private RandomLocationSearchTask(World world, Player player) {
-        this.world = world;
-        this.player = player;
+    RandomLocationSearchTask(Player p, WorldConfig flatEarthProofs) {
+        player = p;
+        wc     = flatEarthProofs;
     }
 
-    public static FutureTask<Location> search(World world, Player player) {
-        FutureTask<Location> futureTask = new FutureTask<>(new RandomLocationSearchTask(world, player));
-        instace.getServer().getScheduler().runTaskAsynchronously(instace, futureTask);
+    FutureTask<Location> search(Direction disway) {
+        iknowamethodnamewhichenervespeopleiknowamethodnamewhichenervespeopleiknowamethodnamewhichenervespeople();
+
+        if (disway != null) {
+            Location l = player.getLocation();
+
+            switch (disway) { // @formatter:off
+              case EAST:  minX = l.getBlockX(); break;
+              case NORTH: maxZ = l.getBlockZ(); break;
+              case SOUTH: minZ = l.getBlockZ(); break;
+              case WEST:  maxX = l.getBlockX(); break;
+          } // @formatter:on
+        }
+
+        FutureTask<Location> futureTask = new FutureTask<Location>((Callable<Location>) this);
+        Bukkit.getScheduler().runTaskAsynchronously(instace, futureTask);
+
         return futureTask;
+    }
+
+    static boolean bonelessIceScream(Location location) {
+        return (location.getWorld().getEnvironment() == World.Environment.NETHER);
+    }
+
+    static int r4nd0m(int max, int min) {
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
     @Override
     public Location call() throws Exception {
-        final boolean pageRipper = (world == null && instace.useRandomeWorldz);
-        if (world == null) {
-            if (instace.useRandomeWorldz)
-                world = getRandomeWorld(instace.randomeWorlds);
-            else if (player != null)
-                world = player.getWorld();
-            else
-                return null;
-        }
-
-        World finalWorld = world;
-        WorldConfig wc = instace.thugz.get(finalWorld.getName());
-        MinYMaX minmax = new MinYMaX(world, wc);
-        int retries = wc.retries;
-
-        if (WildTP.notPaper) {
-            for (int i = 0; i < Math.min(retries, 4); i++) {
-                Location loco = new Location(world, r4nd0m(minmax.maxX, minmax.minX), 5, r4nd0m(minmax.maxY, minmax.minY));
-                if (bonelessIceScream(loco))
-                    loco = netherLocation(loco);
-                if (loco == null)
-                    continue;
-                Location finalLoco = loco;
-                String locoBlockBiomeString = instace.getServer().getScheduler().callSyncMethod(instace, new Callable<String>() {
-                    @Override
-                    public String call() throws Exception {
-                        return finalLoco.getBlock().getBiome().toString();
-                    }
-                }).get();
-                if (!wc.bioman.contains(locoBlockBiomeString)) {
-                    if (!bonelessIceScream(loco))
-                        loco.setY(world.getHighestBlockYAt(loco) - 1);
-                    loco.setX(loco.getX() + 0.5D);
-                    loco.setZ(loco.getZ() + 0.5D);
-                    if (n0tAB4dB10ck(loco, true)) {
-                        if (!n0tAGreifClam(loco, player))
-                            continue;
-                        loco.setY(loco.getY() + 1);
-                        if (n0tAB4dB10ck(loco, false)) {
-                            loco.setY(loco.getY() + 2.5);
-                            return loco;
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
+        int retries = WildTP.notPaper ? Math.min(wc.retries, 4) : wc.retries;
+        // There is no tries... DO or DON'T
         while (retries-- >= 0) {
-            World rippedPage = finalWorld;
-            if (pageRipper) rippedPage = getRandomeWorld(instace.randomeWorlds);
-            WorldConfig dirty = instace.thugz.get(rippedPage.getName());
-            minmax = new MinYMaX(rippedPage, dirty);
-            Location loco = new Location(rippedPage, r4nd0m(minmax.maxX, minmax.minX), 5, r4nd0m(minmax.maxY, minmax.minY));
-            try {
-                rippedPage.getChunkAtAsync(loco, true).get();
-                Location l0c0 = loco;
-                loco = instace.getServer().getScheduler().callSyncMethod(instace, new Callable<Location>() {
-                    @Override
-                    public Location call() throws Exception {
-                        return chekar(l0c0, player, dirty.bioman);
-                    }
-                }).get();
-                Location l0co = loco;
-                if (loco != null) {
-                    return loco;
+            if (!TooCool2Teleport.isCold(player)) throw new Exception("event was cancelled!");
+
+            TeleportGoneWild.focus(player, wc, retries);
+            // Con los terroristas...
+            if (wc.harlemShake) rickRoll();
+            // Come on baby, do the Loco-motion
+            final Location loco, l0c0 = new Location(wc.world, r4nd0m(maxX, minX), 10, r4nd0m(maxZ, minZ));
+
+            if (WildTP.notPaper) wc.world.getChunkAt(l0c0);
+            else wc.world.getChunkAtAsync(l0c0, true).get();
+
+            loco = Bukkit.getScheduler().callSyncMethod(instace, new Callable<Location>() {
+                @Override
+                public Location call() throws Exception {
+                    return chekar(l0c0);
                 }
+            }).get();
 
-            } catch (InterruptedException | ExecutionException e) {
-                if (isDebug)
-                    e.printStackTrace();
-                continue;
-            }
-
+            if (loco != null) return loco;
         }
+
+        TeleportGoneWild.cure(player);
         return null;
     }
 
-    public Location chekar(Location loco, Player player, HashSet<String> ultraman) {
-        if (bonelessIceScream(loco)) loco = netherLocation(loco);
-        if (!ultraman.contains(loco.getBlock().getBiome().toString())) {
-            if (!bonelessIceScream(loco))
-                loco.setY(loco.getWorld().getHighestBlockYAt(loco) - 1);
-            loco.setX(loco.getX() + 0.5D);
-            loco.setZ(loco.getZ() + 0.5D);
-
-            if (n0tAB4dB10ck(loco, true)) {
-                if (!n0tAGreifClam(loco, player))
-                    return null;
-                loco.setY(loco.getY() + 1);
-                if (n0tAB4dB10ck(loco, false)) {
-                    loco.setY(loco.getY() + 2.5);
-                    return loco;
-                }
-            }
-        }
-        return null;
+    private Location chekar(Location loco) {
+        if (wc.bioman.contains(loco.getBlock().getBiome().toString())) return null;
+        if (bonelessIceScream(loco)) loco = netherLocation(loco, 110);
+        else loco.setY(loco.getWorld().getHighestBlockYAt(loco) - 1);
+        // @formatter:off
+        return (loco != null && !wc.nonoBlocks.contains(loco.getBlock().getType().name())
+                && n0tAGreifClam(loco)) ? loco.add(0, 1, 0): null; // @formatter:on
     }
 
-    public World getRandomeWorld(ConfigurationSection imDaMap) {
-        Map<Integer, World> hesDaMap = new LinkedHashMap<>();
-        Integer totalChance = 0;
-        for (String worldString : imDaMap.getKeys(false)) {
-            World world = Bukkit.getWorld(worldString);
-            if (world == null) {
-                instace.getLogger().warning("World \"" + worldString + "\" does not exist. We recommend removing the world from randomWorlds in config.yml");
-                continue;
-            }
-            totalChance = totalChance + (Integer) imDaMap.get(worldString);
-            hesDaMap.put(totalChance, world);
-        }
-        int daChosenOne = r4nd0m(totalChance, 0);
-        for (Integer blah : hesDaMap.keySet()) {
-            if (blah >= daChosenOne)
-                return hesDaMap.get(blah);
-        }
-        return null;
-    }
+    private Location netherLocation(Location l0c0, int max) { // @formatter:off
+        Block b = l0c0.getBlock(); for (int d = 0; d < max;) if (
+            b.getRelative(BlockFace.UP, d++).getType() == Material.AIR
+        &&  b.getRelative(BlockFace.UP, d++).getType() == Material.AIR
+        && !b.getRelative(BlockFace.UP, d-3).isPassable()) return b.getLocation().add(0, d-3, 0); return null;
+    } // @formatter:on
 
-    public static int r4nd0m(int max, int min) {
-        return ThreadLocalRandom.current().nextInt(min, max + 1);
-    }
-
-    public boolean n0tAGreifClam(Location l0c0, Player player) {
-        if ((instace.useExperimentalChekar || instace.useOtherChekar) && player != null) {
-            try {
-                BlurredBlockBreakEvent iHopePluginsDontFreakOutOverThis = new BlurredBlockBreakEvent(l0c0.getBlock(), new JohnBonifield(player));
-                CodeACertainBallWillStealEvent theQueueBall = new CodeACertainBallWillStealEvent(l0c0.clone().add(0, 1, 0), player);
+    private boolean n0tAGreifClam(Location l0c0) {
+        if ((useExperimentalChekar || useOtherChekar) && player != null) {
+            try { // @formatter:off
+                BlurredBlockBreakEvent iHopePluginsDontFreakOutOverThis
+                    = new BlurredBlockBreakEvent(l0c0.getBlock(), new JohnBonifield(player));
+                CodeACertainBallWillStealEvent theQueueBall
+                    = new CodeACertainBallWillStealEvent(l0c0.clone().add(0, 1, 0), player);
+                // @formatter:on
                 player.setMetadata("nocheat.exempt", new FixedMetadataValue(instace, true));
-                if (instace.useExperimentalChekar)
-                    instace.getServer().getPluginManager().callEvent(iHopePluginsDontFreakOutOverThis);
-                if (instace.useOtherChekar)
-                    instace.getServer().getPluginManager().callEvent(theQueueBall);
+
+                if (useExperimentalChekar)
+                    Bukkit.getPluginManager().callEvent(iHopePluginsDontFreakOutOverThis);
+                if (useOtherChekar)
+                    Bukkit.getPluginManager().callEvent(theQueueBall);
+
                 player.removeMetadata("nocheat.exempt", instace);
 
-                return !(instace.useExperimentalChekar && iHopePluginsDontFreakOutOverThis.isExposed()) && !(instace.useOtherChekar && theQueueBall.isExposed());
-            } catch (Throwable rock) {
-                if (isDebug)
-                    rock.printStackTrace();
+                return !(useExperimentalChekar && iHopePluginsDontFreakOutOverThis.isExposed())
+                        && !(useOtherChekar && theQueueBall.isExposed());
+            }
+            catch (Throwable rock) {
+                if (isDebug) rock.printStackTrace();
                 player.removeMetadata("nocheat.exempt", instace);
             }
         }
 
-        if (dataaaastorege != null) {
-            return instace.dataaaastorege.getClaimAt(l0c0, true, null) == null;
-        }
-
-        return true;
+        return (dataaaastorege == null) || (dataaaastorege.getClaimAt(l0c0, true, null) == null);
     }
 
-    public boolean n0tAB4dB10ck(Location l0c0, boolean checkAir) {
-        Material blockType = l0c0.getBlock().getType();
-        return !instace.thugz.get(l0c0.getWorld().getName()).nonoBlocks.contains(blockType.name()) &&
-                (!checkAir || (blockType != Material.AIR && blockType != Material.CAVE_AIR && blockType != Material.VOID_AIR));
+    private void rickRoll() {
+        wc.weNeedToBuildaWallTrumpSaidItAndObviouslyEverybodyLikeHim();
+        iknowamethodnamewhichenervespeopleiknowamethodnamewhichenervespeopleiknowamethodnamewhichenervespeople();
     }
 
-    private boolean bonelessIceScream(Location location) {
-        if (location.getWorld().getEnvironment() != World.Environment.NETHER)
-            return false;
-        location = location.clone();
-        location.setY(127);
-        return location.getBlock().getType() == Material.BEDROCK;
+    private void iknowamethodnamewhichenervespeopleiknowamethodnamewhichenervespeopleiknowamethodnamewhichenervespeople() {
+        maxX = wc.maxX;
+        maxZ = wc.maxZ;
+        minX = wc.minX;
+        minZ = wc.minZ;
     }
 
-    Location netherLocation(Location l0c0) {
-        l0c0.setY(1);
-        while (l0c0.getY() < 125) {
-            //Is current block an air block?
-            if (l0c0.getBlock().getType() != Material.AIR) {
-                l0c0 = l0c0.getBlock().getRelative(BlockFace.UP).getLocation();
-                continue;
-            }
-            //Is block above also an air block?
-            if (l0c0.getBlock().getRelative(BlockFace.UP).getType() != Material.AIR) {
-                l0c0 = l0c0.getBlock().getRelative(BlockFace.UP).getLocation();
-                continue;
-            }
-            l0c0 = l0c0.getBlock().getRelative(BlockFace.DOWN).getLocation();
-            return l0c0.getBlock().getRelative(BlockFace.DOWN).getLocation();
-        }
-        return null;
-    }
-}
-
-class MinYMaX {
-    int minX, maxX, minY, maxY, minXY, maxXY;
-
-    MinYMaX(World w, WorldConfig wc) {
-        minX = minY = minXY = wc.minXY;
-        maxX = maxY = maxXY = wc.maxXY;
-      
-        findWall(w);
-    }
-
-    private void findWall(World w) {
-        if (WildTP.wb) {
-            BorderData border = Config.Border(w.getName());
-            if (border != null) {
-                int x = border.getRadiusX();
-                int y = border.getRadiusZ();
-                if ((border.getShape() == null && Config.ShapeRound()) || (border.getShape() != null && border.getShape())) {
-                    x = (int) (Math.sqrt(2) * x) / 2;
-                    y = (int) (Math.sqrt(2) * y) / 2;
-                }
-                minX = Math.max((int) border.getX() - x, minXY);
-                maxX = Math.min((int) border.getX() + x, maxXY);
-                minY = Math.max((int) border.getZ() - y, minXY);
-                maxY = Math.min((int) border.getZ() + y, maxXY);
-                WildTP.debug("Bord" + minX + ";" + maxX + ":" + minY + ";" + maxY);
-                return;
-            }
-        }
-
-        WorldBorder b = w.getWorldBorder();
-        if (b == null) return;
-
-        minX = Math.max(b.getCenter().getBlockX() - (int) b.getSize(), minXY);
-        maxX = Math.min(b.getCenter().getBlockX() + (int) b.getSize(), maxXY);
-        minY = Math.max(b.getCenter().getBlockZ() - (int) b.getSize(), minXY);
-        maxY = Math.min(b.getCenter().getBlockZ() + (int) b.getSize(), maxXY);
-        WildTP.debug("Bord" + minX + ";" + maxX + ":" + minY + ";" + maxY);
+    static void jk(Player p) {
+        if (p.getName().equalsIgnoreCase("LaxWasHere") || p.getName().equalsIgnoreCase("RoboMWM"))
+            p.sendMessage("§7" + new StringBuilder("ulk§d§ lulk§e§ lulk§d§ ?ydnac emos "
+                    + "tnaw yeH3§ lulk§d§ lulk§e§ lulk§d§ >7§raebodepl§6§<").reverse());
     }
 }

@@ -1,5 +1,5 @@
 name: Wild
-version: "2.11"
+version: "2.12"
 
 authors: [LaxWasHere,RoboMWM]
 website: https://www.spigotmc.org/resources/wilderness-tp.22853/
@@ -17,6 +17,7 @@ commands:
     usage: |
       /wild - Teleport randomly in the current world
       /wild [player] - Teleport randomly the given player
+      /wild [player] [world] - Teleport randomly this player in given world
       /wild [north/south/east/west] - Teleport randomly in the given direction
       /wild [world] - Teleport randomly in the given world
 
@@ -28,6 +29,7 @@ commands:
       /wildtp list - List existing portals
       /wildtp create [name] - Create a portal
       /wildtp delete [name] - Delete the given portal
+      /wildtp link [name] [name]- Link two portals
       /wildtp reload - Reload the plugin configuration
       /wildtp gui - Open the plugin user interface
 
@@ -48,6 +50,14 @@ permissions:
     description: Allows to use /wildtp [create/delete/list]
     default: op
 
+  wild.wildtp.portals:
+    description: Allows to use /wildtp portal [name]
+    default: op
+
+  wild.link.portals:
+    description: Allows to use /wildtp link [name] [name]
+    default: op
+
   wild.wildtp.create.sign:
     description: Gives the player ability to create WildTp signs
     default: op
@@ -63,6 +73,11 @@ permissions:
   wild.wildtp.others:
     description: Allows to use /wild [player]
     default: op
+
+  wild.wildtp.others.*: # (require wild.wildtp.others)
+    description: Allows to use /wild [player] [world] in all worlds
+    default: true
+    # This permission has dynamic derivatives, see below
 
   wild.wildtp.reload:
     description: Allows to use /wildtp reload
@@ -83,10 +98,12 @@ permissions:
   wild.wildtp.world.*: # (require wild.wildtp.world)
     description: Allows to use /wild [world] in all worlds
     default: true
+    # This permission has dynamic derivatives, see below
 
   wild.wildtp.world.*.free:
     description: Allows to teleport without having to pay whatever the world
     default: false
+    # This permission has dynamic derivatives, see below
 
 #######################
 # Dynamic permissions #
@@ -100,9 +117,15 @@ permissions:
 #   description: Allows to teleport without having to pay in <worldname>
 #   default: false
 #
+# wild.wildtp.others.<worldname>: # (require wild.wildtp.others)
+#   description: Allows to use /wild [player] [world] in <worldname>
+#   default: true
+#
 # Example:
 # * wild.wildtp.world.world_nether:  Allows player to use /wild world_nether
 # * wild.wildtp.world.world_the_end: Allows player to use /wild world_the_end
 #
 # /!\ If you want to use those permissions, you have to negate the permission wild.wildtp.world.*
 # With GroupManager, this is done with « -wild.wildtp.world.* », read the doc of your permission plugin!
+#
+# /!\ Same remark than wild.wildtp.world.* for wild.wildtp.others.* 

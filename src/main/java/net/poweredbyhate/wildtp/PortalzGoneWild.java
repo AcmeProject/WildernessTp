@@ -1,214 +1,435 @@
 package net.poweredbyhate.wildtp;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.poweredbyhate.wildtp.TeleportGoneWild.Trigger;
 
 /**
  * Created by Lax on 10/4/2016.
+ * .
+ * <arboriginal - 9/10/2019> I've made some improvements in this class. Big ones:
+ * - Pre-calculation of portals coords instead of do it for each players moves
+ * - Also test if the player has moved only once in onMove() for all portals, same for recentTP
+ * - Change HashMap keys to UUID instead of Player, because the Player object can change, not its UUID
+ * - isInside() "shitty code" has been removed, now a simplified one is used because locs already sorted
+ * - ...
  */
-public class PortalzGoneWild implements Listener {
+class PortalzGoneWild implements Listener {
+    private final String      CONFIG_KEY = "Portals";
+    private File              portalFile;
+    private FileConfiguration portalConf;
+    private WildTP            will;
 
-    public HashMap<String,String[]> ports = new HashMap<>();
-    public HashSet<Player> recentTPs = new HashSet<>();
-    public HashMap<Player, PortalMaker> makers = new HashMap<>();
-    File portalFile;
-    FileConfiguration portalConf;
+    private HashMap<UUID, BukkitTask>  recentTPs = new HashMap<UUID, BukkitTask>();
+    private HashMap<UUID, PortalMaker> makers    = new HashMap<UUID, PortalMaker>();
 
-    @EventHandler(ignoreCancelled = true)
-    public void onMove(PlayerMoveEvent ev) {
-        final Player p = ev.getPlayer();
-        for (String s : ports.keySet()) {
-            //Bukkit.broadcastMessage(String.valueOf(isInside(p.getLocation(), locationConvert(ports.get(s)[0]), locationConvert(ports.get(s)[1]))));
-            if(!hasMoved(ev)){
-                return;
-            }
-            if (recentTPs.contains(p))
-                return;
-            if (isInside(p.getLocation(), locationConvert(ports.get(s)[0]), locationConvert(ports.get(s)[1]))) {
-                WildTP.debug("Player: " + p.getDisplayName() + " entered a portal");
-                recentTPs.add(p);
-                new BukkitRunnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        recentTPs.remove(p);
-                    }
-                }.runTaskLater(WildTP.instace, 60L);
-                new TeleportGoneWild().WildTeleport(p, s,true);
-            }
-        }
-    }
+    HashMap<String, PortalMaker> ports;
 
-    @EventHandler
-    public void onClick(PlayerInteractEvent event)
-    {
-        if (!makers.containsKey(event.getPlayer()))
-            return;
-        if (event.getClickedBlock() == null)
-            return;
-        Player p = event.getPlayer();
-        if (!makers.get(event.getPlayer()).setCorner(event.getClickedBlock().getLocation()))
-        {
-            event.getPlayer().sendMessage("Now click other corner.");
-            return;
-        }
-        PortalMaker m = makers.remove(event.getPlayer());
-        savePortal("Portals."+m.name,stringConvert(p, m.two)+"~"+stringConvert(p, m.one), event.getPlayer());
-    }
-
-    public void createPortal(Player p, String name) {
-        WildTP.debug("Got create portal");
-        makers.put(p, new PortalMaker(name));
-        p.sendMessage("Click two corners to create your portal.");
-    }
-
-    public void deletePortal(CommandSender p, String name)
-    {
-        WildTP.debug("Got delete portal " + name);
-        portalFile = new File(WildTP.instace.getDataFolder(), "Portals.yml");
-        portalConf = new YamlConfiguration();
-        try {
-            portalConf.load(portalFile);
-            portalConf.set(name, null);
-            portalConf.save(portalFile);
-        } catch (InvalidConfigurationException | IOException e) {
-            e.printStackTrace();
-            p.sendMessage("Error occurred, check console logs");
-            return;
-        }
-        p.sendMessage("Portal " + name + " deleted!");
+    PortalzGoneWild(WildTP wildwildwest) {
+        will = wildwildwest;
         loadConfig();
     }
 
-    public void listPortals(CommandSender p)
-    {
-        StringBuilder yesIusedeez = new StringBuilder("Portals:  ");
-        for (String name : ports.keySet())
-            yesIusedeez.append(name + ", ");
-        yesIusedeez.setLength(yesIusedeez.length() - 2);
-        p.sendMessage(yesIusedeez.toString());
+    boolean gotoLabel5(Player drunk, String glass) {
+        PortalMaker portal = ports.get(glass);
+        if (portal == null) return false;
+
+        Location[] lolo = portal.dimensions();
+        if (lolo == null || lolo.length != 2) return false;
+
+        return drunk.teleport(new Location(
+                lolo[0].getWorld(),
+                (lolo[0].getX() + lolo[1].getX()) / 2,
+                Math.min(lolo[0].getY(), lolo[1].getY()),
+                (lolo[0].getZ() + lolo[1].getZ()) / 2));
     }
 
-    public void loadConfig() {
-        WildTP.debug("Got Load Portal Config");
-        portalFile = new File(WildTP.instace.getDataFolder(), "Portals.yml");
-        portalConf = new YamlConfiguration();
-        if (!portalFile.exists()) {
-            try {
-                portalFile.createNewFile();
-                portalConf.load(portalFile);
-                portalConf.set("Version",0.1);
-                portalConf.save(portalFile);
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
+    void deletePortal(CommandSender p, String name) {
+        if (!ports.containsKey(name.toLowerCase())) {
+            p.sendMessage(TooWildForEnums.PORTAL404);
+            return;
+        }
+
+        portalConf.set(CONFIG_KEY + "." + name, null);
+        WildTP.debug("Got delete portal " + name);
+        String cat;
+
+        if (saveConfig()) {
+            ports.remove(name);
+            cat = TooWildForEnums.PORTALDEL.replace("%NAME%", name);
+        }
+        else cat = TooWildForEnums.GENERROR;
+
+        p.sendMessage(cat);
+    }
+
+    void initPortal(Player p, String name, boolean swat) {
+        if (!swat && ports.containsKey(name.toLowerCase())) {
+            p.sendMessage(TooWildForEnums.PORTALEXIST);
+            return;
+        }
+
+        WildTP.debug("Got create portal");
+        makers.put(p.getUniqueId(), new PortalMaker(name)); // SPOILER IN THE NEXT COMMENT!
+        p.sendMessage(TooWildForEnums.PORTALBEGIN); // At the end, Marion Portillard dies!
+        p.sendMessage(TooWildForEnums.PORTALCANCEL); // (and she's not credible at all)
+    }
+
+    boolean linkPortals(CommandSender knockknock, String judasHole, String keyHole, boolean gloryHole) {
+        if (!knockknock.hasPermission("wild.link.portals")) return false;
+        // @formatter:off
+        PortalMaker judlaw = (judasHole == null) ? null : ports.get(judasHole),
+                    keynie = (keyHole   == null) ? null : ports.get(keyHole);
+        // @formatter:on
+        if (judlaw == null || keyHole == null) {
+            knockknock.sendMessage(TooWildForEnums.PORTAL404);
+            return false;
+        }
+
+        if (!gloryHole) {
+            if (judlaw.link != null) {
+                knockknock.sendMessage(TooWildForEnums.PORTALINKED.replace("%PORTAL%", judasHole));
+                return false;
             }
-        } else {
-            try {
-                portalConf.load(portalFile);
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
+
+            if (keynie.link != null) {
+                knockknock.sendMessage(TooWildForEnums.PORTALINKED.replace("%PORTAL%", keyHole));
+                return false;
             }
         }
+
+        if (judlaw.link != null && judlaw.link != keyHole) {
+            PortalMaker old = ports.get(judlaw.link);
+            old.link = null;
+            savePortal(old);
+        }
+
+        if (keynie.link != null && keynie.link != judasHole) {
+            PortalMaker old = ports.get(keynie.link);
+            old.link = null;
+            savePortal(old);
+        }
+        
+        judlaw.link = keyHole;
+        keynie.link = judasHole;
+        boolean sux = (savePortal(judlaw) && savePortal(keynie));
+
+        knockknock.sendMessage(sux ? TooWildForEnums.PORTALINKOK : TooWildForEnums.GENERROR);
+        return sux;
+    }
+
+    void listPortals(CommandSender p) {
+        boolean click = (p instanceof Player && p.hasPermission("wild.wildtp.portals"));
+
+        p.sendMessage("Portals:");
+
+        ports.forEach((name, portal) -> {
+            String spam = "- §b§l" + name + "§7:§r "
+                    + portal.one.getBlockX() + "§7/§r" + portal.one.getBlockY() + "§7/§r" + portal.one.getBlockZ()
+                    + " §7<->§r "
+                    + portal.two.getBlockX() + "§7/§r" + portal.two.getBlockY() + "§7/§r" + portal.two.getBlockZ()
+                    + " §7(" + portal.one.getWorld().getName() + ")";
+
+            if (click) {
+                p.spigot().sendMessage(new ComponentBuilder(spam)
+                        .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wild portal " + name))
+                        .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                                TextComponent.fromLegacyText(TooWildForEnums.PORTALHOVER)))
+                        .create());
+            }
+            else p.sendMessage(spam);
+        });
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    private void onClick(PlayerInteractEvent event) {
+        if (event.getHand() == EquipmentSlot.OFF_HAND) return;
+
+        final Block b = event.getClickedBlock();
+        if (b == null) return;
+
+        final Player p = event.getPlayer();
+        final UUID   u = p.getUniqueId();
+        PortalMaker  m = makers.get(u);
+        if (m == null) return;
+
+        if (isInsideBermudaTriangle(b.getLocation()) != null) {
+            p.sendMessage(TooWildForEnums.PORTALHERE);
+            return;
+        }
+
+        WorldConfig wc = will.thugz.get(b.getWorld().getName());
+        if (wc == null) return;
+        // @formatter:off
+        String r; switch (m.setCorner(b.getLocation(), wc.portal_max_x, wc.portal_max_y, wc.portal_max_z)) {
+            case 0:  r = TooWildForEnums.PORTALSTOP; makers.remove(u); break;
+            case 1:  r = TooWildForEnums.PORTALGOHAN; break;
+            // @formatter:on
+            case 2:
+                if (allYourBasesAreBelongToUs(m)) {
+                    r = TooWildForEnums.PORTALCONTAIN;
+                    makers.remove(u);
+                    break;
+                }
+
+                r = (savePortal(m) && makers.remove(u) != null)
+                        ? TooWildForEnums.PORTALADD.replace("%NAME%", m.name)
+                        : TooWildForEnums.GENERROR;
+                break;
+
+            default:
+                r = TooWildForEnums.PORTALBIG
+                        .replace("{%xMax%}", "" + wc.portal_max_x)
+                        .replace("{%yMax%}", "" + wc.portal_max_y)
+                        .replace("{%zMax%}", "" + wc.portal_max_z);
+        }
+
+        p.sendMessage(r);
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
+    private void onMove(PlayerMoveEvent ev) {
+        if (!hasMoved(ev.getFrom(), ev.getTo())) return;
+
+        Player p = ev.getPlayer();
+        if (TooCool2Teleport.isCold(p)) return;
+
+        PortalMaker blackhole = isInsideBermudaTriangle(p.getLocation());
+        if (blackhole == null) return;
+
+        UUID u = p.getUniqueId();
+
+        if (recentTPs.containsKey(u)) return;
+        flaggleRock(u, 10);
+
+        WorldConfig wc = will.thugz.get(p.getWorld().getName());
+        if (!wc.portal_gms.contains(p.getGameMode().toString())) return;
+
+        if (wc.fusRoDah > 0 && wc.checKar.isInCooldown(u, wc, Trigger.PORTAL)) {
+            p.setVelocity(ev.getTo().toVector().subtract(ev.getFrom().toVector()).normalize().multiply(-wc.fusRoDah));
+            // @formatter:off
+            String m = TooWildForEnums.COOLDOWN.replace("%TIME%", wc.checKar.getTimeLeft(p));
+            if (WildTP.ab) p.sendActionBar(m); else p.sendMessage(m);
+            // @formatter:on
+            return;
+        }
+        // Carter: He's traversing the portal!
+        WildTP.debug("Player: " + p.getDisplayName() + " entered a portal");
+        // Teal'c: OK, I take my laser broom for later!
+        flaggleRock(u, 60);
+        // O'Neil: Go go go!
+        if (blackhole.link == null) new TeleportGoneWild(Trigger.PORTAL, p).WildTeleport();
+        else gotoLabel5(p, blackhole.link);
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    private void onWildAdminAppears(PlayerTeleportEvent ev) {
+        if (isInsideBermudaTriangle(ev.getTo()) != null) flaggleRock(ev.getPlayer().getUniqueId(), 100);
+    }
+
+    private void flaggleRock(UUID gobo, long mokey) {
+        BukkitTask wembley = recentTPs.remove(gobo);
+        if (wembley != null) wembley.cancel();
+
+        recentTPs.put(gobo, new BukkitRunnable() {
+            @Override
+            public void run() {
+                recentTPs.remove(gobo);
+            }
+        }.runTaskLaterAsynchronously(WildTP.instace, mokey));
+    }
+
+    private boolean hasMoved(Location f, Location t) {
+        return (f.getBlockX() != t.getBlockX() || f.getBlockY() != t.getBlockY() || f.getBlockZ() != t.getBlockZ());
+    }
+
+    private PortalMaker isInsideBermudaTriangle(Location sailor) {
+        for (PortalMaker boat : ports.values()) if (boat.contains(sailor)) return boat;
+
+        return null;
+    }
+
+    private boolean allYourBasesAreBelongToUs(PortalMaker mine) {
+        for (PortalMaker your : ports.values()) {
+            Location[] base = your.dimensions();
+            for (int i = 0; i < 2; i++) if (base[i] != null && mine.contains(base[i])) return true;
+        }
+
+        return false;
+    }
+
+    private void loadConfig() {
+        WildTP.debug("Got Load Portal Config");
+
+        ports      = new HashMap<String, PortalMaker>();
+        portalFile = new File(WildTP.instace.getDataFolder(), "Portals.yml");
+        portalConf = new YamlConfiguration();
+
+        try {
+            if (portalFile.exists())
+                portalConf.load(portalFile);
+            else {
+                portalFile.createNewFile();
+                portalConf.save(portalFile);
+            }
+        }
+        catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
         if (portalConf.getConfigurationSection("Portals") == null) {
             WildTP.debug("No portals saved.");
             return;
         }
-        for (String s : portalConf.getConfigurationSection("Portals").getKeys(false)) {
-            ports.put(s, portalConf.getString("Portals."+s).split("~"));
-            WildTP.debug("Converting portal " + s);
-            WildTP.debug(ports.values());
+
+        for (String s : portalConf.getConfigurationSection(CONFIG_KEY).getKeys(false)) {
+            WildTP.debug("Reading portal " + s + "...");
+            PortalMaker p = new PortalMaker(s, portalConf.getString("Portals." + s));
+            if (p.isValid()) ports.put(s, p);
+            else WildTP.debug("\t\t/!\\ This one leads to the Bermuda triangle :(");
         }
+
+        WildTP.debug("Portals conf loaded: " + ports.size() + " valid portals.");
     }
 
-    public void savePortal(String name, String portal, Player p) {
-        WildTP.debug("Got save portal " + name + " " + portal);
-        portalFile = new File(WildTP.instace.getDataFolder(), "Portals.yml");
-        portalConf = new YamlConfiguration();
+    private boolean saveConfig() {
         try {
-            portalConf.load(portalFile);
-            portalConf.set(name, portal);
             portalConf.save(portalFile);
-        } catch (InvalidConfigurationException | IOException e) {
-            e.printStackTrace();
-            p.sendMessage("Error occurred, check console logs");
-            return;
+            return true;
         }
-        p.sendMessage("Portal " + name + " created!");
-        loadConfig(); //dum lax
-    }
-
-    public boolean hasMoved(PlayerMoveEvent ev) {
-        return (ev.getFrom().getX() != ev.getTo().getX() || ev.getFrom().getBlockY() != ev.getTo().getBlockY() || ev.getFrom().getZ() != ev.getTo().getZ());
-    }
-
-    public boolean isInside(Location loc, Location l1, Location l2) { //shitty code but not as shit as qballz
-        int x1 = Math.min(l1.getBlockX(), l2.getBlockX());
-        int y1 = Math.min(l1.getBlockY(), l2.getBlockY());
-        int z1 = Math.min(l1.getBlockZ(), l2.getBlockZ());
-        int x2 = Math.max(l1.getBlockX(), l2.getBlockX());
-        int y2 = Math.max(l1.getBlockY(), l2.getBlockY());
-        int z2 = Math.max(l1.getBlockZ(), l2.getBlockZ());
-        return loc.getBlockX() >= x1 && loc.getBlockX() <= x2 && loc.getBlockY() >= y1 && loc.getBlockY() <= y2 && loc.getBlockZ() >= z1 && loc.getBlockZ() <= z2;
-    }
-
-    public Location locationConvert(String s) {
-        String[] x = s.split("\\.");
-        return new Location(Bukkit.getServer().getWorld(x[0]),Integer.parseInt(x[1]),Integer.parseInt(x[2]),Integer.parseInt(x[3]));
-    }
-
-    public String stringConvert(Entity e, Location loc) {
-        return (e.getWorld().getName()+"."+loc.getBlockX()+"."+loc.getBlockY()+"."+loc.getBlockZ());
-    }
-}
-
-class PortalMaker
-{
-    String name;
-    Location one;
-    Location two;
-
-    PortalMaker(String name)
-    {
-        this.name = name;
-    }
-
-    public boolean setCorner(Location l)
-    {
-        if (this.one == null)
-        {
-            one = l;
+        catch (IOException e) {
+            e.printStackTrace();
             return false;
         }
-        two = l;
-        minymysteri();
-        return true;
     }
-    public void minymysteri()
-    {
-        Location l = one.clone();
-        Location ll = two.clone();
-        one.setX(Math.min(l.getX(), ll.getX()));
-        one.setY(Math.min(l.getY(), ll.getY()));
-        one.setZ(Math.min(l.getZ(), ll.getZ()));
-        two.setX(Math.max(l.getX(), ll.getX()));
-        two.setY(Math.max(l.getY(), ll.getY()));
-        two.setZ(Math.max(l.getZ(), ll.getZ()));
+
+    private boolean savePortal(PortalMaker pm) {
+        String diamZ = pm.xRay();
+        if (diamZ == null) return false; // Early access...
+
+        portalConf.set(CONFIG_KEY + "." + pm.name, diamZ);
+
+        if (saveConfig()) {
+            ports.put(pm.name, pm);
+            WildTP.debug("Got save portal " + pm.name + ": " + diamZ);
+            return true;
+        }
+
+        return false;
+    }
+
+    private class PortalMaker {
+        private Location one, two;
+
+        String name, link = null;
+
+        PortalMaker(String name) {
+            this.name = name.toLowerCase();
+        }
+
+        PortalMaker(String name, String lowcaution) {
+            this(name);
+
+            String[] wolf = lowcaution.split("~");
+            if (wolf.length == 3) {
+                link = wolf[2];
+                wolf = new String[] { wolf[0], wolf[1] };
+            }
+
+            if (wolf.length != 2) return;
+            WildTP.debug("\t2 one two... I can b the answer, ready 2 dance when the vamp up...");
+
+            for (String fox : wolf) {
+                WildTP.debug("\tHatee-hatee-hatee-ho! " + fox);
+                String[] weasel = fox.split("\\.");
+                if (weasel.length != 4) return;
+
+                try {
+                    setCorner(new Location(Bukkit.getWorld(weasel[0]), Integer.parseInt(weasel[1]),
+                            Integer.parseInt(weasel[2]), Integer.parseInt(weasel[3])), 0, 0, 0);
+                    WildTP.debug("\t\tDo a barrel roll!");
+                }
+                catch (Exception e) {
+                    WildTP.debug("I hear the wolf, the fox and the weasel, but not the « " + name + " » portal...");
+                }
+            }
+
+            WildTP.debug("\tTo Infinity... and Beyond!");
+        }
+
+        boolean contains(Location l) {
+            return /**/one.getBlockX() <= l.getBlockX() && l.getBlockX() <= two.getBlockX()
+                    && one.getBlockY() <= l.getBlockY() && l.getBlockY() <= two.getBlockY()
+                    && one.getBlockZ() <= l.getBlockZ() && l.getBlockZ() <= two.getBlockZ();
+        }
+
+        Location[] dimensions() {
+            return isValid() ? new Location[] { one, two } : null;
+        }
+
+        boolean isValid() {
+            return (one != null && two != null);
+        }
+
+        int setCorner(Location l, int maxX, int maxY, int maxZ) {
+            if (this.one == null) {
+                one = l;
+                return 1;
+            }
+            // Cause tonight is the night when two become one...
+            if (l.equals(one)) return 0;
+            // @formatter:off
+            Vector v = l.toVector().subtract(one.toVector());
+            if ( (maxX > 0 && Math.abs(v.getBlockX()) > maxX)
+              || (maxY > 0 && Math.abs(v.getBlockY()) > maxY)
+              || (maxZ > 0 && Math.abs(v.getBlockZ()) > maxZ) ) return -1;
+            // @formatter:on
+            two = l;
+            minymysteri();
+            return 2;
+        }
+
+        String xRay() {
+            return isValid() ? sendNudes(one) + "~" + sendNudes(two) + (link == null ? "" : "~" + link) : null;
+        }
+
+        private void minymysteri() {
+            Location l = one.clone(), ll = two.clone();
+
+            one.setX(Math.min(l.getX(), ll.getX()));
+            one.setY(Math.min(l.getY(), ll.getY()));
+            one.setZ(Math.min(l.getZ(), ll.getZ()));
+            two.setX(Math.max(l.getX(), ll.getX()));
+            two.setY(Math.max(l.getY(), ll.getY()));
+            two.setZ(Math.max(l.getZ(), ll.getZ()));
+        }
+
+        private String sendNudes(Location xyz) {
+            return xyz.getWorld().getName() + "." + xyz.getBlockX() + "." + xyz.getBlockY() + "." + xyz.getBlockZ();
+        }
     }
 }

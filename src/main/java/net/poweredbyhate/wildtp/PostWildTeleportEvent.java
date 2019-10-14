@@ -8,16 +8,14 @@ import org.bukkit.event.HandlerList;
  * Created by Lax on 5/9/2016.
  */
 public class PostWildTeleportEvent extends Event {
+    private static final HandlerList panHandlers = new HandlerList();
 
-    public static final HandlerList panHandlers = new HandlerList();
-    private Player wildLing;
+    Player      wildLing;
+    WorldConfig wc;
 
-    public PostWildTeleportEvent(Player wildLing) {
-        this.wildLing = wildLing;
-    }
-
-    public static HandlerList getHandlerList() {
-        return panHandlers;
+    public PostWildTeleportEvent(Player p, WorldConfig c) {
+        wildLing = p;
+        wc       = c;
     }
 
     @Override
@@ -25,7 +23,7 @@ public class PostWildTeleportEvent extends Event {
         return panHandlers;
     }
 
-    public Player getWildLing() {
-        return this.wildLing;
+    public static HandlerList getHandlerList() {
+        return panHandlers;
     }
 }
