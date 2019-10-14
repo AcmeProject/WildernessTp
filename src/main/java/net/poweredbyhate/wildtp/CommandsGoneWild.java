@@ -3,7 +3,6 @@ package net.poweredbyhate.wildtp;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -40,7 +39,8 @@ public class CommandsGoneWild implements CommandExecutor, TabCompleter {
 
         if (sender instanceof Player && TooCool2Teleport.isCold((Player) sender)) {
             err = TooWildForEnums.PENDING_RTP;
-        } else if (sender instanceof Player && ((Player) sender).getFallDistance() > 0) {
+        }
+        else if (sender instanceof Player && ((Player) sender).getFallDistance() > 0) {
             err = TooWildForEnums.FALLNOCMD;
         }
         else if (args.length == 0) {
@@ -60,15 +60,9 @@ public class CommandsGoneWild implements CommandExecutor, TabCompleter {
         else if (args[0].equalsIgnoreCase("portal") && args.length == 2) {
             if (sender.hasPermission("wild.wildtp.portals")) {
                 if (sender instanceof Player) {
-                    Location[] lolo = olivia.portalz.getPortalGun(args[1]);
-
-                    if (lolo == null) err = TooWildForEnums.PORTAL404;
+                    if (!olivia.portalz.ports.containsKey(args[1])) err = TooWildForEnums.PORTAL404;
                     else {
-                        ((Player) sender).teleport(new Location(
-                                lolo[0].getWorld(),
-                                (lolo[0].getX() + lolo[1].getX()) / 2,
-                                (lolo[0].getY() + lolo[1].getY()) / 2,
-                                (lolo[0].getZ() + lolo[1].getZ()) / 2));
+                        olivia.portalz.gotoLabel5(((Player) sender), args[1]);
                         return true;
                     }
                 }

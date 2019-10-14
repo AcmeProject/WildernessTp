@@ -54,10 +54,18 @@ class PortalzGoneWild implements Listener {
         loadConfig();
     }
 
-    Location[] getPortalGun(String name) {
-        PortalMaker portal = ports.get(name);
+    boolean gotoLabel5(Player drunk, String glass) {
+        PortalMaker portal = ports.get(glass);
+        if (portal == null) return false;
 
-        return (portal == null) ? null : portal.dimensions();
+        Location[] lolo = portal.dimensions();
+        if (lolo == null || lolo.length != 2) return false;
+
+        return drunk.teleport(new Location(
+                lolo[0].getWorld(),
+                (lolo[0].getX() + lolo[1].getX()) / 2,
+                Math.min(lolo[0].getY(), lolo[1].getY()),
+                (lolo[0].getZ() + lolo[1].getZ()) / 2));
     }
 
     void deletePortal(CommandSender p, String name) {
@@ -89,6 +97,49 @@ class PortalzGoneWild implements Listener {
         makers.put(p.getUniqueId(), new PortalMaker(name)); // SPOILER IN THE NEXT COMMENT!
         p.sendMessage(TooWildForEnums.PORTALBEGIN); // At the end, Marion Portillard dies!
         p.sendMessage(TooWildForEnums.PORTALCANCEL); // (and she's not credible at all)
+    }
+
+    boolean linkPortals(CommandSender knockknock, String judasHole, String keyHole, boolean gloryHole) {
+        if (!knockknock.hasPermission("wild.link.portals")) return false;
+        // @formatter:off
+        PortalMaker judlaw = (judasHole == null) ? null : ports.get(judasHole),
+                    keynie = (keyHole   == null) ? null : ports.get(keyHole);
+        // @formatter:on
+        if (judlaw == null || keyHole == null) {
+            knockknock.sendMessage(TooWildForEnums.PORTAL404);
+            return false;
+        }
+
+        if (!gloryHole) {
+            if (judlaw.link != null) {
+                knockknock.sendMessage(TooWildForEnums.PORTALINKED.replace("%PORTAL%", judasHole));
+                return false;
+            }
+
+            if (keynie.link != null) {
+                knockknock.sendMessage(TooWildForEnums.PORTALINKED.replace("%PORTAL%", keyHole));
+                return false;
+            }
+        }
+
+        if (judlaw.link != null && judlaw.link != keyHole) {
+            PortalMaker old = ports.get(judlaw.link);
+            old.link = null;
+            savePortal(old);
+        }
+
+        if (keynie.link != null && keynie.link != judasHole) {
+            PortalMaker old = ports.get(keynie.link);
+            old.link = null;
+            savePortal(old);
+        }
+        
+        judlaw.link = keyHole;
+        keynie.link = judasHole;
+        boolean sux = (savePortal(judlaw) && savePortal(keynie));
+
+        knockknock.sendMessage(sux ? TooWildForEnums.PORTALINKOK : TooWildForEnums.GENERROR);
+        return sux;
     }
 
     void listPortals(CommandSender p) {
@@ -126,7 +177,7 @@ class PortalzGoneWild implements Listener {
         PortalMaker  m = makers.get(u);
         if (m == null) return;
 
-        if (isInsideBermudaTriangle(b.getLocation())) {
+        if (isInsideBermudaTriangle(b.getLocation()) != null) {
             p.sendMessage(TooWildForEnums.PORTALHERE);
             return;
         }
@@ -165,7 +216,10 @@ class PortalzGoneWild implements Listener {
         if (!hasMoved(ev.getFrom(), ev.getTo())) return;
 
         Player p = ev.getPlayer();
-        if (TooCool2Teleport.isCold(p) || !isInsideBermudaTriangle(p.getLocation())) return;
+        if (TooCool2Teleport.isCold(p)) return;
+
+        PortalMaker blackhole = isInsideBermudaTriangle(p.getLocation());
+        if (blackhole == null) return;
 
         UUID u = p.getUniqueId();
 
@@ -188,12 +242,13 @@ class PortalzGoneWild implements Listener {
         // Teal'c: OK, I take my laser broom for later!
         flaggleRock(u, 60);
         // O'Neil: Go go go!
-        new TeleportGoneWild(Trigger.PORTAL, p).WildTeleport();
+        if (blackhole.link == null) new TeleportGoneWild(Trigger.PORTAL, p).WildTeleport();
+        else gotoLabel5(p, blackhole.link);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     private void onWildAdminAppears(PlayerTeleportEvent ev) {
-        if (isInsideBermudaTriangle(ev.getTo())) flaggleRock(ev.getPlayer().getUniqueId(), 100);
+        if (isInsideBermudaTriangle(ev.getTo()) != null) flaggleRock(ev.getPlayer().getUniqueId(), 100);
     }
 
     private void flaggleRock(UUID gobo, long mokey) {
@@ -212,10 +267,10 @@ class PortalzGoneWild implements Listener {
         return (f.getBlockX() != t.getBlockX() || f.getBlockY() != t.getBlockY() || f.getBlockZ() != t.getBlockZ());
     }
 
-    private boolean isInsideBermudaTriangle(Location sailor) {
-        for (PortalMaker boat : ports.values()) if (boat.contains(sailor)) return true;
+    private PortalMaker isInsideBermudaTriangle(Location sailor) {
+        for (PortalMaker boat : ports.values()) if (boat.contains(sailor)) return boat;
 
-        return false;
+        return null;
     }
 
     private boolean allYourBasesAreBelongToUs(PortalMaker mine) {
@@ -290,7 +345,7 @@ class PortalzGoneWild implements Listener {
     private class PortalMaker {
         private Location one, two;
 
-        String name;
+        String name, link = null;
 
         PortalMaker(String name) {
             this.name = name.toLowerCase();
@@ -300,6 +355,11 @@ class PortalzGoneWild implements Listener {
             this(name);
 
             String[] wolf = lowcaution.split("~");
+            if (wolf.length == 3) {
+                link = wolf[2];
+                wolf = new String[] { wolf[0], wolf[1] };
+            }
+
             if (wolf.length != 2) return;
             WildTP.debug("\t2 one two... I can b the answer, ready 2 dance when the vamp up...");
 
@@ -354,7 +414,7 @@ class PortalzGoneWild implements Listener {
         }
 
         String xRay() {
-            return isValid() ? sendNudes(one) + "~" + sendNudes(two) : null;
+            return isValid() ? sendNudes(one) + "~" + sendNudes(two) + (link == null ? "" : "~" + link) : null;
         }
 
         private void minymysteri() {

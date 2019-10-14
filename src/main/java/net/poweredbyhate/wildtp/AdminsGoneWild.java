@@ -65,6 +65,10 @@ public class AdminsGoneWild implements CommandExecutor, TabCompleter {
                 }
                 break;
 
+            case "link":
+                return args.length > 2 && tpWild.portalz.linkPortals(sender, args[1], args[2],
+                        args.length == 4 && args[3].equals("FORCE"));
+
             case "reload":
                 if (sender.hasPermission("wild.wildtp.reload")) {
                     tpWild.reloadConfig();
@@ -83,29 +87,28 @@ public class AdminsGoneWild implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (args.length == 0) return null;
+
         List<String> candidates = new ArrayList<String>();
 
         if (args.length == 1) {
             if (WildTP.enableUselessGUI && sender.hasPermission("wild.wildtp.set")) candidates.add("gui");
+            if (sender.hasPermission("wild.link.portals")) candidates.add("link");
             if (sender.hasPermission("wild.wildtp.reload")) candidates.add("reload");
             if (sender.hasPermission("wild.wildtp.create.portal")) {
                 candidates.add("create");
                 candidates.add("delete");
                 candidates.add("list");
             }
-
-            return CommandsGoneWild.filterList(candidates, args[0]);
-        }
-        else if (args.length == 2 && args[0].equalsIgnoreCase("delete")) {
+        } // @formatter:off
+        else if ((args.length == 2 && (args[0].equalsIgnoreCase("link") || args[0].equalsIgnoreCase("delete")))
+              || (args.length == 3 &&  args[0].equalsIgnoreCase("link"))) {
             candidates.addAll(tpWild.portalz.ports.keySet());
-            return CommandsGoneWild.filterList(candidates, args[1]);
         }
-        else if (args.length == 3 && args[0].equalsIgnoreCase("create")) {
-            candidates.add("FORCE");
-            return CommandsGoneWild.filterList(candidates, args[2]);
-        }
-
-        return candidates;
+        else if ((args.length == 3 && args[0].equalsIgnoreCase("create"))
+              || (args.length == 4 && args[0].equalsIgnoreCase("link"))) candidates.add("FORCE");
+        // @formatter:on
+        return CommandsGoneWild.filterList(candidates, args[args.length - 1]);
     }
 
     private List<String> halpMassage(CommandSender sender) {
@@ -121,10 +124,13 @@ public class AdminsGoneWild implements CommandExecutor, TabCompleter {
             list.add("§6* /WildTP gui - Open the plugin user interface");
 
         if (sender.hasPermission("wild.wildtp.create.portal")) {
-            list.add("§6* /WildTP create <name> - Creates a portal");
-            list.add("§6* /WildTP delete <name> - Deletes a portal");
+            list.add("§6* /WildTP create [name] - Creates a portal");
+            list.add("§6* /WildTP delete [name] - Deletes a portal");
             list.add("§6* /WildTP list - Lists portals");
         }
+
+        if (WildTP.enableUselessGUI && sender.hasPermission("wild.link.portals"))
+            list.add("§6* /WildTP link [name] [name] - Link two portals");
 
         if (sender.hasPermission("wild.wildtp")) list.add("§6* /Wild - Teleports player to random location");
         if (sender.hasPermission("wild.wildtp.direction")) list.add("§6* /Wild [direction] - Directional random tp");

@@ -29,6 +29,7 @@ commands:
       /wildtp list - List existing portals
       /wildtp create [name] - Create a portal
       /wildtp delete [name] - Delete the given portal
+      /wildtp link [name] [name]- Link two portals
       /wildtp reload - Reload the plugin configuration
       /wildtp gui - Open the plugin user interface
 
@@ -50,7 +51,11 @@ permissions:
     default: op
 
   wild.wildtp.portals:
-    description: Allows to use /wildtp portal <name>
+    description: Allows to use /wildtp portal [name]
+    default: op
+
+  wild.link.portals:
+    description: Allows to use /wildtp link [name] [name]
     default: op
 
   wild.wildtp.create.sign:

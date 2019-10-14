@@ -46,6 +46,8 @@ class TooWildForEnums {
         PORTALGOHAN,
         PORTALHERE,
         PORTALHOVER,
+        PORTALINKED,
+        PORTALINKOK,
         PORTALSTOP,
         PROCEED,
         RELOADED,
@@ -116,6 +118,8 @@ class TooWildForEnums {
         dv.put("PORTALGOHAN",   "&bNow click other corner.");
         dv.put("PORTALHERE",    "&cTry again: This block is part of another portal!");
         dv.put("PORTALHOVER",   "&bClick to teleport to it.");
+        dv.put("PORTALINKED",    "&cPortal %PORTAL% is already linked to another one.");
+        dv.put("PORTALINKOK",    "&aPortals are now linked.");
         dv.put("PORTALSTOP",    "&6Portal creation cancelled.");
         dv.put("PROCEED",       "&aProcessing...");
         dv.put("RELOADED",      "&aPlugin config has successfuly been reloaded.");
