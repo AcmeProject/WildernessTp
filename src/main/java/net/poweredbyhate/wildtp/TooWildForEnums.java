@@ -1,13 +1,13 @@
 package net.poweredbyhate.wildtp;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 class TooWildForEnums {
     private FileConfiguration langConf;
@@ -69,8 +69,6 @@ class TooWildForEnums {
         langConf = YamlConfiguration.loadConfiguration(langFile);
 
         try {
-            if (langFile.exists()) langFile.createNewFile();
-
             papersPlease();
 
             dV().forEach((k, v) -> {
