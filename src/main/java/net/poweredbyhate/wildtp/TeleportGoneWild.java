@@ -61,7 +61,7 @@ public class TeleportGoneWild {
     }
 
     boolean WildTeleport(Direction direction) {
-        return (cook(direction) && WildTPListener.chargePlayer(who, wc, how, false)) ? realTeleportt() : false;
+        return cook(direction) ? realTeleportt() : false;
     }
 
     static private KeyedBossBar auscultate(Player sickPlayer, BarColor color, BarStyle style) {
@@ -144,6 +144,17 @@ public class TeleportGoneWild {
         // for after the digestion...
         wc = instace.thugz.get(whr.getName());
         if (wc == null) return false;
+
+        if (wc.checKar.isInCooldown(who.getUniqueId(), wc, how)) {
+            String m = TooWildForEnums.COOLDOWN.replace("%TIME%", wc.checKar.getTimeLeft(who));
+            if (WildTP.ab) who.sendActionBar(m); else who.sendMessage(m);
+            return false;
+        }
+
+        if (!WildTPListener.chargePlayer(who, wc, how, false)) {
+            who.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_MONEY));
+            return false;
+        }
         // @formatter:off
         way = meat; // Sorry vegans, here meat is the way!
         boo = TooCool2Teleport.powerSupply(
