@@ -31,13 +31,9 @@ debug: false
 # (this is useful not to spam it when players tries to reach a portal)
 colldownMsgUseActionBar: true
 
-# GUI is an attempt to do something, but it actually does nothing usesul:
-# It opens a single item inventory, on which you can click to RTP.
-# But why typing a command to show it, then click to proceed,
-# instead of typing a command and proceed directly? ;)
-#
-# use false will disable command « /wildtp gui » and will not load gui listener on startup.
+# dere, configurable
 enableGUI: true
+
 # this won't have big impact on performances, but if you are not using this "feature",
 # it's a good idea to disable, because its listener is triggered each time you click in
 # an inventory. It checks first if this inventory is its one, and stop quickly
@@ -56,7 +52,7 @@ barStyle:
 # If false, cooldowns are per world not global
 shareCoolDown: true # /!\ If true, overriden values of "Cooldown" will be ignored
 # If true, extinguish adjacent blocks in nether after a WildTP
-callFiremenInNether: true # (Ignored if not in nether)
+callFiremenInNether: false # (Ignored if not in nether)
 
 # If true, if you request a RTP, you cannot move until its done
 freezeWhileRTP: false
@@ -85,6 +81,9 @@ BlockedBlocks: # Use « [] » if you don't want to restrict
   - FIRE
   - LAVA
   - MAGMA_BLOCK
+  - AIR
+  - VOID_AIR
+  - CAVE_AIR
 
 Portals:
   # Gamemode NOT listed here will ignore portals
@@ -102,9 +101,9 @@ Portals:
   zMax: 10
   # When a player try to reach a portal when being in cooldown, this push him back
   push: 1.0 # Force of the push (float), put 0 or less to disable
-  # /!\ Big values can be fun but will hurt & irritate your players... I mean litteraly! 
+  # /!\ Big values can be fun but will hurt & irritate your players... I mean literally!
 
-Bypass: # /!\ Those settings FORCE bypass, whatever the player has permission or not!
+Bypass: # /!\ Those settings FORCE bypass, whether the player has permission or not!
   # Force permission « wild.wildtp.cooldown.bypass »
   cooldown:
     COMMAND: false # When the player tp via command
@@ -149,11 +148,11 @@ Effects:
 # Bounds of the wildness (named XY and not XZ... Another proof! #CatEarthSociety)
 MinXY: -5000
 MaxXY: 5000
-# If true, border is recalculated each RTP, each tries (so you should let it false if not required)
+# If true, border is recalculated each RTP - useful if you set your border to grow/shrink (so you should keep it false if not required)
 movingBorder: false
 
 Wait: 5      # (seconds) Time the player have to wait between he type the command and tp be sent in wild
-Retries: 6   # Max attempt the plugin will try to find a safe place to tp the player
+Retries: 6   # Max attempts the plugin will try to find a safe place to tp the player
 Cooldown: 60 # (seconds) Time to wait before player can re-do again
 
 Cost: 0 # Money cost of a RTP (requires Vault)
@@ -161,7 +160,7 @@ paidTPconfirmation: 30 # If the RTP has a cost, a confirmation will be asked to 
 # This is (in second) the time this pending RTP stay valid. (set to 0 if you don't want confirmations) 
 
 teleportNewPlayers: false  # Choose "true" if you are not proud of your spawn
-dropPlayerFromAbove: false # Choose "true" if you vocal on discord and want hear them scream
+dropPlayerFromAbove: false # Choose "true" if you vocal on dumcord and want to hear them scream
 dropPlayerFromHeight: 255  # Height from where the player is dropped (if dropPlayerFromAbove is true)
 # /!\ Using too high values can cause issues in some cases... Test before letting your players use them.
 # For example, using 300 with datapack "EndAboveOverworld" load the end, then reload overworld...
@@ -295,4 +294,4 @@ overrides: {} # <=== « {} » means there is no overrides at all
 #
 #   another_working_example: # (to show you don't have to add all parameters)
 #     MinXY: -50000
-#     MaxXY: 50000t
+#     MaxXY: 50000

@@ -42,7 +42,7 @@ public class WildTP extends JavaPlugin {
         if (Integer.valueOf(Bukkit.getBukkitVersion().split("\\.")[1]) <= 12) {
             getLogger().severe("This version of Wilderness-TP does not support your ancient server version.");
             getLogger().warning("Either update your server to 1.13, or use Wild 1.52");
-            getLogger().warning("https://robomwm.com"); // URL changed because the old one no more works
+            getLogger().warning("http://r.robomwm.com/oldwild");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }

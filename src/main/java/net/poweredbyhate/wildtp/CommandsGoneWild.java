@@ -15,14 +15,6 @@ import net.poweredbyhate.wildtp.TeleportGoneWild.Trigger;
 
 /**
  * Created by John on 5/6/2016.
- * <Ted - 19/09/2005> told ya how I met ur motha?
- * <terminator - 21/12/2012> don't worry John... I'll be back!
- * <John Nada - 4/11/1988> do you have bubblegum?
- * <terminator - 6/08/2003> you are not Connor... fuck it, I'll take over the world!
- * <Snoop - 1/01/2018> thx bro, smoke it everyday!!!
- * <Donald - 20/01/2017> duck duck duck duck
- * <Toad - 14/11/2018> it just works, buy it!
- * <terminator - ?/?/2029> told ya!
  */
 public class CommandsGoneWild implements CommandExecutor, TabCompleter {
     WildTP olivia; // API usage examples: https://youtu.be/e58IdlvZkRE

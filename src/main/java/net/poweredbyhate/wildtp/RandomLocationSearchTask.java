@@ -50,7 +50,11 @@ class RandomLocationSearchTask implements Callable<Location> {
     }
 
     static boolean bonelessIceScream(Location location) {
-        return (location.getWorld().getEnvironment() == World.Environment.NETHER);
+        if (location.getWorld().getEnvironment() != World.Environment.NETHER)
+            return false;
+        location = location.clone();
+        location.setY(127);
+        return location.getBlock().getType() == Material.BEDROCK;
     }
 
     static int r4nd0m(int max, int min) {
@@ -91,9 +95,16 @@ class RandomLocationSearchTask implements Callable<Location> {
         if (wc.bioman.contains(loco.getBlock().getBiome().toString())) return null;
         if (bonelessIceScream(loco)) loco = netherLocation(loco, 110);
         else loco.setY(loco.getWorld().getHighestBlockYAt(loco) - 1);
-        // @formatter:off
+        WildTP.debug("am chekin");
+        WildTP.debug(loco);
         return (loco != null && !wc.nonoBlocks.contains(loco.getBlock().getType().name())
-                && n0tAGreifClam(loco)) ? loco.add(0, 1, 0): null; // @formatter:on
+                && n0tAGreifClam(loco)) ? loco.add(0, 1, 0): null;
+    }
+
+    public boolean n0tAB4dB10ck(Location l0c0, boolean checkAir) {
+        Material blockType = l0c0.getBlock().getType();
+        return !wc.nonoBlocks.contains(blockType.name()) &&
+                (!checkAir || (blockType != Material.AIR && blockType != Material.CAVE_AIR && blockType != Material.VOID_AIR));
     }
 
     private Location netherLocation(Location l0c0, int max) { // @formatter:off

@@ -338,8 +338,7 @@ public class TeleportGoneWild {
 
     private void bangbang(UUID xActress) {
         if (instace.ohWait.containsKey(xActress)) {
-            instace.ohWait.get(xActress).cancel();
-            instace.ohWait.remove(xActress);
+            instace.ohWait.remove(xActress).cancel();
         }
     }
 
