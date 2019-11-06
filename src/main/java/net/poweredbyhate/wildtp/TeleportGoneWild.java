@@ -315,7 +315,7 @@ public class TeleportGoneWild {
             OuchieListener.plsSaveDisDood(who);
         }
 
-        if (!who.teleport(loc.toCenterLocation())) {
+        if (!who.teleport(loc.clone().add(0.5, 0.5, 0.5))) {
             WildTP.debug("teleport was canceled.");
             return;
         }
