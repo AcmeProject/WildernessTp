@@ -21,11 +21,9 @@ import net.milkbowl.vault.economy.Economy;
  */
 public class WildTP extends JavaPlugin {
     private boolean wamuppahTooCool = false;
-    // @formatter:off
     static boolean
         ab, enableUselessGUI, isDebug, newPlayersTeleported, noCreditJustCash, notPaper,
         useExperimentalChekar, useOtherChekar, useRandomeWorldz, wb;
-    // @formatter:on
     static ConfigurationSection   randomeWorlds;
     static DataStore              dataaaastorege;
     static Economy                econ;
@@ -39,18 +37,17 @@ public class WildTP extends JavaPlugin {
     HashMap<UUID, BukkitRunnable> ohWait;
 
     public void onEnable() {
-        if (Integer.valueOf(Bukkit.getBukkitVersion().split("\\.")[1]) <= 12) {
+        if (Integer.parseInt(Bukkit.getBukkitVersion().split("\\.")[1]) <= 12) {
             getLogger().severe("This version of Wilderness-TP does not support your ancient server version.");
             getLogger().warning("Either update your server to 1.13, or use Wild 1.52");
             getLogger().warning("http://r.robomwm.com/oldwild");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        // @formatter:off
         try { Class.forName("com.destroystokyo.paper.PaperConfig"); } catch (Throwable cue) {
             getLogger().info(" = = = = = = = = = = = = = = = = = = = =");
             getLogger().info(" ");
-            getLogger().warning("Btw, dis wild plugin (and server) would be a bazillion times");
+            getLogger().warning("Btw, dis wild plugin (and ur server) would be a bazillion times");
             getLogger().warning("faster and wilder if u switch 2 Paper.");
             getLogger().warning("Until then, we'll just go wild at ur serburs slower/laggier pace.");
             getLogger().warning(" ");
@@ -58,7 +55,6 @@ public class WildTP extends JavaPlugin {
             getLogger().info(" ");
             getLogger().info(" = = = = = = = = = = = = = = = = = = = ="); notPaper = true;
         }
-        // @formatter:on
         instace = this;
         ohWait  = new HashMap<UUID, BukkitRunnable>();
 
@@ -117,7 +113,6 @@ public class WildTP extends JavaPlugin {
         }
         // Re-save (so omitted and new parameters are added in the file)
         saveConfig();
-        // Take off your clothes
         getWild(config);
     }
 
@@ -152,11 +147,9 @@ public class WildTP extends JavaPlugin {
                 }
             }
         }.runTask(instace);
-        // @formatter:off
         try { dataaaastorege = ((GriefPrevention) (getServer().getPluginManager()
                 .getPlugin("GriefPrevention"))).dataStore;
         } catch (Throwable rock) { dataaaastorege = null; }
-        // @formatter:on
         wb = getServer().getPluginManager().isPluginEnabled("WorldBorder");
     }
 
@@ -165,9 +158,7 @@ public class WildTP extends JavaPlugin {
     }
 
     public void wildMetrics() {
-        // @formatter:off
         try { new Metricsa(this).start(); } catch (IOException e) {}
-        // @formatter:on
         try {
             Metrics metrics = new Metrics(this);
 

@@ -282,7 +282,6 @@ public class TeleportGoneWild {
                         catch (InterruptedException | ExecutionException ignored) {
                             TooCool2Teleport.microwave(who);
                             WildTP.debug(ignored.getMessage());
-                            ignored.printStackTrace();
                             return;
                         }
 

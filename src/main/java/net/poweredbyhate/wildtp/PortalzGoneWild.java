@@ -184,11 +184,9 @@ class PortalzGoneWild implements Listener {
 
         WorldConfig wc = will.thugz.get(b.getWorld().getName());
         if (wc == null) return;
-        // @formatter:off
         String r; switch (m.setCorner(b.getLocation(), wc.portal_max_x, wc.portal_max_y, wc.portal_max_z)) {
             case 0:  r = TooWildForEnums.PORTALSTOP; makers.remove(u); break;
             case 1:  r = TooWildForEnums.PORTALGOHAN; break;
-            // @formatter:on
             case 2:
                 if (allYourBasesAreBelongToUs(m)) {
                     r = TooWildForEnums.PORTALCONTAIN;
@@ -231,10 +229,8 @@ class PortalzGoneWild implements Listener {
 
         if (wc.fusRoDah > 0 && wc.checKar.isInCooldown(u, wc, Trigger.PORTAL)) {
             p.setVelocity(ev.getTo().toVector().subtract(ev.getFrom().toVector()).normalize().multiply(-wc.fusRoDah));
-            // @formatter:off
             String m = TooWildForEnums.COOLDOWN.replace("%TIME%", wc.checKar.getTimeLeft(p));
             if (WildTP.ab) p.sendActionBar(m); else p.sendMessage(m);
-            // @formatter:on
             return;
         }
         // Carter: He's traversing the portal!
@@ -264,7 +260,7 @@ class PortalzGoneWild implements Listener {
     }
 
     private boolean hasMoved(Location f, Location t) {
-        return (f.getBlockX() != t.getBlockX() || f.getBlockY() != t.getBlockY() || f.getBlockZ() != t.getBlockZ());
+        return f.distanceSquared(t) > 0;
     }
 
     private PortalMaker isInsideBermudaTriangle(Location sailor) {
@@ -400,21 +396,18 @@ class PortalzGoneWild implements Listener {
                 one = l;
                 return 1;
             }
-            // Cause tonight is the night when two become one...
             if (l.equals(one)) return 0;
-            // @formatter:off
             Vector v = l.toVector().subtract(one.toVector());
             if ( (maxX > 0 && Math.abs(v.getBlockX()) > maxX)
               || (maxY > 0 && Math.abs(v.getBlockY()) > maxY)
               || (maxZ > 0 && Math.abs(v.getBlockZ()) > maxZ) ) return -1;
-            // @formatter:on
             two = l;
             minymysteri();
             return 2;
         }
 
         String xRay() {
-            return isValid() ? sendNudes(one) + "~" + sendNudes(two) + (link == null ? "" : "~" + link) : null;
+            return isValid() ? johnWouldLikeToKnowYourLocation(one) + "~" + johnWouldLikeToKnowYourLocation(two) + (link == null ? "" : "~" + link) : null;
         }
 
         private void minymysteri() {
@@ -428,7 +421,7 @@ class PortalzGoneWild implements Listener {
             two.setZ(Math.max(l.getZ(), ll.getZ()));
         }
 
-        private String sendNudes(Location xyz) {
+        private String johnWouldLikeToKnowYourLocation(Location xyz) {
             return xyz.getWorld().getName() + "." + xyz.getBlockX() + "." + xyz.getBlockY() + "." + xyz.getBlockZ();
         }
     }
