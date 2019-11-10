@@ -9,6 +9,8 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+
+import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,8 +33,8 @@ public class TeleportGoneWild {
     private boolean[]      boo;
     private Direction      way;
     private Trigger        how;
-    private Player         who;   // he's doctor!
-    private PotionEffect[] queen; // it's a kind of magic!
+    private Player         who;
+    private PotionEffect[] queen;
     private World          whr;
     private WorldConfig    wc;
 
@@ -122,7 +124,7 @@ public class TeleportGoneWild {
             int i = 0;
 
             @Override
-            public void run() { // @formatter:off
+            public void run() {
                 if (isCancelled()) return;
                 if (bossbar == null || bossbar.getPlayers().isEmpty()) { cancel(); return; };
                 // @formatter:on
@@ -138,7 +140,6 @@ public class TeleportGoneWild {
 
     private boolean cook(Direction meat) {
         if (who == null || !who.isOnline()) return false;
-        // @note: no need to do world randomizer later each tries, enough once here + so we have wc
         if (whr == null) whr = useRandomeWorldz ? getRandomeWorld() : who.getWorld();
         if (whr == null) return false;
         // for after the digestion...
@@ -147,7 +148,7 @@ public class TeleportGoneWild {
 
         if (wc.checKar.isInCooldown(who.getUniqueId(), wc, how)) {
             String m = TooWildForEnums.COOLDOWN.replace("%TIME%", wc.checKar.getTimeLeft(who));
-            if (WildTP.ab) who.sendActionBar(m); else who.sendMessage(m);
+            if (WildTP.ab) who.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(m)); else who.sendMessage(m);
             return false;
         }
 
@@ -155,13 +156,11 @@ public class TeleportGoneWild {
             who.sendMessage(TooWildForEnums.translate(TooWildForEnums.NO_MONEY));
             return false;
         }
-        // @formatter:off
-        way = meat; // Sorry vegans, here meat is the way!
+        way = meat;
         boo = TooCool2Teleport.powerSupply(
             wc.freeze     || (wc.freezePortal     && how == Trigger.PORTAL),
             wc.moveCancel || (wc.moveCancelPortal && how == Trigger.PORTAL));
         queen = wc.effects.get(how);
-        // @formatter:on
         return true;
     }
 
@@ -178,15 +177,13 @@ public class TeleportGoneWild {
             public void run() {
                 if (!isCancelled() && ChecKar.getEpoch() < myTralala) {
                     ChecKar shaker = wc.checKar;
-                    // Almost impossible... she's too hot
                     if (shaker.isInCooldown(ginaWilde, wc, how)) {
-                        WildTP.debug("In cooldown: yes"); // @formatter:off
+                        WildTP.debug("In cooldown: yes");
                         String m = TooWildForEnums.COOLDOWN.replace("%TIME%", shaker.getTimeLeft(who));
-                        if (WildTP.ab) who.sendActionBar(m); else who.sendMessage(m);
-                    } // @formatter:on
+                        if (WildTP.ab) who.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(m)); else who.sendMessage(m);
+                    }
                     else getRandomeLocation();
                 }
-                // ding dong dong you touch my tralala
                 bangbang(ginaWilde);
             }
         };
@@ -245,7 +242,7 @@ public class TeleportGoneWild {
             if (vote4Pedro == null) {
                 Bukkit.getLogger().warning("World « " + worldString + " » does not exist. "
                         + "We recommend removing the world from randomWorlds in config.yml");
-                continue; // You should vote for Pedro!
+                continue;
             }
 
             totalChance += randomeWorlds.getInt(worldString);
@@ -255,7 +252,6 @@ public class TeleportGoneWild {
         int daChosenOne = RandomLocationSearchTask.r4nd0m(totalChance, 0);
 
         for (Integer blah : hesDaMap.keySet()) if (blah >= daChosenOne) return hesDaMap.get(blah);
-        // Nooooooooooooo! You were the chosen one...
         return null;
     }
 
@@ -297,15 +293,14 @@ public class TeleportGoneWild {
         WildTP.debug("Teleporting " + who.getName() + loc);
 
         if (RandomLocationSearchTask.bonelessIceScream(loc)) {
-            if (wc.whoYaGonaCall) { // @formatter:off
+            if (wc.whoYaGonaCall) {
                 WildTP.debug("Here come the §cfiremen§r!");
                 Block block = loc.getBlock(); block.setType(Material.AIR);
-                // @formatter:off
                 for (BlockFace flame :
                     new BlockFace[] { BlockFace.UP, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST }) {
                     Block bed = block.getRelative(flame); if (bed.getType() == Material.FIRE) bed.setType(Material.AIR);
-                } // How do we sleep while our beds are burning?
-            } // @formatter:on
+                } // How do we sleep while our beds are burning? //Ask St. John Vianney
+            }
         }
         else if (wc.dr0p1n) {
             WildTP.debug("Drop in feature enabled: Setting y=" + wc.dr0pFr0m);

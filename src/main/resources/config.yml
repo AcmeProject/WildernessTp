@@ -29,7 +29,7 @@
 debug: false
 # If true, cooldown messages will use actionbar instead of chat
 # (this is useful not to spam it when players tries to reach a portal)
-colldownMsgUseActionBar: true
+cooldownMsgUsesActionBar: true
 
 # dere, configurable
 enableGUI: true

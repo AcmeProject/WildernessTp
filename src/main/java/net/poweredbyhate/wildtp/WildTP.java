@@ -117,7 +117,7 @@ public class WildTP extends JavaPlugin {
     }
 
     public void getWild(FileConfiguration config) {
-        ab                    = config.getBoolean("colldownMsgUseActionBar");
+        ab                    = config.getBoolean("cooldownMsgUsesActionBar");
         isDebug               = config.getBoolean("debug");
         newPlayersTeleported  = config.getBoolean("teleportNewPlayers");
         randomeWorlds         = config.getConfigurationSection("randomWorlds");
