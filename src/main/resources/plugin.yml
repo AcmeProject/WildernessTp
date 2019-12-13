@@ -1,10 +1,10 @@
 name: Wild
-version: "2.13-${git.commit.id.abbrev}"
+version: "2.14-${git.commit.id.abbrev}"
 
 authors: [LaxWasHere,RoboMWM]
 website: https://www.spigotmc.org/resources/wilderness-tp.22853/
 dev-url: https://github.com/AcmeProject/WildernessTp
-contributors: [arboriginal,jyhsu2000] # via Github pull requests
+contributors: [arboriginal,jyhsu2000]
 
 main: net.poweredbyhate.wildtp.WildTP
 api-version: '1.13'

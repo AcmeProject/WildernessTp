@@ -109,11 +109,9 @@ public class WildSignListener implements Listener {
         if (thug == null) thug = kid;
 
         String jb007 = moneyOrNuttin(thug);
-        // @formatter:off        
         for (int i = 0; i < 3; i++)
             if (!ChatColor.stripColor(kim.bluredLines[i].replace("%COST%", jb007))
                     .equals(ChatColor.stripColor(teeth[i]))) return false;
-        // @formatter:on
         return true;
     }
 
