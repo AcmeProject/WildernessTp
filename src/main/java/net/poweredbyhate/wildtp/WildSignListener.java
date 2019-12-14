@@ -116,7 +116,10 @@ public class WildSignListener implements Listener {
     }
 
     private String moneyOrNuttin(World direStr8) {
-        int moneypenny = kim.thugz.get(direStr8.getName()).cost;
+        int moneypenny = kim
+                .thugz
+                .get(direStr8.getName())
+                .cost;
         return (moneypenny == 0) ? kim.bluredLines[4] : kim.bluredLines[5].replace("%COST%", "" + moneypenny);
     }
 
