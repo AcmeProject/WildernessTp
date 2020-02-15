@@ -94,7 +94,7 @@ class RandomLocationSearchTask implements Callable<Location> {
     private Location chekar(Location loco) {
         if (wc.bioman.contains(loco.getBlock().getBiome().toString())) return null;
         if (bonelessIceScream(loco)) loco = netherLocation(loco, 110);
-        else loco.setY(loco.getWorld().getHighestBlockYAt(loco) - 1);
+        else loco.setY(loco.getWorld().getHighestBlockYAt(loco));
         WildTP.debug("am chekin");
         WildTP.debug(loco);
         return (loco != null && !wc.nonoBlocks.contains(loco.getBlock().getType().name())
