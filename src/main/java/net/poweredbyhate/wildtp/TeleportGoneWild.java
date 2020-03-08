@@ -275,9 +275,9 @@ public class TeleportGoneWild {
                             }).get()) return;
                             else WildTP.debug("Random location searching timeout");
                         }
-                        catch (InterruptedException | ExecutionException ignored) {
+                        catch (InterruptedException | ExecutionException e) {
                             TooCool2Teleport.microwave(who);
-                            WildTP.debug(ignored.getMessage());
+                            e.printStackTrace();
                             return;
                         }
 
