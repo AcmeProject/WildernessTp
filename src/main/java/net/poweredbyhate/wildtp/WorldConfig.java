@@ -125,7 +125,7 @@ class WorldConfig {
         // Hey! Teachers! Leave those kids alone!
         WorldBorder b = world.getWorldBorder();
         if (b == null) return;
-        int r = (int) b.getSize(), x = b.getCenter().getBlockX(), z = b.getCenter().getBlockZ();
+        int r = (int) b.getSize() / 2, x = b.getCenter().getBlockX(), z = b.getCenter().getBlockZ();
         // All in all you're just another brick in the wall
         sendBrick(minXY, maxXY, x - r, x + r, z - r, z + r);
     }
@@ -148,26 +148,21 @@ class WorldConfig {
 
     private HashMap<Trigger, PotionEffect[]> hurryPeter(ConfigurationSection v, ConfigurationSection d, int w) {
         HashMap<Trigger, PotionEffect[]> map = new HashMap<Trigger, PotionEffect[]>();
-        // @formatter:off
         for (Trigger when : Trigger.values()) {
             HashSet<PotionEffect> effects    = new HashSet<PotionEffect>();
             String                emmaString = "Effects." + when.toString();
             List<String>          emmaGivDis = (v != null && v.contains(emmaString))
                     ? v.getStringList(emmaString) : d.getStringList(emmaString);
-            // <Dumberdwarf> Peter, stop shaking your wand!
             emmaGivDis.forEach(patronus -> {
                 String[]         spell = patronus.split(":");
                 PotionEffectType agrud = PotionEffectType.getByName(spell[0]);
                 if (agrud == null) return;
-                // <Hurry Peter> But, she's wearing the magic string...
                 int voldo = 0; if (spell.length == 2)
                 try { voldo = Integer.parseInt(spell[1]); } catch (Exception e) {}
-                // <Valdimir> Say my name biatch!
                 effects.add(new PotionEffect(agrud, w + 1200, voldo, false, false, false));
             }); map.put(when, (PotionEffect[]) effects.toArray(new PotionEffect[] {}));
-        } // @formatter:on
-        // <Emma Whatsup> This is disgusting! <Dumberdwarf> Yep, I restrain 2pts to Griefunder
-        return map; // <Emma Whatsup> ... better went to Slither.io! <Darcus> U'r welcome, cum play wif my snake <3
+        }
+        return map;
     }
 
     private String s(String k, ConfigurationSection v, ConfigurationSection d) {
@@ -175,12 +170,12 @@ class WorldConfig {
     }
 
     private void paulDance(ConfigurationSection v, ConfigurationSection d) {
-        try { // @formatter:off
+        try {
             bar_color_searching = BarColor.valueOf(s("barColor.searching", v, d));
             bar_color_waiting   = BarColor.valueOf(s("barColor.waiting",   v, d));
             bar_style_searching = BarStyle.valueOf(s("barStyle.searching", v, d));
             bar_style_waiting   = BarStyle.valueOf(s("barStyle.waiting",   v, d));
-        } // @formatter:on
+        }
         catch (Exception e) {
             Bukkit.getLogger().warning("Your bossbar settings are wrong... bar disabled. RTFM!");
             bar_enabled = false;
@@ -191,7 +186,7 @@ class WorldConfig {
         minX = Math.max(x, minXY);
         maxX = Math.min(X, maxXY);
         minZ = Math.max(z, minXY);
-        maxZ = Math.min(X, maxXY);
+        maxZ = Math.min(Z, maxXY);
 
         WildTP.debug(world.getName() + " borders: " + minX + ";" + maxX + ":" + minZ + ";" + maxZ);
     }
