@@ -20,6 +20,7 @@ commands:
       /wild [player] [world] - Teleport randomly this player in given world
       /wild [north/south/east/west] - Teleport randomly in the given direction
       /wild [world] - Teleport randomly in the given world
+    default: true
 
   wildtp:
     description: Admin tasks like reload, manage portals, ...
@@ -32,6 +33,7 @@ commands:
       /wildtp link [name] [name]- Link two portals
       /wildtp reload - Reload the plugin configuration
       /wildtp gui - Open the plugin user interface
+    default: op
 
 permissions:
   wild.wildtp:
