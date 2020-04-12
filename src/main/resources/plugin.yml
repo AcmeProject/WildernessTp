@@ -20,7 +20,7 @@ commands:
       /wild [player] [world] - Teleport randomly this player in given world
       /wild [north/south/east/west] - Teleport randomly in the given direction
       /wild [world] - Teleport randomly in the given world
-    default: true
+    default: false
 
   wildtp:
     description: Admin tasks like reload, manage portals, ...
