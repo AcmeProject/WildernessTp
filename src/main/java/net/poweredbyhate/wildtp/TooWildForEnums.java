@@ -26,7 +26,6 @@ class TooWildForEnums {
         CONFIRMSG,
         COOLDOWN,
         DIDNT_WAIT,
-        FALLNOCMD,
         GENERROR,
         NO_BIOME,
         NO_BREAK,
@@ -95,7 +94,6 @@ class TooWildForEnums {
         dv.put("BREAK_SIGN",    "&aYou have broken a WildTP sign");
         dv.put("COOLDOWN",      "&4You must wait %TIME% until you can use the command/sign again");
         dv.put("DIDNT_WAIT",    "&cYou need to hold still while you wait!");
-        dv.put("FALLNOCMD",     "&cYou can't use this command while falling!");
         dv.put("GENERROR",      "&c&lError occurred, check console logs");
         dv.put("NO_BIOME",      "&4You may not put signs in %BIOME%");
         dv.put("NO_BREAK",      "&4Hey! You can not break WildTp sign!");
