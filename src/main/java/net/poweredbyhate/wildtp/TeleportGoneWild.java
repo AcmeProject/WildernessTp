@@ -245,13 +245,19 @@ public class TeleportGoneWild {
                 continue;
             }
 
-            totalChance += randomeWorlds.getInt(worldString);
+            int chance = randomeWorlds.getInt(worldString);
+            if (chance < 1) //fixes bug where setting as 0 overwrites previous entry
+                continue;
+
+            totalChance += chance;
             hesDaMap.put(totalChance, vote4Pedro);
         }
 
         int daChosenOne = RandomLocationSearchTask.r4nd0m(totalChance, 0);
 
-        for (Integer blah : hesDaMap.keySet()) if (blah >= daChosenOne) return hesDaMap.get(blah);
+        for (Integer blah : hesDaMap.keySet())
+            if (blah >= daChosenOne)
+                return hesDaMap.get(blah);
         return null;
     }
 

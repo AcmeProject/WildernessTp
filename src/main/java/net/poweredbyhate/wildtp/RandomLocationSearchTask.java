@@ -35,12 +35,12 @@ class RandomLocationSearchTask implements Callable<Location> {
         if (disway != null) {
             Location l = player.getLocation();
 
-            switch (disway) { // @formatter:off
+            switch (disway) {
               case EAST:  minX = l.getBlockX(); break;
               case NORTH: maxZ = l.getBlockZ(); break;
               case SOUTH: minZ = l.getBlockZ(); break;
               case WEST:  maxX = l.getBlockX(); break;
-          } // @formatter:on
+          }
         }
 
         FutureTask<Location> futureTask = new FutureTask<Location>((Callable<Location>) this);
@@ -69,9 +69,9 @@ class RandomLocationSearchTask implements Callable<Location> {
             if (!TooCool2Teleport.isCold(player)) throw new Exception("event was cancelled!");
 
             TeleportGoneWild.focus(player, wc, retries);
-            // Con los terroristas...
+            // if movingBorder, then check worldborder (again)
             if (wc.harlemShake) rickRoll();
-            // Come on baby, do the Loco-motion
+
             final Location loco, l0c0 = new Location(wc.world, r4nd0m(maxX, minX), 10, r4nd0m(maxZ, minZ));
 
             if (WildTP.notPaper) wc.world.getChunkAt(l0c0);
@@ -107,21 +107,20 @@ class RandomLocationSearchTask implements Callable<Location> {
                 (!checkAir || (blockType != Material.AIR && blockType != Material.CAVE_AIR && blockType != Material.VOID_AIR));
     }
 
-    private Location netherLocation(Location l0c0, int max) { // @formatter:off
+    private Location netherLocation(Location l0c0, int max) {
         Block b = l0c0.getBlock(); for (int d = 0; d < max;) if (
             b.getRelative(BlockFace.UP, d++).getType() == Material.AIR
         &&  b.getRelative(BlockFace.UP, d++).getType() == Material.AIR
         && !b.getRelative(BlockFace.UP, d-3).isPassable()) return b.getLocation().add(0, d-3, 0); return null;
-    } // @formatter:on
+    }
 
     private boolean n0tAGreifClam(Location l0c0) {
         if ((useExperimentalChekar || useOtherChekar) && player != null) {
-            try { // @formatter:off
+            try {
                 BlurredBlockBreakEvent iHopePluginsDontFreakOutOverThis
                     = new BlurredBlockBreakEvent(l0c0.getBlock(), new JohnBonifield(player));
                 CodeACertainBallWillStealEvent theQueueBall
                     = new CodeACertainBallWillStealEvent(l0c0.clone().add(0, 1, 0), player);
-                // @formatter:on
                 player.setMetadata("nocheat.exempt", new FixedMetadataValue(instace, true));
 
                 if (useExperimentalChekar)

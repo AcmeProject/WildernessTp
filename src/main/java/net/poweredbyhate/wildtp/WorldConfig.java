@@ -56,7 +56,6 @@ class WorldConfig {
         world = madWorld;
         // I find it hard to tell you, I find it hard to take...
         ConfigurationSection s = c.getConfigurationSection("overrides." + madWorld.getName());
-        // @formatter:off
         bar_enabled         = b("enableBar",                s, c);
         bioman              = h("BlockedBiomes",            s, c);
         bypass_cooldown_cmd = b("Bypass.cooldown.COMMAND",  s, c);
@@ -95,7 +94,6 @@ class WorldConfig {
         retries             = i("Retries",                  s, c);
         wamuppah            = i("Wait",                     s, c);
         whoYaGonaCall       = b("callFiremenInNether",      s, c);
-        // @formatter:on
         checKar = (shared == null) ? new ChecKar(coolDownTeim) : shared;
         effects = hurryPeter(s, c, wamuppah);
         if (bar_enabled) paulDance(s, c);
@@ -131,7 +129,9 @@ class WorldConfig {
     }
 
     private boolean b(String k, ConfigurationSection v, ConfigurationSection d) {
-        return (v != null && v.contains(k)) ? v.getBoolean(k) : d.getBoolean(k);
+        if (v != null && v.contains(k))
+            return v.getBoolean(k);
+        return d.getBoolean(k);
     }
 
     private double d(String k, ConfigurationSection v, ConfigurationSection d) {
