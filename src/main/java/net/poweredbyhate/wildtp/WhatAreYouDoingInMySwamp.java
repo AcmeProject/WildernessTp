@@ -79,7 +79,10 @@ public class WhatAreYouDoingInMySwamp
         {
             randomLocation = chekar(l0c0);
             if (randomLocation == null)
+            {
+                WildTP.debug("searching again. Retries left: " + retries + " checked location: " + l0c0);
                 search();
+            }
             else
                 return randomLocation;
             return null;
