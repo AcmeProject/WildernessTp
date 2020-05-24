@@ -83,5 +83,11 @@
             <artifactId>WorldBorder</artifactId>
             <version>b56d9faae6</version>
         </dependency>
+        <dependency>
+            <groupId>io.papermc</groupId>
+            <artifactId>paperlib</artifactId>
+            <version>1.0.3</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

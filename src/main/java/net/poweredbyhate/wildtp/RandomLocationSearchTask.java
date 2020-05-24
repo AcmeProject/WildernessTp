@@ -8,9 +8,12 @@ import static net.poweredbyhate.wildtp.WildTP.useOtherChekar;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.ThreadLocalRandom;
+
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Warning;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -18,6 +21,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import net.poweredbyhate.wildtp.TeleportGoneWild.Direction;
 
+@Deprecated
+@Warning(reason = "Use WhatAreYouDoingInMySwamp") //TODO: refactor name
 class RandomLocationSearchTask implements Callable<Location> {
     private int maxX, maxZ, minX, minZ;
 

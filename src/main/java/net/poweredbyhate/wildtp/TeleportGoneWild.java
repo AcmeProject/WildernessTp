@@ -263,32 +263,23 @@ public class TeleportGoneWild {
 
     private void getRandomeLocation() {
         TooCool2Teleport.addPlayer(who, boo, queen,
-                Bukkit.getScheduler().runTaskAsynchronously(instace, new Runnable() {
+                Bukkit.getScheduler().runTask(instace, new Runnable()
+                {
                     @Override
-                    public void run() {
-                        try { // Start searching random task
-                            FutureTask<Location> futureTask = new RandomLocationSearchTask(who, wc).search(way);
-                            // Wait and get the random location
-                            Location loco = futureTask.get();
-
-                            if (loco == null) WildTP.debug("No suitable locations found");
-                            // Teleport player in main thread
-                            else if (Bukkit.getScheduler().callSyncMethod(instace, new Callable<Boolean>() {
-                                @Override
-                                public Boolean call() throws Exception {
-                                    return realTeleportt2(loco);
-                                }
-                            }).get()) return;
-                            else WildTP.debug("Random location searching timeout");
-                        }
-                        catch (InterruptedException | ExecutionException e) {
-                            TooCool2Teleport.microwave(who);
-                            e.printStackTrace();
-                            return;
-                        }
-
+                    public void run()
+                    {
+                        new WhatAreYouDoingInMySwamp(who, wc, way).search().thenAccept(location ->
+                        {
+                            Location loco = location;
+                            if (loco != null)
+                                realTeleportt2(loco);
+                            else
+                            {
+                                WildTP.debug("No suitable locations found");
+                                who.sendMessage(TooWildForEnums.NO_LOCATION);
+                            }
+                        });
                         TooCool2Teleport.microwave(who);
-                        who.sendMessage(TooWildForEnums.NO_LOCATION);
                     }
                 }));
     }
