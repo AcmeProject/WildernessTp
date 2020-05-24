@@ -265,7 +265,7 @@ public class TeleportGoneWild {
 
     private void getRandomeLocation() {
         TooCool2Teleport.addPlayer(who, boo, queen,
-                Bukkit.getScheduler().runTaskTimer(instace, new BukkitRunnable()
+                new BukkitRunnable()
                 {
                     @Override
                     public void run()
@@ -300,7 +300,7 @@ public class TeleportGoneWild {
                             }
                         });
                     }
-                }, 1, 1));
+                }.runTaskTimer(instace, 1, 1));
     }
 
     private void goWild(Location loc) {
