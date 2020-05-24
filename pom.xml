@@ -74,6 +74,10 @@
             <url>https://repo.destroystokyo.com/repository/maven-public/</url>
         </repository>
         <repository>
+            <id>essx-repo</id>
+            <url>https://ci.ender.zone/plugin/repository/everything/</url>
+        </repository>
+        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
@@ -87,7 +91,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.MilkBowl</groupId>
+            <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
             <scope>provided</scope>
