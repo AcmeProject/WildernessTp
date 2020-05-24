@@ -264,6 +264,7 @@ public class TeleportGoneWild {
     }
 
     private void getRandomeLocation() {
+        retries = wc.retries;
         TooCool2Teleport.addPlayer(who, boo, queen,
                 new BukkitRunnable()
                 {
@@ -275,12 +276,14 @@ public class TeleportGoneWild {
                             this.cancel();
                             WildTP.debug("No suitable locations found");
                             who.sendMessage(TooWildForEnums.NO_LOCATION);
+                            return;
                         }
 
                         if (!TooCool2Teleport.isCold(who))
                         {
                             this.cancel();
                             WildTP.debug(who + " is cold");
+                            return;
                         }
 
                         TeleportGoneWild.focus(who, wc, retries);
