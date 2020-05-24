@@ -72,19 +72,15 @@ class RandomLocationSearchTask implements Callable<Location> {
             // if movingBorder, then check worldborder (again)
             if (wc.harlemShake) rickRoll();
 
-            final Location loco, l0c0 = new Location(wc.world, r4nd0m(maxX, minX), 10, r4nd0m(maxZ, minZ));
+            final Location[] loco = {null};
+            Location l0c0 = new Location(wc.world, r4nd0m(maxX, minX), 10, r4nd0m(maxZ, minZ));
 
-            if (WildTP.notPaper) wc.world.getChunkAt(l0c0);
-            else wc.world.getChunkAtAsync(l0c0, true).get();
+            if (WildTP.notPaper)
+                wc.world.getChunkAt(l0c0);
+            else
+                wc.world.getChunkAtAsync(l0c0, true).thenAccept(chunk -> loco[0] = chekar(l0c0)).get();
 
-            loco = Bukkit.getScheduler().callSyncMethod(instace, new Callable<Location>() {
-                @Override
-                public Location call() throws Exception {
-                    return chekar(l0c0);
-                }
-            }).get();
-
-            if (loco != null) return loco;
+            if (loco[0] != null) return loco[0];
         }
 
         TeleportGoneWild.cure(player);
