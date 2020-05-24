@@ -32,7 +32,6 @@ public class WhatAreYouDoingInMySwamp
     private int maxX, maxZ, minX, minZ;
     private Player player;
     private WorldConfig wc;
-    int retries;
     private Location randomLocation;
     private Callable<Boolean> callable;
 
@@ -57,34 +56,20 @@ public class WhatAreYouDoingInMySwamp
             }
         }
 
-        retries = wc.retries;
-
         if (WildTP.notPaper)
             Math.min(wc.retries, 4);
     }
 
     public CompletableFuture<Location> search()
     {
-        if (retries-- < 0)
-            return CompletableFuture.completedFuture(null);
-
-        if (!TooCool2Teleport.isCold(player))
-            return CompletableFuture.completedFuture(null);
-
-        TeleportGoneWild.focus(player, wc, retries);
-
         Location l0c0 = new Location(wc.world, r4nd0m(maxX, minX), 10, r4nd0m(maxZ, minZ));
 
         return PaperLib.getChunkAtAsync(l0c0, true).thenApply(chunk ->
         {
             randomLocation = chekar(l0c0);
-            if (randomLocation == null)
-            {
-                WildTP.debug("searching again. Retries left: " + retries + " checked location: " + l0c0);
-                search();
-            }
-            else
+            if (randomLocation != null)
                 return randomLocation;
+            WildTP.debug("Location unsafe: " + l0c0);
             return null;
         });
     }

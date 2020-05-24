@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -37,6 +38,7 @@ public class TeleportGoneWild {
     private PotionEffect[] queen;
     private World          whr;
     private WorldConfig    wc;
+    private int retries;
 
     static enum Direction {
         EAST, NORTH, SOUTH, WEST
@@ -263,25 +265,42 @@ public class TeleportGoneWild {
 
     private void getRandomeLocation() {
         TooCool2Teleport.addPlayer(who, boo, queen,
-                Bukkit.getScheduler().runTask(instace, new Runnable()
+                Bukkit.getScheduler().runTaskTimer(instace, new BukkitRunnable()
                 {
                     @Override
                     public void run()
                     {
+                        if (retries-- < 0)
+                        {
+                            this.cancel();
+                            WildTP.debug("No suitable locations found");
+                            who.sendMessage(TooWildForEnums.NO_LOCATION);
+                        }
+
+                        if (!TooCool2Teleport.isCold(who))
+                        {
+                            this.cancel();
+                            WildTP.debug(who + " is cold");
+                        }
+
+                        TeleportGoneWild.focus(who, wc, retries);
+
                         new WhatAreYouDoingInMySwamp(who, wc, way).search().thenAccept(location ->
                         {
                             Location loco = location;
                             if (loco != null)
+                            {
                                 realTeleportt2(loco);
+                                TooCool2Teleport.microwave(who);
+                                this.cancel();
+                            }
                             else
                             {
-                                WildTP.debug("No suitable locations found");
-                                who.sendMessage(TooWildForEnums.NO_LOCATION);
+                                WildTP.debug("unsuitable location, trying again.");
                             }
                         });
-                        TooCool2Teleport.microwave(who);
                     }
-                }));
+                }, 1, 1));
     }
 
     private void goWild(Location loc) {
