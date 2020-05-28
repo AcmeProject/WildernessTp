@@ -255,7 +255,7 @@ public class TeleportGoneWild {
             hesDaMap.put(totalChance, vote4Pedro);
         }
 
-        int daChosenOne = RandomLocationSearchTask.r4nd0m(totalChance, 0);
+        int daChosenOne = WhatAreYouDoingInMySwamp.r4nd0m(totalChance, 0);
 
         for (Integer blah : hesDaMap.keySet())
             if (blah >= daChosenOne)
