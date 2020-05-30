@@ -8,7 +8,7 @@ contributors: [arboriginal,jyhsu2000]
 
 main: net.poweredbyhate.wildtp.WildTP
 api-version: '1.13'
-softdepend: [GriefPrevention,Vault,WorldBorder]
+softdepend: [GriefPrevention,Vault,WorldBorder,PlotSquared,Multiverse-Core]
 
 commands:
   wild:
