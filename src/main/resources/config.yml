@@ -34,12 +34,6 @@ cooldownMsgUsesActionBar: true
 # dere, configurable
 enableGUI: true
 
-# this won't have big impact on performances, but if you are not using this "feature",
-# it's a good idea to disable, because its listener is triggered each time you click in
-# an inventory. It checks first if this inventory is its one, and stop quickly
-# so not a big deal to let it enabled. But as MC becomes heavier and heavier,
-# saving resources even if small can be essential for servers which hardly keep their TPS.
-
 # If true, a bossbar will be displayed to the player while waiting for the RTP proceed
 enableBar: true
 barColor:
@@ -179,10 +173,10 @@ PostCommands: # Ignored if DoCommands is false
 useRandomWorlds: false
 randomWorlds: # Ignored if useRandomWorlds is false
   world: 1337
-  world_nether: 42 # Don't ask... (or wait a few millions years) 
+  world_nether: 42
 
 useGlobalClaimCheck: true # (if GriefPrevention plugin is found, default value will be false)
-useAlternativeGlobalClaimCheck: false
+useAlternativeGlobalClaimCheck: false # If you see errors like "Could not pass BlockBreakEvent..." then enable this instead of the global claim check
 
 signTexts:
   # This is what player have to type on a sign (first or second line) to create a WildTP sign

@@ -54,7 +54,6 @@ class WorldConfig {
 
     WorldConfig(World madWorld, ConfigurationSection c, @Nullable ChecKar shared) {
         world = madWorld;
-        // I find it hard to tell you, I find it hard to take...
         ConfigurationSection s = c.getConfigurationSection("overrides." + madWorld.getName());
         bar_enabled         = b("enableBar",                s, c);
         bioman              = h("BlockedBiomes",            s, c);
@@ -97,7 +96,6 @@ class WorldConfig {
         checKar = (shared == null) ? new ChecKar(coolDownTeim) : shared;
         effects = hurryPeter(s, c, wamuppah);
         if (bar_enabled) paulDance(s, c);
-        // Pa pa l'americano, Whisky soda e rockenroll!
         maxXY = i("MaxXY", s, c);
         minXY = i("MinXY", s, c);
         weNeedToBuildaWallTrumpSaidItAndObviouslyEverybodyLikeHim();
@@ -120,11 +118,9 @@ class WorldConfig {
                 return;
             }
         }
-        // Hey! Teachers! Leave those kids alone!
         WorldBorder b = world.getWorldBorder();
         if (b == null) return;
         int r = (int) b.getSize() / 2, x = b.getCenter().getBlockX(), z = b.getCenter().getBlockZ();
-        // All in all you're just another brick in the wall
         sendBrick(minXY, maxXY, x - r, x + r, z - r, z + r);
     }
 
@@ -177,7 +173,7 @@ class WorldConfig {
             bar_style_waiting   = BarStyle.valueOf(s("barStyle.waiting",   v, d));
         }
         catch (Exception e) {
-            Bukkit.getLogger().warning("Your bossbar settings are wrong... bar disabled. RTFM!");
+            WildTP.instace.getLogger().warning("Your bossbar settings are wrong... bar disabled.");
             bar_enabled = false;
         }
     }
