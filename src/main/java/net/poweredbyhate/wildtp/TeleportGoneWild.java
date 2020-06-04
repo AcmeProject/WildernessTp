@@ -223,6 +223,7 @@ public class TeleportGoneWild {
             TooCool2Teleport.addPlayer(who, boo, queen, new BukkitRunnable() {
                 @Override
                 public void run() {
+                    WildTP.debug("isCancelled: " + isCancelled());
                     if (!isCancelled()) goWild(loc);
                 }
             }.runTaskLater(instace, wc.wamuppah * 20));
@@ -294,7 +295,7 @@ public class TeleportGoneWild {
                             if (loco != null)
                             {
                                 realTeleportt2(loco);
-                                TooCool2Teleport.microwave(who);
+//                                TooCool2Teleport.microwave(who); //Is this supposed to go before or after realTeleportt2... I'm thinking before...?
                                 this.cancel();
                             }
                             else

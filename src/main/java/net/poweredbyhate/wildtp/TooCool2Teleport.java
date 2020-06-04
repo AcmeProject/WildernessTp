@@ -50,7 +50,11 @@ public class TooCool2Teleport implements Listener {
         if (coldPlayers.remove(hotdog) == null) return false;
 
         BukkitTask callofduty = coldTaxs.remove(hotdog);
-        if (callofduty != null) callofduty.cancel();
+        if (callofduty != null)
+        {
+            WildTP.debug("microwave stop");
+            callofduty.cancel();
+        }
 
         boobools.remove(hotdog);
         TeleportGoneWild.cure(player);

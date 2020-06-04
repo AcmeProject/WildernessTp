@@ -145,16 +145,16 @@ MaxXY: 5000
 # If true, border is recalculated each RTP - useful if you set your border to grow/shrink (so you should keep it false if not required)
 movingBorder: false
 
-Wait: 5      # (seconds) Time the player have to wait between he type the command and tp be sent in wild
+Wait: 0      # (seconds) Time the player have to wait between he type the command and tp be sent in wild
 Retries: 6   # Max attempts the plugin will try to find a safe place to tp the player
-Cooldown: 60 # (seconds) Time to wait before player can re-do again
+Cooldown: 0 # (seconds) Time to wait before player can re-do again
 
 Cost: 0 # Money cost of a RTP (requires Vault)
 paidTPconfirmation: 30 # If the RTP has a cost, a confirmation will be asked to the player...
 # This is (in second) the time this pending RTP stay valid. (set to 0 if you don't want confirmations) 
 
 teleportNewPlayers: false  # Choose "true" if you are not proud of your spawn
-dropPlayerFromAbove: false # Choose "true" if you vocal on dumcord and want to hear them scream
+dropPlayerFromAbove: false # Choose "true" if you vocal on dumcord and want to hear them scream. Or as I originally intended this to be, a dropship-like teleport
 dropPlayerFromHeight: 255  # Height from where the player is dropped (if dropPlayerFromAbove is true)
 # /!\ Using too high values can cause issues in some cases... Test before letting your players use them.
 # For example, using 300 with datapack "EndAboveOverworld" load the end, then reload overworld...
