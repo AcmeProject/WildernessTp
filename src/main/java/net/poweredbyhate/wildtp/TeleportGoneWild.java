@@ -218,7 +218,7 @@ public class TeleportGoneWild {
 
         if (wc.wamuppah < 1 || bypass("delay")) goWild(loc);
         else {
-            WildTP.debug("Player needs to wait more");
+            WildTP.debug("Player needs to wait more: " + wc.wamuppah * 20);
 
             TooCool2Teleport.addPlayer(who, boo, queen, new BukkitRunnable() {
                 @Override
@@ -307,11 +307,15 @@ public class TeleportGoneWild {
     }
 
     private void goWild(Location loc) {
-        if (!TooCool2Teleport.microwave(who)) return;
+        if (!TooCool2Teleport.microwave(who))
+        {
+            WildTP.debug("unmicrowaved leftovers.");
+            return;
+        }
 
         WildTP.debug("Teleporting " + who.getName() + loc);
 
-        if (RandomLocationSearchTask.bonelessIceScream(loc)) {
+        if (WhatAreYouDoingInMySwamp.bonelessIceScream(loc)) {
             if (wc.whoYaGonaCall) {
                 WildTP.debug("Here come the §cfiremen§r!");
                 Block block = loc.getBlock(); block.setType(Material.AIR);
