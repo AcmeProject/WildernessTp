@@ -184,7 +184,11 @@ public class TeleportGoneWild {
                         String m = TooWildForEnums.COOLDOWN.replace("%TIME%", shaker.getTimeLeft(who));
                         if (WildTP.ab) who.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(m)); else who.sendMessage(m);
                     }
-                    else getRandomeLocation();
+                    else
+                    {
+                        retries = wc.retries;
+                        getRandomeLocation();
+                    }
                 }
                 bangbang(ginaWilde);
             }
@@ -265,46 +269,35 @@ public class TeleportGoneWild {
     }
 
     private void getRandomeLocation() {
-        retries = wc.retries;
-        TooCool2Teleport.addPlayer(who, boo, queen,
-                new BukkitRunnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        if (retries-- < 0)
-                        {
-                            this.cancel();
-                            WildTP.debug("No suitable locations found");
-                            who.sendMessage(TooWildForEnums.NO_LOCATION);
-                            return;
-                        }
+        TooCool2Teleport.addPlayer(who, boo, queen, null);
+        if (retries-- < 0)
+        {
+            WildTP.debug("No suitable locations found");
+            who.sendMessage(TooWildForEnums.NO_LOCATION);
+            return;
+        }
 
-                        if (!TooCool2Teleport.isCold(who))
-                        {
-                            this.cancel();
-                            WildTP.debug(who + " is cold");
-                            return;
-                        }
+        if (!TooCool2Teleport.isCold(who))
+        {
+            WildTP.debug(who + " is cold");
+            return;
+        }
 
-                        TeleportGoneWild.focus(who, wc, retries);
+        TeleportGoneWild.focus(who, wc, retries);
 
-                        new WhatAreYouDoingInMySwamp(who, wc, way).search().thenAccept(location ->
-                        {
-                            Location loco = location;
-                            if (loco != null)
-                            {
-                                realTeleportt2(loco);
-//                                TooCool2Teleport.microwave(who); //Is this supposed to go before or after realTeleportt2... I'm thinking before...?
-                                this.cancel();
-                            }
-                            else
-                            {
-                                WildTP.debug("unsuitable location, trying again.");
-                            }
-                        });
-                    }
-                }.runTaskTimer(instace, 1, 1));
+        new WhatAreYouDoingInMySwamp(who, wc, way).search().thenAccept(location ->
+        {
+            Location loco = location;
+            if (loco != null)
+            {
+                realTeleportt2(loco);
+            }
+            else
+            {
+                WildTP.debug("unsuitable location, trying again.");
+                getRandomeLocation();
+            }
+        });
     }
 
     private void goWild(Location loc) {
