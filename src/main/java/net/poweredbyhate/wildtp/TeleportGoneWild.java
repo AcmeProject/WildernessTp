@@ -274,6 +274,7 @@ public class TeleportGoneWild {
         {
             WildTP.debug("No suitable locations found");
             who.sendMessage(TooWildForEnums.NO_LOCATION);
+            TooCool2Teleport.microwave(who);
             return;
         }
 
@@ -291,6 +292,7 @@ public class TeleportGoneWild {
             if (loco != null)
             {
                 realTeleportt2(loco);
+                TooCool2Teleport.microwave(who);
             }
             else
             {
