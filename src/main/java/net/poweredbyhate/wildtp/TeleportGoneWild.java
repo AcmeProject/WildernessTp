@@ -228,7 +228,8 @@ public class TeleportGoneWild {
                 @Override
                 public void run() {
                     WildTP.debug("isCancelled: " + isCancelled());
-                    if (!isCancelled()) goWild(loc);
+                    if (!isCancelled())
+                        goWild(loc);
                 }
             }.runTaskLater(instace, wc.wamuppah * 20));
 
@@ -290,10 +291,7 @@ public class TeleportGoneWild {
         {
             Location loco = location;
             if (loco != null)
-            {
                 realTeleportt2(loco);
-                TooCool2Teleport.microwave(who);
-            }
             else
             {
                 WildTP.debug("unsuitable location, trying again.");
