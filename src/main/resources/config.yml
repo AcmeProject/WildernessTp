@@ -80,10 +80,11 @@ BlockedBlocks: # Use « [] » if you don't want to restrict
   - CAVE_AIR
 
 Portals:
-  # Gamemode NOT listed here will ignore portals
-  Gamemodes: # (must be useful to disable CREATIVE if you build your spawn for example)
+  # Gamemode NOT listed here will ignore portals (e.g., remove CREATIVE if you don't want to be teleported when in a portal while in creative mode)
+  Gamemodes:
     - ADVENTURE
     - SURVIVAL
+    - CREATIVE
   # If true, a player enterring a portal is frozen until it's done
   freezeWhileRTP: false
   # If true, if you enter a portal and move, this will cancel the RTP
