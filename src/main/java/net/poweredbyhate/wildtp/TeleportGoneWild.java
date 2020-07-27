@@ -11,6 +11,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
+import io.papermc.lib.PaperLib;
 import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -301,46 +302,49 @@ public class TeleportGoneWild {
     }
 
     private void goWild(Location loc) {
-        if (!TooCool2Teleport.microwave(who))
+        PaperLib.getChunkAtAsync(loc, true).thenAccept(chunk ->
         {
-            WildTP.debug("unmicrowaved leftovers.");
-            return;
-        }
-
-        WildTP.debug("Teleporting " + who.getName() + loc);
-
-        if (WhatAreYouDoingInMySwamp.bonelessIceScream(loc)) {
-            if (wc.whoYaGonaCall) {
-                WildTP.debug("Here come the §cfiremen§r!");
-                Block block = loc.getBlock(); block.setType(Material.AIR);
-                for (BlockFace flame :
-                    new BlockFace[] { BlockFace.UP, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST }) {
-                    Block bed = block.getRelative(flame); if (bed.getType() == Material.FIRE) bed.setType(Material.AIR);
-                } // How do we sleep while our beds are burning? //Ask St. John Vianney
+            if (!TooCool2Teleport.microwave(who))
+            {
+                WildTP.debug("unmicrowaved leftovers.");
+                return;
             }
-        }
-        else if (wc.dr0p1n) {
-            WildTP.debug("Drop in feature enabled: Setting y=" + wc.dr0pFr0m);
-            loc.setY(wc.dr0pFr0m);
-            loc.setPitch(64);
-            OuchieListener.plsSaveDisDood(who);
-        }
 
-        if (!who.teleport(loc.clone().add(0.5, 0.5, 0.5))) {
-            WildTP.debug("teleport was canceled.");
-            return;
-        }
+            WildTP.debug("Teleporting " + who.getName() + loc);
 
-        WildTP.debug(who.getName() + " Teleported to " + who.getLocation());
+            if (WhatAreYouDoingInMySwamp.bonelessIceScream(loc)) {
+                if (wc.whoYaGonaCall) {
+                    WildTP.debug("Here come the §cfiremen§r!");
+                    Block block = loc.getBlock(); block.setType(Material.AIR);
+                    for (BlockFace flame :
+                        new BlockFace[] { BlockFace.UP, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST }) {
+                        Block bed = block.getRelative(flame); if (bed.getType() == Material.FIRE) bed.setType(Material.AIR);
+                    } // How do we sleep while our beds are burning? //Ask St. John Vianney
+                }
+            }
+            else if (wc.dr0p1n) {
+                WildTP.debug("Drop in feature enabled: Setting y=" + wc.dr0pFr0m);
+                loc.setY(wc.dr0pFr0m);
+                loc.setPitch(64);
+                OuchieListener.plsSaveDisDood(who);
+            }
 
-        if (!bypass("cooldown")) {
-            WildTP.debug(who.getName() + " Adding to cooldown");
-            wc.checKar.addKewlzDown(who.getUniqueId());
-            WildTP.debug("Added to cooldown " + who.getUniqueId());
-        }
+            if (!who.teleport(loc.clone().add(0.5, 0.5, 0.5))) {
+                WildTP.debug("teleport was canceled.");
+                return;
+            }
 
-        PostWildTeleportEvent postWildTeleportEvent = new PostWildTeleportEvent(who, wc);
-        Bukkit.getPluginManager().callEvent(postWildTeleportEvent);
+            WildTP.debug(who.getName() + " Teleported to " + who.getLocation());
+
+            if (!bypass("cooldown")) {
+                WildTP.debug(who.getName() + " Adding to cooldown");
+                wc.checKar.addKewlzDown(who.getUniqueId());
+                WildTP.debug("Added to cooldown " + who.getUniqueId());
+            }
+
+            PostWildTeleportEvent postWildTeleportEvent = new PostWildTeleportEvent(who, wc);
+            Bukkit.getPluginManager().callEvent(postWildTeleportEvent);
+        });
     }
 
     private boolean bypass(String what) {
