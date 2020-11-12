@@ -59,6 +59,9 @@ class RandomLocationSearchTask implements Callable<Location> {
             return false;
         location = location.clone();
         location.setY(127);
+        if (location.getBlock().getType() == Material.BEDROCK)
+            return true;
+        location.setY(255); //account for billy's "double nether height" datapack
         return location.getBlock().getType() == Material.BEDROCK;
     }
 
