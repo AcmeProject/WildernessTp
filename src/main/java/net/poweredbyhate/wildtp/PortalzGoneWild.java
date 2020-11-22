@@ -378,7 +378,8 @@ class PortalzGoneWild implements Listener {
         }
 
         boolean contains(Location l) {
-            return /**/one.getBlockX() <= l.getBlockX() && l.getBlockX() <= two.getBlockX()
+            return  l.getWorld() == one.getWorld()
+                    && one.getBlockX() <= l.getBlockX() && l.getBlockX() <= two.getBlockX()
                     && one.getBlockY() <= l.getBlockY() && l.getBlockY() <= two.getBlockY()
                     && one.getBlockZ() <= l.getBlockZ() && l.getBlockZ() <= two.getBlockZ();
         }
