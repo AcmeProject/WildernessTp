@@ -6,10 +6,6 @@ import static net.poweredbyhate.wildtp.WildTP.useRandomeWorldz;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 import io.papermc.lib.PaperLib;
 import net.md_5.bungee.api.ChatMessageType;
@@ -262,7 +258,7 @@ public class TeleportGoneWild {
             hesDaMap.put(totalChance, vote4Pedro);
         }
 
-        int daChosenOne = WhatAreYouDoingInMySwamp.r4nd0m(totalChance, 0);
+        int daChosenOne = WildWarrantTax.r4nd0m(totalChance, 0);
 
         for (Integer blah : hesDaMap.keySet())
             if (blah >= daChosenOne)
@@ -288,7 +284,7 @@ public class TeleportGoneWild {
 
         TeleportGoneWild.focus(who, wc, retries);
 
-        new WhatAreYouDoingInMySwamp(who, wc, way).search().thenAccept(location ->
+        new WildWarrantTax(who, wc, way).search().thenAccept(location ->
         {
             Location loco = location;
             if (loco != null)
@@ -312,7 +308,7 @@ public class TeleportGoneWild {
 
             WildTP.debug("Teleporting " + who.getName() + loc);
 
-            if (WhatAreYouDoingInMySwamp.bonelessIceScream(loc)) {
+            if (WildWarrantTax.bonelessIceScream(loc)) {
                 if (wc.whoYaGonaCall) {
                     WildTP.debug("Here come the §cfiremen§r!");
                     Block block = loc.getBlock(); block.setType(Material.AIR);

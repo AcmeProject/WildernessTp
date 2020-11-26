@@ -17,7 +17,6 @@ public class NoobieListener implements Listener {
     @EventHandler
     private void onNewbJoin(final PlayerJoinEvent event) {
         final Player p = event.getPlayer();
-        RandomLocationSearchTask.jk(p);
         if (p.hasPlayedBefore()) return;
 
         new BukkitRunnable() {

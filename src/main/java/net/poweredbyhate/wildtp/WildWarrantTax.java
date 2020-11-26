@@ -27,7 +27,7 @@ import static net.poweredbyhate.wildtp.WildTP.useOtherChekar;
  * @author RoboMWM
  */
 
-public class WhatAreYouDoingInMySwamp
+public class WildWarrantTax
 {
     private int maxX, maxZ, minX, minZ;
     private Player player;
@@ -35,7 +35,7 @@ public class WhatAreYouDoingInMySwamp
     private Location randomLocation;
     private Callable<Boolean> callable;
 
-    WhatAreYouDoingInMySwamp(Player p, WorldConfig flatEarthProofs, TeleportGoneWild.Direction disway)
+    WildWarrantTax(Player p, WorldConfig flatEarthProofs, TeleportGoneWild.Direction disway)
     {
         this.player = p;
         this.wc = flatEarthProofs;
@@ -82,13 +82,24 @@ public class WhatAreYouDoingInMySwamp
         return location.getBlock().getType() == Material.BEDROCK;
     }
 
+    static boolean billyIceScream(Location location) {
+        if (location.getWorld().getEnvironment() != World.Environment.NETHER)
+            return false;
+        location = location.clone();
+        location.setY(255);
+        return location.getBlock().getType() == Material.BEDROCK;
+    }
+
     static int r4nd0m(int max, int min) {
         return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
     private Location chekar(Location loco) {
         if (wc.bioman.contains(loco.getBlock().getBiome().toString())) return null;
-        if (bonelessIceScream(loco)) loco = netherLocation(loco, 110);
+        if (bonelessIceScream(loco))
+            loco = netherLocation(loco, 110);
+        else if (billyIceScream(loco))
+            loco = netherLocation(loco, 250);
         else loco.setY(loco.getWorld().getHighestBlockYAt(loco));
         WildTP.debug("am chekin");
         WildTP.debug(loco);
