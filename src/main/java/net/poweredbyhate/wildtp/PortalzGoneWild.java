@@ -233,12 +233,10 @@ class PortalzGoneWild implements Listener {
             if (WildTP.ab) p.sendActionBar(m); else p.sendMessage(m);
             return;
         }
-        // Carter: He's traversing the portal!
         WildTP.debug("Player: " + p.getDisplayName() + " entered a portal");
-        // Teal'c: OK, I take my laser broom for later!
         flaggleRock(u, 60);
-        // O'Neil: Go go go!
-        if (blackhole.link == null) new TeleportGoneWild(Trigger.PORTAL, p).WildTeleport();
+        if (blackhole.link == null)
+            new TeleportGoneWild(Trigger.PORTAL, p, WildTP.instace.getServer().getWorld(blackhole.name)).WildTeleport();
         else gotoLabel5(p, blackhole.link);
     }
 
