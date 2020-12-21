@@ -1,0 +1,156 @@
+[CENTER][IMG]http://i.imgur.com/4eq40Xf.png[/IMG][/CENTER]
+
+[B][SIZE=7][COLOR=rgb(255, 0, 0)][SIZE=7]WildernessTp[/SIZE] [/COLOR][/SIZE][/B](Best WildTP plogen, [URL='https://kiwiirc.com/client/irc.spi.gt/#wilderness-tp']ask anyone in the spigot chat[/URL])
+It is a simple lightweight plugin that randomly will teleport players when they do /wild. Wild changes the TP rules to create [B]NEW, WILD TELEPORTATIONS [/B]for players who want to have a random teleporting experience! Unlike Mojang's "/tp" or other plugins' "random" teleports which have tons of class files for often-buggy features, [B]Wild[/B] delivers interesting new teleportations due to its elite class and variable naming scheme.
+
+[B]Looking for 1.12.2 or earlier-compatible builds? [URL='https://dev.bukkit.org/projects/wildernesstp-the-one-true-wildtp/files?filter-status=1&filter-game-version=2020709689%3A6588']They're over here![/URL]
+[/B]
+[FONT=Courier New][SIZE=7][COLOR=rgb(0, 179, 0)]SOME WILDLY [B]UNIQUE[/B] FEATURES of dis truly wild tp plogen:[/COLOR][/SIZE][/FONT]
+[LIST]
+[*][SIZE=6][COLOR=rgb(128, 0, 255)]Compatible with [B][SIZE=7]all[/SIZE][/B] region/claim protection plugins! [/COLOR][/SIZE]
+[LIST]
+[*]compatible wit [insert ur region claiming plogen(s) here]! Ur poor player will not be teleported to a place where he cannot destroy blocks!
+[*][B]Yes, it [U]is compatible[/U][/B] with GriefPrevention, factions, factionsuuid, factionsone, fractions, towny, kingdoms, residence, mychunk, yourchunk, redchunk, bluechunk, redprotect, empires, preciousstones, protectionstones, worldguard, fuedal,[SIZE=2] some random region plugin nobody uses,[/SIZE] [SIZE=1]bop it, twist it, pull it, flick it, shake it, spin it[/SIZE]
+[/LIST]
+[*][SIZE=6][COLOR=rgb(128, 0, 255)]Random locations [/COLOR][/SIZE][SIZE=7][B][COLOR=rgb(128, 0, 255)]and worlds![/COLOR] [/B] [/SIZE]
+[LIST]
+[*]Why only teleport to just a random location, like every other boring wilderness TP plugin? Ever wanted to travel to a [B]RANDOM WORLD[/B] too? Well with this plugin, the [B]ONE TRUE WILDERNESSTP[/B], yes, it is possible, and configurable!
+[/LIST]
+[*][SIZE=6][COLOR=rgb(128, 0, 255)]Actually a [B][SIZE=7]lightweight, performant[/SIZE][/B] plugin: Minimizes lag due to chunk generation/loading![/COLOR][/SIZE]
+[LIST]
+[*]Avoids TPS drops due to chunk generation and loading! Benefits both pregenerated and non-pregenerated worlds!
+[*]Some other, bad wild plugins will crash ur server while desperately loading 300 chunks all at once to find a spot. Others copy code and do non-thread-safe stuff async, putting your server's files, worlds, and state at risk.
+[*]Make sure your server uses Paper to take advantage of these lag-reducing features! [URL]https://papermc.io[/URL]
+[/LIST]
+[/LIST]
+
+[CENTER][MEDIA=youtube]SRH8NKWc6dQ[/MEDIA][/CENTER]
+
+[B][SIZE=7]Dev Builds:[/SIZE][/B]
+For anyone wanting to test our latest builds/fixes, you can do so [URL='https://ci.appveyor.com/project/RoboMWM39862/wildernesstp/build/artifacts']here[/URL]
+
+Any feedback please [URL='https://kiwiirc.com/client/irc.spi.gt/#wilderness-tp'][U][COLOR=rgb(0, 102, 204)]click this link.[/COLOR][/U][/URL]
+
+[B]Sign format[/B]
+[code]Line 1: [wildtp]
+Line 2:
+Line 3: world name (optional)
+Line 4:[/code]
+
+[B]Old Config/Messages (RIP older simpler config):[/B]
+[SPOILER]
+Config:
+[CODE=yaml]MaxXY: 5000
+MinXY: -5000
+Retries: 4
+Cooldown: 30
+Cost: 0
+Wait: 5
+dropPlayerFromAbove: false
+Sound: 'ENTITY_ENDERMEN_TELEPORT'
+BlockedBiomes:
+  - 'DEEP_OCEAN'
+  - 'OCEAN'
+  - 'FROZEN_OCEAN'
+DoCommands: false
+PostCommands:
+  - 'title %PLAYER% times 20 100 20'
+  - 'title %PLAYER% title ["",{"text":"Wilderness","color":"green","bold":false}]'
+  - 'title %PLAYER% subtitle ["",{"text":"Its too dangerous to go alone.","color":"yellow"}]'
+
+# Should we use the randomWorlds list? If false, defaults to the world the player is currently in.
+useRandomWorlds: false
+
+# Regarding randomWorlds: the key is the world name, the value is its probability value.
+# Probability is calculated by adding up all the values (in this case, 1337 + 42 = 1379)
+# In this default case, world_nether has only a 42/1379 (3.05%) chance of being selected.
+# Feel free to add or remove worlds from this list.
+# If you aren't good at math: The higher the number, the higher the chance the world has of being selected at random.
+# You can also use this to restrict WildTP to one world: just leave only a single world in this list, and the player will only be teleported to that world.
+randomWorlds:
+  world: 1337
+  world_nether: 42
+[/CODE]
+Messages:
+[CODE=yaml]NO_PERMS: '&4You do not have permission!'
+NO_SIGN_PERMS: '&4You do not have permission to make a wild sign'
+NO_BREAK: '&4Hey! You can not break WildTp sign!'
+NO_LOCATION: '&4No suitable locations found.'
+NO_BIOME: '&4You may not put signs in %BIOME%'
+YES_SIGN: '&aSuccessfully made a new WildTP sign'
+BREAK_SIGN: '&aYou have broken a WildTP sign'
+COOLDOWN: '&4You must wait %TIME% seconds until you can use the command/sign again '
+RELOADED: '&aPlugin config has successfuly been reloaded.'
+[/CODE]
+[/SPOILER]
+[B]
+Pictures:[/B]
+[SPOILER]
+Yell at lax to fix his domains/server
+[IMG]http://q.AwsmPwrd.com/S1Fn.png[/IMG]
+[IMG]http://q.awsmpwrd.com/yUVS.png[/IMG]
+[/SPOILER]
+
+[SIZE=6][B]Commands:[/B][/SIZE]
+[LIST]
+[*]/wild - command for players to get randomly teleported
+[*]/wild [player] - Command for admins to teleport other players to random a location
+[*]/wild [world] - Random teleport to a specific world
+[*]/wild [north/south/east/west] Random teleport towards a specific direction
+
+[*]/wildtp reload - Reload the plugin config
+[*]/wildtp create <name> - Creates a portal
+[*]/wildtp delete <name> - Delete a portal
+[*]/wildtp list - Lists portals
+[*]/wildtp - shows help message
+[*]/wildtp  gui
+[/LIST]
+[B][SIZE=6]Permissions:[/SIZE][/B]
+[LIST]
+[*]wild.wildtp - Give player access to /wild
+[*]wild.wildtp.world - Give player access to /wild [world]
+[*]wild.wildtp.direction - Give player access to /wild [north/south/east/west]
+[*]wild.wildtp.others - Gives the player the ability to use /wild on other players
+
+[*]wild.wildtp.reload - Gives the player the ability to reload the plugin's config
+
+[*]wild.wildtp.create.sign - Gives the player ability to create WildTp signs
+[*]wild.wildtp.break.sign - Allows the player to break wildtp signs
+[*]wild.wildtp.sign - Allows the player to use WildTP signs
+
+[*]wild.wildtp.set - opens the gui
+[*]wild.wildtp.create.portal - Allows creation, listing, and deletion of portals
+[*]wild.wildtp.delay.bypass - Bypass warmup
+[*]wild.wildtp.cooldown.bypass - Bypass cooldown
+[/LIST]
+[SIZE=6][B]Possible features[/B][/SIZE]
+[LIST]
+[*][S]Commands[/S] done
+[*][S]Configurable min max (5k,-5k locked atm)??[/S]dDone
+[*][S]Cooldown for command??[/S] done
+[*][S]Price for using command??[/S] dONE!
+[*][S]Possible portal support??[/S]  DONE
+
+[*][S]griefprevention claim checks??[/S] done
+[*][S]Support for factions / factionsuuid / factionsone / fractions / towny / kingdoms / residence / mychunk / yourchunk / redchunk / bluechunk / redprotect / empires / preciousstones / worldguard / fuedal / some random region plugin nobody uses / Did you like / miss the first listed feature / that says it's compatible / with every single region protection plugin?[/S] [B][SIZE=7]DONE[/SIZE][/B]
+
+[*]Say your suggestion in discussion area to add to this list :)
+[/LIST]
+
+
+Source and dev builds are here [URL]https://github.com/acmeproject/WildernessTp[/URL] and we love pull requests, forks, and spoons! Is Wild wild enough for you vote here [URL]http://www.strawpoll.me/10140643[/URL]
+[B]
+LIKE BIG SERBUR NETWORKS using Wildnerness-TP[/B]
+[SPOILER]
+- 192.168.1.254 - The Router Network
+- mlg.robomwm.com - MLG Fortress (a memetastic serbur!)
+
+
+If u want ur serbur here [URL='https://patreon.com/RoboMWM']subscribe here first[/URL]
+[/SPOILER]
+
+If you feel like helping RoboMWM a.k.a. the guy who's basically 100% maintaining dis plogen now, subscribe to his [URL='http://patreon.com/robomwm']patreon[/URL].
+
+If you feel like helping LaxWasHere out, subscribe to his [URL='https://www.patreon.com/LaxWasHere']patreon[/URL] or you can donate directly to his paypal by clicking [URL='http://paypal.me/LaxWasHere']this[/URL]
+
+[SIZE=5]Support: [URL='https://kiwiirc.com/client/irc.spi.gt/#wilderness-tp']chat[/URL] or on [URL='https://github.com/AcmeProject/WildernessTp']GitHub[/URL] or on [URL='https://discord.gg/XjW6Kuk33g']Dumcord[/URL][/SIZE]
