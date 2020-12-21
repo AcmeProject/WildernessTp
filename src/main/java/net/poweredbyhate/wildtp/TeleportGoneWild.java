@@ -20,6 +20,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -30,18 +31,18 @@ import net.md_5.bungee.api.chat.TextComponent;
 public class TeleportGoneWild {
     private boolean[]      boo;
     private Direction      way;
-    private Trigger        how;
-    private Player         who;
+    private final Trigger        how;
+    private final Player         who;
     private PotionEffect[] queen;
     private World          whr;
     private WorldConfig    wc;
     private int retries;
 
-    static enum Direction {
+    enum Direction {
         EAST, NORTH, SOUTH, WEST
     }
 
-    static enum Trigger {
+    enum Trigger {
         COMMAND, GUI, JOIN, OTHERGUY, PORTAL, SIGN
     }
 
@@ -62,7 +63,7 @@ public class TeleportGoneWild {
     }
 
     boolean WildTeleport(Direction direction) {
-        return cook(direction) ? realTeleportt() : false;
+        return cook(direction) && realTeleportt();
     }
 
     static private KeyedBossBar auscultate(Player sickPlayer, BarColor color, BarStyle style) {
@@ -125,7 +126,7 @@ public class TeleportGoneWild {
             @Override
             public void run() {
                 if (isCancelled()) return;
-                if (bossbar == null || bossbar.getPlayers().isEmpty()) { cancel(); return; };
+                if (bossbar == null || bossbar.getPlayers().isEmpty()) { cancel(); return; }
                 // @formatter:on
                 int   s = milk - ++i;
                 float l = Math.max((float) s / milk, 0F);
@@ -325,7 +326,7 @@ public class TeleportGoneWild {
                 OuchieListener.plsSaveDisDood(who);
             }
 
-            if (!who.teleport(loc.clone().add(0.5, 0.5, 0.5))) {
+            if (!who.teleport(loc.clone().add(0.5, 0.5, 0.5), PlayerTeleportEvent.TeleportCause.COMMAND)) {
                 WildTP.debug("teleport was canceled.");
                 return;
             }
