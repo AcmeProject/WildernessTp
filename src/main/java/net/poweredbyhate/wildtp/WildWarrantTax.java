@@ -63,6 +63,7 @@ public class WildWarrantTax
     public CompletableFuture<Location> search()
     {
         Location l0c0 = new Location(wc.world, r4nd0m(maxX, minX), 10, r4nd0m(maxZ, minZ));
+        WildTP.debug("started search with " + l0c0);
 
         return PaperLib.getChunkAtAsync(l0c0, true).thenApply(chunk ->
         {
@@ -95,6 +96,7 @@ public class WildWarrantTax
     }
 
     private Location chekar(Location loco) {
+        WildTP.debug("starting chekar with " + loco);
         if (wc.bioman.contains(loco.getBlock().getBiome().toString())) return null;
         if (bonelessIceScream(loco))
             loco = netherLocation(loco, 110);

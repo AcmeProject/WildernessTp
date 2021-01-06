@@ -139,6 +139,7 @@ public class TeleportGoneWild {
     }
 
     private boolean cook(Direction meat) {
+        WildTP.debug("starting cook()");
         if (who == null || !who.isOnline()) return false;
         if (whr == null) whr = useRandomeWorldz ? getRandomeWorld() : who.getWorld();
         if (whr == null) return false;
@@ -268,6 +269,7 @@ public class TeleportGoneWild {
     }
 
     private void getRandomeLocation() {
+        WildTP.debug("starting getRandomeLocation()");
         TooCool2Teleport.addPlayer(who, boo, queen, null);
         if (retries-- < 0)
         {
