@@ -64,6 +64,7 @@ public class WildWarrantTax
     {
         Location l0c0 = new Location(wc.world, r4nd0m(maxX, minX), 10, r4nd0m(maxZ, minZ));
         WildTP.debug("started search with " + l0c0);
+        WildTP.debug("primary thread? " + Bukkit.isPrimaryThread());
 
         return PaperLib.getChunkAtAsync(l0c0, true).thenApply(chunk ->
         {
@@ -99,6 +100,7 @@ public class WildWarrantTax
 
     private Location chekar(Location loco) {
         WildTP.debug("starting chekar with " + loco + " first checking biome blacklist");
+        WildTP.debug("primary thread? " + Bukkit.isPrimaryThread());
         if (wc.bioman.contains(loco.getBlock().getBiome().toString())) return null;
         WildTP.debug("Biome not banned, now set y (also checks if this is a vanilla (or doubleheight) nether."); //Will need to update for 1.17
         if (bonelessIceScream(loco))
