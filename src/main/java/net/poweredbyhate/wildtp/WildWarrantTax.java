@@ -80,6 +80,7 @@ public class WildWarrantTax
             return false;
         location = location.clone();
         location.setY(127);
+        WildTP.debug("world is a nether environment, checking " + location + " for bedrock (vanilla nether)");
         return location.getBlock().getType() == Material.BEDROCK;
     }
 
@@ -88,6 +89,7 @@ public class WildWarrantTax
             return false;
         location = location.clone();
         location.setY(255);
+        WildTP.debug("world is a nether environment, checking " + location + " for bedrock (billy's doubleheight nether)");
         return location.getBlock().getType() == Material.BEDROCK;
     }
 
@@ -96,15 +98,19 @@ public class WildWarrantTax
     }
 
     private Location chekar(Location loco) {
-        WildTP.debug("starting chekar with " + loco);
+        WildTP.debug("starting chekar with " + loco + " first checking biome blacklist");
         if (wc.bioman.contains(loco.getBlock().getBiome().toString())) return null;
+        WildTP.debug("Biome not banned, now set y (also checks if this is a vanilla (or doubleheight) nether."); //Will need to update for 1.17
         if (bonelessIceScream(loco))
             loco = netherLocation(loco, 110);
         else if (billyIceScream(loco))
             loco = netherLocation(loco, 250);
-        else loco.setY(loco.getWorld().getHighestBlockYAt(loco));
-        WildTP.debug("am chekin");
-        WildTP.debug(loco);
+        else
+        {
+            WildTP.debug("world is not vanilla/doubleheight nether, find highest y block with a totally reliable and never constantly changing Bukkit method");
+            loco.setY(loco.getWorld().getHighestBlockYAt(loco));
+        }
+        WildTP.debug("am chekin" + loco);
         if (loco != null
                 && !wc.nonoBlocks.contains(loco.getBlock().getType().name())
                 && n0tAGreifClam(loco))
