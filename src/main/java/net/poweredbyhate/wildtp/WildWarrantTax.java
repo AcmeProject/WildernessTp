@@ -101,7 +101,12 @@ public class WildWarrantTax
     private Location chekar(Location loco) {
         WildTP.debug("starting chekar with " + loco + " first checking biome blacklist");
         WildTP.debug("primary thread? " + Bukkit.isPrimaryThread());
-        if (wc.bioman.contains(loco.getBlock().getBiome().toString())) return null;
+        for (StackTraceElement element : Thread.currentThread().getStackTrace())
+            WildTP.debug(element.toString());
+        WildTP.debug("biome: " + loco.getBlock().getBiome().toString());
+        WildTP.debug("banned biome? " + wc.bioman.contains(loco.getBlock().getBiome().toString()));
+        if (wc.bioman.contains(loco.getBlock().getBiome().toString()))
+            return null;
         WildTP.debug("Biome not banned, now set y (also checks if this is a vanilla (or doubleheight) nether."); //Will need to update for 1.17
         if (bonelessIceScream(loco))
             loco = netherLocation(loco, 110);

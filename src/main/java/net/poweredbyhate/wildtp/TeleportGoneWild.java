@@ -168,17 +168,17 @@ public class TeleportGoneWild {
     private boolean realTeleportt() {
         WildTP.debug("Wild teleport called for " + who.getName() + " for world " + whr.getName());
 
-        final long myTralala = ChecKar.getEpoch() + wc.confirmDelay; // i63cgUeSsY0
-        final UUID ginaWilde = who.getUniqueId();
+        final long wasteUrTime = ChecKar.getEpoch() + wc.confirmDelay;
+        final UUID youYouEyeDee = who.getUniqueId();
         // What everybody waiting for...
-        bangbang(ginaWilde);
+        bangbang(youYouEyeDee);
 
         BukkitRunnable taskyNhutch = new BukkitRunnable() {
             @Override
             public void run() {
-                if (!isCancelled() && ChecKar.getEpoch() < myTralala) {
+                if (!isCancelled() && ChecKar.getEpoch() < wasteUrTime) {
                     ChecKar shaker = wc.checKar;
-                    if (shaker.isInCooldown(ginaWilde, wc, how)) {
+                    if (shaker.isInCooldown(youYouEyeDee, wc, how)) {
                         WildTP.debug("In cooldown: yes");
                         String m = TooWildForEnums.COOLDOWN.replace("%TIME%", shaker.getTimeLeft(who));
                         if (WildTP.ab) who.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(m)); else who.sendMessage(m);
@@ -189,13 +189,13 @@ public class TeleportGoneWild {
                         getRandomeLocation();
                     }
                 }
-                bangbang(ginaWilde);
+                bangbang(youYouEyeDee);
             }
         };
 
         if (wc.cost == 0 || wc.confirmDelay < 1 || bypass("cost")) taskyNhutch.runTask(instace);
         else {
-            instace.ohWait.put(ginaWilde, taskyNhutch);
+            instace.ohWait.put(youYouEyeDee, taskyNhutch);
             taskyNhutch.runTaskLaterAsynchronously(instace, (wc.confirmDelay + 1) * 20);
             oralExam(who, wc.confirmDelay, wc.cost);
         }
