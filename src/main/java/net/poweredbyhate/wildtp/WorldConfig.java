@@ -103,6 +103,7 @@ class WorldConfig {
 
     void weNeedToBuildaWallTrumpSaidItAndObviouslyEverybodyLikeHim() {
         if (WildTP.wb) {
+            WildTP.debug("worldborder plugin detected");
             BorderData b = Config.Border(world.getName());
             // We don't need no education...
             if (b != null) {
@@ -118,6 +119,7 @@ class WorldConfig {
                 return;
             }
         }
+        WildTP.debug("WorldBorder plugin not detected (or border not set), checking for vanilla's");
         WorldBorder b = world.getWorldBorder();
         if (b == null) return;
         int r = (int) b.getSize() / 2, x = b.getCenter().getBlockX(), z = b.getCenter().getBlockZ();

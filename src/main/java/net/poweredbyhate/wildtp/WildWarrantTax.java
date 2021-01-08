@@ -103,7 +103,9 @@ public class WildWarrantTax
         WildTP.debug("primary thread? " + Bukkit.isPrimaryThread());
         for (StackTraceElement element : Thread.currentThread().getStackTrace())
             WildTP.debug(element.toString());
-        WildTP.debug("biome: " + loco.getBlock().getBiome().toString());
+        WildTP.debug("block: " + loco.getBlock());
+        WildTP.debug("biome: " + loco.getBlock().getBiome());
+        WildTP.debug("toString (probs redundant): " + loco.getBlock().getBiome().toString());
         WildTP.debug("banned biome? " + wc.bioman.contains(loco.getBlock().getBiome().toString()));
         if (wc.bioman.contains(loco.getBlock().getBiome().toString()))
             return null;
