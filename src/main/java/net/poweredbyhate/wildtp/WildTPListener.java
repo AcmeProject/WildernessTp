@@ -41,22 +41,31 @@ public class WildTPListener implements Listener {
     }
 
     @EventHandler
-    private void onPostTele(PostWildTeleportEvent ev) { // ça existe encore les postes de télé ?
+    private void onPostTele(PostWildTeleportEvent ev) {
         Location lok   = ev.wildLing.getLocation();
         World    plaza = lok.getWorld();
 
         TeleportGoneWild.cure(ev.wildLing);
 
-        try {
-            plaza.playSound(lok, Sound.valueOf(WildTP.instace.getConfig().getString("Sound")), 1, 1);
-        }
-        catch (Throwable boop) {}
-
-        if (ev.wc.doCommandz) {
+        if (ev.wc.doCommandz)
+        {
             String p = ev.wildLing.getName(), x = "" + lok.getBlockX(), z = "" + lok.getBlockZ();
 
             for (String c : ev.wc.commando) Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                     c.replace("%PLAYER%", p).replace("%X%", x).replace("%Z%", z));
+        }
+
+        String sound = WildTP.instace.getConfig().getString("Sound");
+        if (sound == null || sound.isEmpty())
+            return;
+
+        try
+        {
+            plaza.playSound(lok, Sound.valueOf(sound), 1, 1);
+        }
+        catch (IllegalArgumentException boop)
+        {
+            WildTP.debug(sound + " is not a valid sound.");
         }
     }
 }

@@ -25,21 +25,21 @@ public class GeeYouEye implements Listener {
     }
 
     @EventHandler
-    @SuppressWarnings("deprecation")
     private void onClick(InventoryClickEvent ev) {
-        try {
-            if (ev.getInventory().getHolder() instanceof IInventoryHolder) {
-                ev.setCancelled(true);
+        if (ev == null || ev.getInventory() == null) //https://www.spigotmc.org/threads/wilderness-tp.145440/page-12#post-2394343
+            return;
 
-                if (ev.getInventory().getName().contains("Unnecessary Feature")
-                        && ev.getInventory().getItem(ev.getRawSlot()).getItemMeta().getDisplayName().toLowerCase()
-                                .contains("wild teleport")) {
-                    ev.getWhoClicked().closeInventory();
-                    new TeleportGoneWild(Trigger.GUI, (Player) ev.getWhoClicked()).WildTeleport();
-                }
+        if (ev.getInventory().getHolder() instanceof IInventoryHolder)
+        {
+            ev.setCancelled(true);
+
+            if (ev.getInventory().getName().contains("Unnecessary Feature")
+                    && ev.getInventory().getItem(ev.getRawSlot()).getItemMeta().getDisplayName().toLowerCase()
+                            .contains("wild teleport")) {
+                ev.getWhoClicked().closeInventory();
+                new TeleportGoneWild(Trigger.GUI, (Player) ev.getWhoClicked()).WildTeleport();
             }
         }
-        catch (Exception PhanaticD) {}
     }
 
     private ItemStack createItem(Material material, int amount, String displayname, String lore) {

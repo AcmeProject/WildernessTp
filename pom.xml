@@ -55,6 +55,11 @@
                             <pattern>io.papermc.lib</pattern>
                             <shadedPattern>net.poweredbyhate.wildtp.paperlib</shadedPattern> <!-- Replace this -->
                         </relocation>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <!-- Replace this with your package! -->
+                            <shadedPattern>net.poweredbyhate.wildtp.bstats</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -70,8 +75,8 @@
     </build>
     <repositories>
         <repository>
-            <id>destroystokyo-repo</id>
-            <url>https://repo.destroystokyo.com/repository/maven-public/</url>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <repository>
             <id>essx-repo</id>
@@ -80,6 +85,10 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.org/repository/maven-public</url>
         </repository>
     </repositories>
     <dependencies>
@@ -111,7 +120,13 @@
         <dependency>
             <groupId>io.papermc</groupId>
             <artifactId>paperlib</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.6</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>1.8</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

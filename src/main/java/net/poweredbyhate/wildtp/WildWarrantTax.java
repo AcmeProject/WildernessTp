@@ -101,22 +101,12 @@ public class WildWarrantTax
     private Location chekar(Location loco) {
         WildTP.debug("starting chekar with " + loco + " first checking biome blacklist");
         WildTP.debug("primary thread? " + Bukkit.isPrimaryThread());
-        Thread.dumpStack();
         WildTP.debug("block: " + loco.getBlock());
         WildTP.debug("biome: " + loco.getBlock().getBiome());
 
-        try
-        {
-            WildTP.debug("toString (probs redundant): " + loco.getBlock().getBiome().toString());
-            WildTP.debug("banned biome? " + wc.bioman.contains(loco.getBlock().getBiome().toString()));
-            if (wc.bioman.contains(loco.getBlock().getBiome().toString()))
-                return null;
-        }
-        catch (NullPointerException e)
-        {
-            WildTP.debug("well, something was indeed null and threw an exception.");
-            e.printStackTrace();
-        }
+        //https://github.com/AcmeProject/WildernessTp/issues/93#issuecomment-757527909
+        if (loco.getBlock().getBiome() != null && wc.bioman.contains(loco.getBlock().getBiome().toString()))
+            return null;
 
         WildTP.debug("Biome not banned, now set y (also checks if this is a vanilla (or doubleheight) nether."); //Will need to update for 1.17
         if (bonelessIceScream(loco))

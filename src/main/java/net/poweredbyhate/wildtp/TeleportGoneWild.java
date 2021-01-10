@@ -350,9 +350,9 @@ public class TeleportGoneWild {
         return ChecKar.bypass(what, who, wc, how);
     }
 
-    private void bangbang(UUID xActress) {
-        if (instace.ohWait.containsKey(xActress)) {
-            instace.ohWait.remove(xActress).cancel();
+    private void bangbang(UUID youYouEyeDe) {
+        if (instace.ohWait.containsKey(youYouEyeDe)) {
+            instace.ohWait.remove(youYouEyeDe).cancel();
         }
     }
 

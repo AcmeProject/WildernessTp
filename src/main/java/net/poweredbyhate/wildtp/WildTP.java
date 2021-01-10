@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -48,10 +50,12 @@ public class WildTP extends JavaPlugin {
             getLogger().info(" = = = = = = = = = = = = = = = = = = = =");
             getLogger().info(" ");
             getLogger().warning("Btw, dis wild plugin (and ur server) would be a bazillion times");
-            getLogger().warning("faster and wilder if u switch 2 Paper.");
+            getLogger().warning("faster and wilder if u switch 2 Paper/Tuinity/Purpur/etc. for async chunk loading/generation.");
             getLogger().warning("Until then, we'll just go wild at ur serburs slower/laggier pace.");
             getLogger().warning(" ");
-            getLogger().warning("Learn and get Paper (it's ez) at https://papermc.io");
+            getLogger().warning("Get Paper at https://papermc.io");
+            getLogger().warning("Get Tuinity at https://github.com/Spottedleaf/Tuinity");
+            getLogger().warning("Get Purpur at https://github.com/pl3xgaming/Purpur");
             getLogger().info(" ");
             getLogger().info(" = = = = = = = = = = = = = = = = = = = ="); notPaper = true;
         }
@@ -160,7 +164,7 @@ public class WildTP extends JavaPlugin {
     public void wildMetrics() {
         try { new Metricsa(this).start(); } catch (IOException e) {}
         try {
-            Metrics metrics = new Metrics(this);
+            Metrics metrics = new Metrics(this, 3316);
 
             metrics.addCustomChart(new Metrics.SimplePie("bukkit_impl", new Callable<String>() {
                 @Override

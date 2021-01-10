@@ -14,19 +14,12 @@
 # - Bar styles: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarStyle.html
 # - Gamemodes: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/GameMode.html
 # - Effects: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html
-# .
-# IF YOUR ARE USING SPIGOT AND NOT PAPER:
-# 1. Why???
-# 2. You really should consider using Paper (https://papermc.io)
-# 3. There is a chance players die after a RTP when chunks not load enough fast...
-#    So, use paper or preload chunks + use dropPlayerFromAbove:true + prey
-# And paper or spigot, this is highly recommended to pre-load your chunks
-# as Minecraft became heavy. If you don't, your player could suffer from lags
-# using this plugin or not when new chunks are loaded (ask to all not noob server admins)
-# (tested a lot on paper without preloaded gives me no problems, only sometimes with spigot)
-# .
-# If you want to spam your console, use "debug: true"
+# FYI, you really should consider using Paper (https://papermc.io)
+# or any fork of it (e.g. Tuinity, Purpur, etc.) so that you benefit from async chunk generation/loading
+
+# use "debug: true" to provide debug messages in console/logs to assist in fixing bugs
 debug: false
+
 # If true, cooldown messages will use actionbar instead of chat
 # (this is useful not to spam it when players tries to reach a portal)
 cooldownMsgUsesActionBar: true
@@ -57,34 +50,34 @@ moveCancelRTP: true
 Sound: ENTITY_ENDERMAN_TELEPORT
 
 BlockedBiomes: # Use « [] » if you don't want to restrict
-  - COLD_OCEAN
-  - DEEP_COLD_OCEAN
-  - DEEP_FROZEN_OCEAN
-  - DEEP_LUKEWARM_OCEAN
-  - DEEP_OCEAN
-  - DEEP_WARM_OCEAN
-  - FROZEN_OCEAN
-  - FROZEN_OCEAN
-  - LUKEWARM_OCEAN
-  - OCEAN
-  - RIVER
-  - WARM_OCEAN
+- COLD_OCEAN
+- DEEP_COLD_OCEAN
+- DEEP_FROZEN_OCEAN
+- DEEP_LUKEWARM_OCEAN
+- DEEP_OCEAN
+- DEEP_WARM_OCEAN
+- FROZEN_OCEAN
+- FROZEN_OCEAN
+- LUKEWARM_OCEAN
+- OCEAN
+- RIVER
+- WARM_OCEAN
 
 BlockedBlocks: # Use « [] » if you don't want to restrict
-  - CACTUS
-  - FIRE
-  - LAVA
-  - MAGMA_BLOCK
-  - AIR
-  - VOID_AIR
-  - CAVE_AIR
+- CACTUS
+- FIRE
+- LAVA
+- MAGMA_BLOCK
+- AIR
+- VOID_AIR
+- CAVE_AIR
 
 Portals:
   # Gamemode NOT listed here will ignore portals (e.g., remove CREATIVE if you don't want to be teleported when in a portal while in creative mode)
   Gamemodes:
-    - ADVENTURE
-    - SURVIVAL
-    - CREATIVE
+  - ADVENTURE
+  - SURVIVAL
+  - CREATIVE
   # If true, a player enterring a portal is frozen until it's done
   freezeWhileRTP: false
   # If true, if you enter a portal and move, this will cancel the RTP
@@ -125,19 +118,19 @@ Bypass: # /!\ Those settings FORCE bypass, whether the player has permission or 
 # /!\ Invalid multiplier will fallback to 0
 Effects:
   COMMAND:
-    - BLINDNESS
-    - CONFUSION:99
-    - SLOW_DIGGING:3
+  - BLINDNESS
+  - CONFUSION:99
+  - SLOW_DIGGING:3
   GUI: [] # <== This represent an empty list (no effects)
   JOIN: # Require « teleportNewPlayers: true »
-    - BLINDNESS
-    - CONFUSION
+  - BLINDNESS
+  - CONFUSION
   OTHERGUY: []
   PORTAL:
-    - BLINDNESS
-    - CONFUSION
-    - INVISIBILITY
-    - SLOW:2
+  - BLINDNESS
+  - CONFUSION
+  - INVISIBILITY
+  - SLOW:2
   SIGN: []
 
 # Bounds of the wildness (named XY and not XZ... Another proof! #CatEarthSociety)
