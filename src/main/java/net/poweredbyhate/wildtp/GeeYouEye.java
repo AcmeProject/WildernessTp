@@ -26,14 +26,14 @@ public class GeeYouEye implements Listener {
 
     @EventHandler
     private void onClick(InventoryClickEvent ev) {
-        if (ev == null || ev.getInventory() == null) //https://www.spigotmc.org/threads/wilderness-tp.145440/page-12#post-2394343
+        if (ev == null || ev.getInventory() == null || ev.getView() == null) //https://www.spigotmc.org/threads/wilderness-tp.145440/page-12#post-2394343
             return;
 
         if (ev.getInventory().getHolder() instanceof IInventoryHolder)
         {
             ev.setCancelled(true);
 
-            if (ev.getInventory().getName().contains("Unnecessary Feature")
+            if (ev.getView().getTitle().contains("Unnecessary Feature")
                     && ev.getInventory().getItem(ev.getRawSlot()).getItemMeta().getDisplayName().toLowerCase()
                             .contains("wild teleport")) {
                 ev.getWhoClicked().closeInventory();
