@@ -1,5 +1,5 @@
 name: Wild
-version: "2.28-${git.commit.id.abbrev}"
+version: "2.29-${git.commit.id.abbrev}"
 
 authors: [LaxWasHere,RoboMWM]
 website: https://www.spigotmc.org/resources/wilderness-tp.22853/
