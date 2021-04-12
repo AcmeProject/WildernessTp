@@ -76,7 +76,7 @@ permissions:
 
   wild.wildtp.others.*: # (require wild.wildtp.others)
     description: Allows to use /wild [player] [world] in all worlds
-    default: true
+    default: op
     # This permission has dynamic derivatives, see below
 
   wild.wildtp.reload:
@@ -97,7 +97,7 @@ permissions:
 
   wild.wildtp.world.*: # (require wild.wildtp.world)
     description: Allows to use /wild [world] in all worlds
-    default: true
+    default: op
     # This permission has dynamic derivatives, see below
 
   wild.wildtp.world.*.free:
