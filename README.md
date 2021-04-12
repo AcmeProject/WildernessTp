@@ -41,7 +41,7 @@ A default config file will be created for you, without extra charges, into the p
 
 ## Have a question / A bug to report ?
 
-We have an [IRC channel](https://kiwiirc.com/client/irc.spi.gt/#wilderness-tp) and a [Dumcord](https://discord.gg/CnRQhsW)
+We have an [IRC channel](https://kiwiirc.com/client/irc.spi.gt/#wilderness-tp) and a [Dumcord](https://discord.gg/XjW6Kuk33g)
 
 You can discuss and ask questions about Wilderness-Tp in the [plugin thread](https://www.spigotmc.org/threads/wilderness-tp.145440/). If you find a bug, please use the [bug tracker](https://github.com/AcmeProject/WildernessTp/issues). Don't forget to give details to reproduce, your configuration, ... Also include plugin and server exact versions. 
 
