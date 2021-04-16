@@ -1,9 +1,6 @@
 package net.poweredbyhate.wildtp;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,18 +39,19 @@ public class WildTPListener implements Listener {
 
     @EventHandler
     private void onPostTele(PostWildTeleportEvent ev) {
-        Location lok   = ev.wildLing.getLocation();
-        World    plaza = lok.getWorld();
+        Location lok = ev.wildLing.getLocation();
+        World plaza = lok.getWorld();
 
         TeleportGoneWild.cure(ev.wildLing);
 
-        if (ev.wc.doCommandz)
-        {
+        if (ev.wc.doCommandz) {
             String p = ev.wildLing.getName(), x = "" + lok.getBlockX(), z = "" + lok.getBlockZ();
 
-            for (String c : ev.wc.commando) Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                    c.replace("%PLAYER%", p).replace("%X%", x).replace("%Z%", z));
+            for (String c : ev.wc.commando)
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                        c.replace("%PLAYER%", p).replace("%X%", x).replace("%Z%", z));
         }
+
 
         String sound = WildTP.instace.getConfig().getString("Sound");
         if (sound == null || sound.isEmpty())
@@ -61,7 +59,9 @@ public class WildTPListener implements Listener {
 
         try
         {
-            plaza.playSound(lok, Sound.valueOf(sound), 1, 1);
+            String volume = WildTP.instace.getConfig().getString("Volume");
+            plaza.playSound(lok, Sound.valueOf(sound), SoundCategory.MASTER, Float.parseFloat(String.valueOf(volume)), 1);
+            WildTP.debug("Playing da sound of " + sound + " with volume of " + volume);
         }
         catch (IllegalArgumentException boop)
         {
