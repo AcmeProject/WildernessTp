@@ -59,9 +59,9 @@ public class WildTPListener implements Listener {
 
         try
         {
-            String radius = WildTP.instace.getConfig().getString("Radius");
-            plaza.playSound(lok, Sound.valueOf(sound), SoundCategory.MASTER, Float.parseFloat(String.valueOf(radius)), 1);
-            WildTP.debug("Playing da sound of " + sound + " with radius of " + radius);
+            String volume = WildTP.instace.getConfig().getString("Volume-Radius");
+            plaza.playSound(lok, Sound.valueOf(sound), SoundCategory.MASTER, Float.parseFloat(String.valueOf(volume)), 1);
+            WildTP.debug("Playing da sound of " + sound + " with volume or radius of " + volume);
         }
         catch (IllegalArgumentException boop)
         {
