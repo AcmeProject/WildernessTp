@@ -64,7 +64,7 @@ public class WildTPListener implements Listener {
 
         try
         {
-            String volume = WildTP.instace.getConfig().getString("Volume-Radius");
+            String volume = WildTP.instace.getConfig().getString("Volume");
             plaza.playSound(lok, Sound.valueOf(sound), SoundCategory.MASTER, Float.parseFloat(String.valueOf(volume)), 1);
             WildTP.debug("Playing da sound of " + sound + " with volume or radius of  " + volume);
         }
