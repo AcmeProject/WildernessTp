@@ -49,7 +49,7 @@ moveCancelRTP: true
 # Sound played when your player gone wild /!\ Invalid values will disable it
 Sound: ENTITY_ENDERMAN_TELEPORT
 # Anything greater than one just increases the radius.
-Volume-Radius: 1
+Volume: 1
 
 BlockedBiomes: # Use « [] » if you don't want to restrict
 - COLD_OCEAN
