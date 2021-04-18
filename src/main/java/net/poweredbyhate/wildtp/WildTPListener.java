@@ -1,6 +1,11 @@
 package net.poweredbyhate.wildtp;
 
-import org.bukkit.*;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -61,7 +66,7 @@ public class WildTPListener implements Listener {
         {
             String volume = WildTP.instace.getConfig().getString("Volume");
             plaza.playSound(lok, Sound.valueOf(sound), SoundCategory.MASTER, Float.parseFloat(String.valueOf(volume)), 1);
-            WildTP.debug("Playing da sound of " + sound + " with volume of " + volume);
+            WildTP.debug("Playing da sound of " + sound + " with volume or radius of  " + volume);
         }
         catch (IllegalArgumentException boop)
         {
