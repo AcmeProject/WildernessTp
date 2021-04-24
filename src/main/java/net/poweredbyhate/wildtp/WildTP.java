@@ -127,7 +127,7 @@ public class WildTP extends JavaPlugin {
         randomeWorlds         = config.getConfigurationSection("randomWorlds");
         useExperimentalChekar = config.getBoolean("useGlobalClaimCheck");
         useRandomeWorldz      = config.getBoolean("useRandomWorlds");
-        enableUselessGUI      = config.getBoolean("enableGUI");
+        enableUselessGUI      = config.getBoolean("enableGUI"); //https://www.spigotmc.org/threads/wilderness-tp.145440/page-24#post-3381048
         useOtherChekar        = config.getBoolean("useAlternativeGlobalClaimCheck");
         bluredLines           = new String[] {
                 TooWildForEnums.translate(config.getString("signTexts.line1")),
