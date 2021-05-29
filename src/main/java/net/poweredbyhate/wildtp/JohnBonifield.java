@@ -1220,7 +1220,7 @@ public class JohnBonifield implements Player
     @Override
     public Spigot spigot()
     {
-        return new Spigot();
+        return p.spigot();
     }
 
     @Override
