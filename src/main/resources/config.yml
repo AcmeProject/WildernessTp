@@ -15,7 +15,7 @@
 # - Gamemodes: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/GameMode.html
 # - Effects: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html
 # FYI, you really should consider using Paper (https://papermc.io)
-# or any fork of it (e.g. Tuinity, Purpur, etc.) so that you benefit from async chunk generation/loading
+# or any fork of it (e.g. Airplane, Purpur etc.) so that you benefit from async chunk generation/loading
 
 # use "debug: true" to provide debug messages in console/logs to assist in fixing bugs
 debug: false
