@@ -37,8 +37,10 @@ import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Pose;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Villager;
+import org.bukkit.entity.memory.MemoryKey;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -1153,6 +1155,12 @@ public class JohnBonifield implements Player
     }
 
     @Override
+    public void openBook(ItemStack itemStack)
+    {
+        
+    }
+
+    @Override
     public int getViewDistance()
     {
         return 0;
@@ -1633,6 +1641,12 @@ public class JohnBonifield implements Player
 
     @Override
     public BlockFace getFacing()
+    {
+        return null;
+    }
+
+    @Override
+    public Pose getPose()
     {
         return null;
     }
@@ -2213,6 +2227,18 @@ public class JohnBonifield implements Player
     public boolean isCollidable()
     {
         return false;
+    }
+
+    @Override
+    public <T> T getMemory(MemoryKey<T> memoryKey)
+    {
+        return null;
+    }
+
+    @Override
+    public <T> void setMemory(MemoryKey<T> memoryKey, T t)
+    {
+
     }
 
     @Override
