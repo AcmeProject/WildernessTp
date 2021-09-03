@@ -56,6 +56,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -1405,6 +1406,12 @@ public class JohnBonifield implements Player
     public void setPersistent(boolean b)
     {
 
+    }
+
+    @Override
+    public PersistentDataContainer getPersistentDataContainer()
+    {
+        return p.getPersistentDataContainer();
     }
 
     /**
