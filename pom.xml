@@ -76,7 +76,7 @@
     <repositories>
         <repository>
             <id>papermc</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
         <repository>
             <id>essx-repo</id>
@@ -108,7 +108,7 @@
         <dependency>
             <groupId>com.github.TechFortress</groupId>
             <artifactId>GriefPrevention</artifactId>
-            <version>16.13.0</version>
+            <version>16.18.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

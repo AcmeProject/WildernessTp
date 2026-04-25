@@ -90,8 +90,7 @@ public class CommandsGoneWild implements CommandExecutor, TabCompleter {
             World w = Bukkit.getWorld(args[0]);
 
             if (w != null) {
-                if (sender.hasPermission("wild.wildtp.world")
-                && (sender.hasPermission("wild.wildtp.world.*") || sender.hasPermission("wild.wildtp.world." + args[0]))) {
+                if (canTPto(sender, w)) {
                     if (sender instanceof Player)
                     {
                         WildTP.debug("wild.wildtp.world: " + sender.hasPermission("wild.wildtp.world"));
@@ -119,7 +118,7 @@ public class CommandsGoneWild implements CommandExecutor, TabCompleter {
                             : (sender instanceof Player) ? ((Player) sender).getWorld() : p.getWorld();
                     if (w == null) return false;
 
-                    if (canTPto(sender, w)) {
+                    if (canTPtoOtherWorld(sender, w)) {
                         new TeleportGoneWild(Trigger.OTHERGUY, p, w).WildTeleport();
                         WildTP.debug(sender.getName() + " Called /wild args " + args[0]);
 
@@ -157,7 +156,7 @@ public class CommandsGoneWild implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 2 && sender.hasPermission("wild.wildtp.others") && Bukkit.getPlayerExact(args[0]) != null) {
-            for (World world : Bukkit.getWorlds()) if (canTPto(sender, world)) candidates.add(world.getName());
+            for (World world : Bukkit.getWorlds()) if (canTPtoOtherWorld(sender, world)) candidates.add(world.getName());
 
             return filterList(candidates, args[1]);
         }
@@ -165,10 +164,19 @@ public class CommandsGoneWild implements CommandExecutor, TabCompleter {
         return candidates;
     }
 
-    private boolean canTPto(CommandSender sender, World world) {
+    private boolean canTPtoOtherWorld(CommandSender sender, World world) {
         if (sender.hasPermission("wild.wildtp.others.*")) return true;
 
         return sender.hasPermission("wild.wildtp.others." + world.getName());
+    }
+
+    private boolean canTPto(CommandSender sender, World world) {
+        String perWorld = "wild.wildtp.world." + world.getName();
+        if (!sender.hasPermission("wild.wildtp.world")) return false;
+        // If explicitly negated by permissions plugin, it must win over wildcard grants.
+        if (sender.isPermissionSet(perWorld) && !sender.hasPermission(perWorld)) return false;
+        if (sender.hasPermission(perWorld)) return true;
+        return sender.hasPermission("wild.wildtp.world.*");
     }
 
     private List<String> directions() {

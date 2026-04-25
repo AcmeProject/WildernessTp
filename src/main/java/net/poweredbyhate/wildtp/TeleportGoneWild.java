@@ -214,6 +214,7 @@ public class TeleportGoneWild {
 
         if (preWildTeleportEvent.isCancelled()) {
             WildTP.debug("preWildTeleport Cancelled");
+            TooCool2Teleport.microwave(who);
             return true;
         }
 

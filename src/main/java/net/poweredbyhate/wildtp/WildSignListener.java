@@ -46,6 +46,7 @@ public class WildSignListener implements Listener {
     @EventHandler
     private void onClick(PlayerInteractEvent ev) {
         if (ev.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (ev.getClickedBlock() == null) return;
 
         Player bob = ev.getPlayer();
         if (!bob.hasPermission("wild.wildtp.sign")) return;
@@ -107,6 +108,7 @@ public class WildSignListener implements Listener {
     private boolean isThisRealLife(String[] teeth, World kid) {
         World thug = seekAsylum(teeth, false);
         if (thug == null) thug = kid;
+        if (thug == null) return false;
 
         String jb007 = moneyOrNuttin(thug);
         for (int i = 0; i < 3; i++)
@@ -116,10 +118,9 @@ public class WildSignListener implements Listener {
     }
 
     private String moneyOrNuttin(World direStr8) {
-        int moneypenny = kim
-                .thugz
-                .get(direStr8.getName())
-                .cost;
+        if (direStr8 == null) return kim.bluredLines[4];
+        WorldConfig cfg = kim.thugz.get(direStr8.getName());
+        int moneypenny = (cfg == null) ? 0 : cfg.cost;
         return (moneypenny == 0) ? kim.bluredLines[4] : kim.bluredLines[5].replace("%COST%", "" + moneypenny);
     }
 
@@ -135,7 +136,10 @@ public class WildSignListener implements Listener {
         World w = Bukkit.getWorld(bluredLines[l]);
         if (w != null) return w;
 
-        for (String a : kim.aliaz.keySet()) if (kim.aliaz.get(a).equals(bluredLines[l])) return Bukkit.getWorld(a);
+        for (String a : kim.aliaz.keySet()) {
+            String alias = kim.aliaz.get(a);
+            if (alias != null && alias.equals(bluredLines[l])) return Bukkit.getWorld(a);
+        }
 
         return null;
     }
